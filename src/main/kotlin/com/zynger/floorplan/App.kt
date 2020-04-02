@@ -80,15 +80,21 @@ fun renderField(field: Field, primaryKey: PrimaryKey): String {
         .append(" ")
         .append(type)
         .apply {
+            append(" ")
+            append("[")
             if (isPrimaryKey) {
-                append(" ")
-                append("[")
                 append("pk")
                 if (primaryKey.autoGenerate) {
                     append(", increment")
                 }
-                append("]")
+                if (field.notNull) {
+                    append(", not null")
+                }
+            } else {
+                append("note: ")
+                append(if (field.notNull) "'not null'" else "'nullable'")
             }
+            append("]")
         }
         .toString()
 }
