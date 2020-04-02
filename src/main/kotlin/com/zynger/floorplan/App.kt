@@ -1,9 +1,6 @@
 package com.zynger.floorplan
 
-import com.zynger.floorplan.model.Field
-import com.zynger.floorplan.model.ForeignKey
-import com.zynger.floorplan.model.PrimaryKey
-import com.zynger.floorplan.model.Schema
+import com.zynger.floorplan.model.*
 import java.io.File
 import kotlinx.serialization.json.*
 import java.lang.IllegalArgumentException
@@ -41,6 +38,22 @@ fun main() {
                 }
             }
             .append("\n")
+            .apply {
+                if (entity.indices.isNotEmpty()) {
+                    append("  ")
+                    append("Indexes")
+                    append(" ")
+                    append("{")
+                    append("\n")
+                    entity.indices.map { index -> renderIndex(index) }.forEach { renderedIndex ->
+                        append("    $renderedIndex")
+                        append("\n")
+                    }
+                    append("  ")
+                    append("}")
+                    append("\n")
+                }
+            }
             .append("}")
             .append("\n")
             .append("\n")
@@ -52,6 +65,26 @@ fun main() {
             }
         println(sb.toString())
     }
+}
+
+fun renderIndex(index: Index): String {
+    //    (merchant_id, status) [name:'product_status']
+    //    id [unique]
+    return StringBuilder()
+        .append("(")
+        .append(index.columnNames.joinToString(","))
+        .append(")")
+        .append(" ")
+        .append("[")
+        .append("name:")
+        .append("'${index.name}'")
+        .apply {
+            if (index.unique) {
+                append(", unique")
+            }
+        }
+        .append("]")
+        .toString()
 }
 
 fun renderReference(fromTable: String, foreignKey: ForeignKey): String {
