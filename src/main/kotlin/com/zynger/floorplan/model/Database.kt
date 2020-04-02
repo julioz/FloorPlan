@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class Database(
     val version: Int,
     val identityHash: String,
-    val entities: List<Entities>,
-    val views: List<Views>,
+    val entities: List<Entity>,
+    val views: List<View>,
     val setupQueries: List<String>
 )
