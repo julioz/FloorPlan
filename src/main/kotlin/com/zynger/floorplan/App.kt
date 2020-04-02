@@ -1,6 +1,7 @@
 package com.zynger.floorplan
 
 import com.zynger.floorplan.model.Field
+import com.zynger.floorplan.model.PrimaryKey
 import com.zynger.floorplan.model.Schema
 import java.io.File
 import kotlinx.serialization.json.*
@@ -33,7 +34,7 @@ fun main() {
             .append("{")
             .append("\n")
             .apply {
-                entity.fields.map { field -> renderField(field) }.forEach { renderedField ->
+                entity.fields.map { field -> renderField(field, entity.primaryKey) }.forEach { renderedField ->
                     append("  $renderedField")
                     append("\n")
                 }
@@ -45,9 +46,29 @@ fun main() {
     }
 }
 
-fun renderField(field: Field): String {
+fun renderField(field: Field, primaryKey: PrimaryKey): String {
     val type = field.affinity.toType()
-    return "${field.columnName} $type"
+    val isPrimaryKey = field.isPrimaryKey(primaryKey)
+
+    return StringBuilder(field.columnName)
+        .append(" ")
+        .append(type)
+        .apply {
+            if (isPrimaryKey) {
+                append(" ")
+                append("[")
+                append("pk")
+                if (primaryKey.autoGenerate) {
+                    append(", increment")
+                }
+                append("]")
+            }
+        }
+        .toString()
+}
+
+private fun Field.isPrimaryKey(primaryKey: PrimaryKey): Boolean {
+    return primaryKey.columnNames.any { it == this.columnName }
 }
 
 private fun String.toType(): String {
