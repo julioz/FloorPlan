@@ -1,6 +1,7 @@
 package com.zynger.floorplan
 
 import com.zynger.floorplan.model.Field
+import com.zynger.floorplan.model.ForeignKey
 import com.zynger.floorplan.model.PrimaryKey
 import com.zynger.floorplan.model.Schema
 import java.io.File
@@ -42,8 +43,33 @@ fun main() {
             .append("\n")
             .append("}")
             .append("\n")
+            .append("\n")
+            .apply {
+                entity.foreignKeys.map { foreignKey -> renderReference(entity.tableName, foreignKey) }.forEach { reference ->
+                    append(reference)
+                    append("\n")
+                }
+            }
         println(sb.toString())
     }
+}
+
+fun renderReference(fromTable: String, foreignKey: ForeignKey): String {
+    // Ref: U.country_code > countries.code
+    // > many-to-one; < one-to-many; - one-to-one
+
+    val fromColumn = foreignKey.columns.first()
+    val toTable = foreignKey.table
+    val toColumn = foreignKey.referencedColumns.first()
+    return StringBuilder("Ref: ")
+        .append(fromTable)
+        .append(".")
+        .append(fromColumn)
+        .append(" - ")
+        .append(toTable)
+        .append(".")
+        .append(toColumn)
+        .toString()
 }
 
 fun renderField(field: Field, primaryKey: PrimaryKey): String {
