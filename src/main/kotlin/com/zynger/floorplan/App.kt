@@ -6,12 +6,16 @@ import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 
 @Serializable
-data class Data(val a: Int, val b: String = "42")
+data class Schema(val formatVersion: Int)
 
 fun main() {
     val src = File("samples/db.json")
     val table = Table("Users")
     println("Hello World $table")
 
+    val json = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true))
+    val obj = json.parse(Schema.serializer(), src.readText())
+
+    println(obj)
 
 }
