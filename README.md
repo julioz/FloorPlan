@@ -6,6 +6,8 @@ Once you a JSON representation of your [Room exported schema](https://developer.
 
 [dbdiagram](https://dbdiagram.io/) is a free, simple tool to draw ER diagrams, that can be used to render the output of FloorPlan.
 
+![screen capture](https://raw.githubusercontent.com/julioz/FloorPlan/master/docs/screencapture.gif)
+
 ### Run FloorPlan
 
 After checking out this repository, make sure you have Gradle installed and run:
