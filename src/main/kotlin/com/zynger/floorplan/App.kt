@@ -14,17 +14,6 @@ fun main() {
 
     val entities = schema.database.entities
 
-    /*
-    Table merchants {
-  id int [pk]
-  merchant_name varchar
-  country_code int
-  "created at" varchar
-  admin_id int [ref: > U.id] // inline relationship (many-to-one)
-}
-
-     */
-
     entities.forEach { entity ->
         val sb = StringBuilder()
             .append("Table ${entity.tableName}")
