@@ -5,8 +5,16 @@ import com.zynger.floorplan.model.*
 import java.io.File
 import kotlinx.serialization.json.*
 
-fun main() {
-    val src = File("samples/db.json")
+fun main(args: Array<String>) {
+    require(args.isNotEmpty()) {
+        """
+            Pass the source Room JSON schema as an argument.
+            
+            e.g.: gradlew run --args=<path-to-file>
+        """.trimIndent()
+    }
+
+    val src = File(args.first())
     val json = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true, isLenient = true))
 
     val dbml = json
