@@ -5,12 +5,12 @@ import com.zynger.floorplan.model.PrimaryKey
 import java.lang.IllegalArgumentException
 import java.lang.StringBuilder
 
-class Field (
+class Field(
     private val field: DbField,
-    private val primaryKey: PrimaryKey
+    private val tablePrimaryKey: PrimaryKey
 ) {
     private val isPrimaryKey: Boolean
-        get() = primaryKey.columnNames.any { it == this.field.columnName }
+        get() = tablePrimaryKey.columnNames.any { it == this.field.columnName }
 
     private val type: String
         get() = this.field.affinity.toType()
@@ -24,7 +24,7 @@ class Field (
                 append("[")
                 if (isPrimaryKey) {
                     append("pk")
-                    if (primaryKey.autoGenerate) {
+                    if (tablePrimaryKey.autoGenerate) {
                         append(", increment")
                     }
                     if (field.notNull) {
