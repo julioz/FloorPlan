@@ -7,9 +7,13 @@ import kotlinx.serialization.json.*
 
 fun main() {
     val src = File("samples/db.json")
-
     val json = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true, isLenient = true))
-    val schema: Schema = json.parse(Schema.serializer(), src.readText())
 
-    schema.database.entities.map { Table(it) }.forEach { println(it) }
+    val dbml = json
+        .parse(Schema.serializer(), src.readText())
+        .database
+        .entities
+        .map { Table(it) }
+        .joinToString(separator = "\n\n")
+    print(dbml)
 }
