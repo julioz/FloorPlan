@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
         """
             Pass the source Room JSON schema as an argument.
             
-            e.g.: gradlew run --args=<path-to-file>
+            e.g.: gradlew run --args=<path-to-schema-file>
         """.trimIndent()
     }
 
