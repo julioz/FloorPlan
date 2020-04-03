@@ -7,6 +7,6 @@ data class Database(
     val version: Int,
     val identityHash: String,
     val entities: List<Entity>,
-    val views: List<View>,
+    val views: List<View> = emptyList(),
     val setupQueries: List<String>
 )
