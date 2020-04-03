@@ -15,40 +15,35 @@ class Table(
             .append("Table $tableName")
             .append(" ")
             .append("{")
-            .append("\n")
+            .appendln()
             .apply {
-                fields.forEach {
-                    append("  ")
-                    append(it)
-                    append("\n")
-                }
+                append(fields.joinToString("\n") { it.toString().prependIndent("  ") })
             }
-            .append("\n")
+            .appendln()
             .apply {
                 if (this@Table.indices.isNotEmpty()) {
-                    append("  ")
-                    append("Indexes")
-                    append(" ")
-                    append("{")
-                    append("\n")
-                    this@Table.indices.forEach {
-                        append("    ")
-                        append(it)
-                        append("\n")
-                    }
-                    append("  ")
-                    append("}")
-                    append("\n")
+                    appendln()
+                    appendIndicesBlock()
                 }
             }
             .append("}")
-            .append("\n")
-            .append("\n")
             .apply {
-                references.forEach {
-                    append(it)
-                    append("\n")
+                if (this@Table.references.isNotEmpty()) {
+                    appendln()
+                    appendln()
+                    append(references.joinToString("\n") { it.toString() })
                 }
-            }.toString()
+            }
+            .toString()
+    }
+
+    private fun StringBuilder.appendIndicesBlock() {
+        append("  ")
+        append("Indexes")
+        append("  ")
+        appendln("{")
+        this@Table.indices.forEach { appendln(it.toString().prependIndent("    ")) }
+        append("  ")
+        appendln("}")
     }
 }
