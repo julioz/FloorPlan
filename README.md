@@ -26,3 +26,6 @@ The project is unit tested. These can be run via Gradle with:
 gradlew test
 ```
 
+## Note
+
+FloorPlan and its developers are in no way associated to dbdiagram.
