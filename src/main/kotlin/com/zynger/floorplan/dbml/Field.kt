@@ -40,11 +40,21 @@ class Field(
     }
 
     private fun String.toType(): String {
-        return when (this) {
+        return when (this.toUpperCase().trim()) {
             "TEXT" -> "varchar"
             "INTEGER" -> "int"
-            else -> throw IllegalArgumentException("Unrecognized affinity $this")
-
+            "REAL" -> "real"
+            "BLOB" -> "blob"
+            "NULL" -> "null"
+            else -> {
+                /**
+                 * DBML supports all data types, as long as it is a single word.
+                 * Examples: JSON, JSONB, decimal(1,2), etc.
+                 *
+                 * https://www.dbml.org/docs/#table-definition
+                 */
+                this.toLowerCase().replace("\\s".toRegex(), "")
+            }
         }
     }
 }
