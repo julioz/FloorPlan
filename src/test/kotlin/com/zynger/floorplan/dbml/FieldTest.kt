@@ -38,7 +38,7 @@ class FieldTest {
     }
 
     @Test
-    fun `primary key with INTEGER type becomes int`() {
+    fun `field with INTEGER type becomes int`() {
         val textField = DbField(FIELD_PATH, COLUMN_NAME, "INTEGER", false)
         val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
 
@@ -51,13 +51,52 @@ class FieldTest {
     }
 
     @Test
-    fun `primary key with TEXT type becomes VARCHAR`() {
+    fun `field with TEXT type becomes VARCHAR`() {
         val textField = DbField(FIELD_PATH, COLUMN_NAME, "TEXT", false)
         val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
 
         assertEquals(
             """
                 $COLUMN_NAME varchar [pk]
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey).toString()
+        )
+    }
+
+    @Test
+    fun `field with REAL type becomes REAL`() {
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "REAL", false)
+        val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME real [pk]
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey).toString()
+        )
+    }
+
+    @Test
+    fun `field with BLOB type becomes BLOB`() {
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "BLOB", false)
+        val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME blob [pk]
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey).toString()
+        )
+    }
+
+    @Test
+    fun `field with unrecognized type follows DBML single-word requirement`() {
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "Decimal (1, 2)", false)
+        val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME decimal(1,2) [pk]
             """.trimIndent(),
             Field(textField, tablePrimaryKey).toString()
         )
