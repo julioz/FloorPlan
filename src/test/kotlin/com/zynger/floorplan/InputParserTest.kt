@@ -38,7 +38,4 @@ class InputParserTest {
             // ok
         }
     }
-
-
 }
-

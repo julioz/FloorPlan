@@ -10,7 +10,6 @@ object InputParser {
         return Input(sanitizeInputFilePath(inputFilePath))
     }
 
-
     private fun sanitizeInputFilePath(inputFilePath: String): String {
         return when {
             inputFilePath.startsWith("~" + File.separator) -> System.getProperty("user.home") + inputFilePath.substring(1)
