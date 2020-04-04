@@ -19,9 +19,8 @@ class TableTest {
         private const val INDEX_1_NAME = "index1"
         private const val INDEX_2_NAME = "index2"
 
-        private const val GARBLE = "egal"
-        private const val ON_DELETE = GARBLE
-        private const val ON_UPDATE = GARBLE
+        private val ON_DELETE = ForeignKeyAction.NO_ACTION
+        private val ON_UPDATE = ForeignKeyAction.NO_ACTION
     }
 
     @Test
@@ -153,7 +152,7 @@ class TableTest {
                   $COLUMN_NAME_1 varchar [note: 'not null']
                 }
                 
-                Ref: $TABLE_NAME.$COLUMN_NAME_1 - $TABLE_NAME_2.$COLUMN_NAME_3
+                Ref: $TABLE_NAME.$COLUMN_NAME_1 - $TABLE_NAME_2.$COLUMN_NAME_3 [delete: no action, update: no action]
             """.trimIndent(),
             table.toString()
         )
@@ -181,8 +180,8 @@ class TableTest {
                   userId varchar [note: 'not null']
                 }
                 
-                Ref: Users.username - Songs.userId
-                Ref: Users.userId - Albums.age
+                Ref: Users.username - Songs.userId [delete: no action, update: no action]
+                Ref: Users.userId - Albums.age [delete: no action, update: no action]
             """.trimIndent(),
             table.toString()
         )
@@ -220,8 +219,8 @@ class TableTest {
                   }
                 }
                 
-                Ref: Users.username - Songs.userId
-                Ref: Users.userId - Albums.age
+                Ref: Users.username - Songs.userId [delete: no action, update: no action]
+                Ref: Users.userId - Albums.age [delete: no action, update: no action]
             """.trimIndent(),
             table.toString()
         )
