@@ -8,14 +8,18 @@ Once you have a JSON representation of your [Room exported schema](https://devel
 
 ![screen capture](https://raw.githubusercontent.com/julioz/FloorPlan/master/docs/screencapture.gif)
 
-### Run FloorPlan
+For instance, when translating [Tivi](https://github.com/chrisbanes/tivi)'s [schema (v26)](https://github.com/chrisbanes/tivi/blob/master/data-android/schemas/app.tivi.data.TiviRoomDatabase/26.json), this is the rendered output in dbdiagram:
+
+![Tivi model](https://raw.githubusercontent.com/julioz/FloorPlan/master/docs/Tivi26SchemaRender.png)
+
+## Run FloorPlan
 
 After checking out this repository, make sure you have Gradle installed and run:
 ```
 gradlew run --args=<path-to-schema-file>
 ```
 
-#### Tests
+### Tests
 
 The project is unit tested. These can be run via Gradle with:
 ```
