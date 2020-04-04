@@ -17,5 +17,12 @@ fun main(args: Array<String>) {
         .entities
         .map { Table(it) }
         .joinToString(separator = "\n\n")
-    print(dbml)
+
+    if (input.outputPath == null) {
+        print(dbml)
+    } else {
+        val outputFile = File(input.outputPath)
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(dbml)
+    }
 }
