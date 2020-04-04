@@ -1,6 +1,7 @@
 package com.zynger.floorplan.dbml
 
 import com.zynger.floorplan.model.ForeignKey
+import com.zynger.floorplan.model.ForeignKeyAction
 import java.lang.StringBuilder
 
 class Reference(
@@ -15,6 +16,8 @@ class Reference(
         val fromColumn = foreignKey.columns.first()
         val toTable = foreignKey.table
         val toColumn = foreignKey.referencedColumns.first()
+        val deleteAction = foreignKey.onDelete.toDbml()
+        val updateAction = foreignKey.onUpdate.toDbml()
         return StringBuilder("Ref: ")
             .append(fromTable)
             .append(".")
@@ -23,6 +26,23 @@ class Reference(
             .append(toTable)
             .append(".")
             .append(toColumn)
+            .append(" [")
+            .append("delete: ")
+            .append(deleteAction)
+            .append(", ")
+            .append("update: ")
+            .append(updateAction)
+            .append("]")
             .toString()
+    }
+
+    private fun ForeignKeyAction.toDbml(): String {
+        return when (this) {
+            ForeignKeyAction.NO_ACTION -> "no action"
+            ForeignKeyAction.RESTRICT -> "restrict"
+            ForeignKeyAction.SET_NULL -> "set null"
+            ForeignKeyAction.SET_DEFAULT -> "set default"
+            ForeignKeyAction.CASCADE -> "cascade"
+        }
     }
 }
