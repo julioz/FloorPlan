@@ -16,7 +16,12 @@ For instance, when translating [Tivi](https://github.com/chrisbanes/tivi)'s [sch
 
 After checking out this repository, make sure you have Gradle installed and run:
 ```
-gradlew run --args=<path-to-schema-file>
+gradlew run --args="<path-to-schema-file>"
+```
+
+**Optionally**, one can also pipe the output of FloorPlan to a file in disk instead of the terminal, by specifying the `output` argument as such:
+```
+gradlew run --args="<path-to-schema-file> --output=<path-to-output-file>"
 ```
 
 ### Tests
