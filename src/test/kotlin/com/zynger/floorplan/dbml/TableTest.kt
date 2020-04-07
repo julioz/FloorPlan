@@ -40,6 +40,8 @@ class TableTest {
             """
                 Table $TABLE_NAME {
                   $COLUMN_NAME_1 varchar [note: 'not null']
+                  
+                  Note: '$CREATE_SQL'
                 }
             """.trimIndent(),
             table.toString()
@@ -65,6 +67,8 @@ class TableTest {
                   $COLUMN_NAME_1 varchar [note: 'not null']
                   $COLUMN_NAME_2 int [note: 'nullable']
                   $COLUMN_NAME_3 varchar [note: 'not null']
+                  
+                  Note: '$CREATE_SQL'
                 }
             """.trimIndent(),
             table.toString()
@@ -94,6 +98,8 @@ class TableTest {
                   Indexes  {
                     ($COLUMN_NAME_1) [name:'$INDEX_1_NAME', unique]
                   }
+                  
+                  Note: '$CREATE_SQL'
                 }
             """.trimIndent(),
             table.toString()
@@ -125,6 +131,8 @@ class TableTest {
                     ($COLUMN_NAME_1) [name:'$INDEX_1_NAME', unique]
                     ($COLUMN_NAME_2,$COLUMN_NAME_3) [name:'$INDEX_2_NAME']
                   }
+                  
+                  Note: '$CREATE_SQL'
                 }
             """.trimIndent(),
             table.toString()
@@ -150,6 +158,8 @@ class TableTest {
             """
                 Table $TABLE_NAME {
                   $COLUMN_NAME_1 varchar [note: 'not null']
+                  
+                  Note: '$CREATE_SQL'
                 }
                 
                 Ref: $TABLE_NAME.$COLUMN_NAME_1 - $TABLE_NAME_2.$COLUMN_NAME_3 [delete: no action, update: no action]
@@ -178,6 +188,8 @@ class TableTest {
             """
                 Table Users {
                   userId varchar [note: 'not null']
+                  
+                  Note: '$CREATE_SQL'
                 }
                 
                 Ref: Users.username - Songs.userId [delete: no action, update: no action]
@@ -217,6 +229,8 @@ class TableTest {
                     (userId) [name:'index1', unique]
                     (age,username) [name:'index2']
                   }
+                  
+                  Note: '$CREATE_SQL'
                 }
                 
                 Ref: Users.username - Songs.userId [delete: no action, update: no action]

@@ -9,6 +9,7 @@ class Table(
     private val fields: List<Field> = entity.fields.map { Field(it, entity.primaryKey) }
     private val indices: List<Index> = entity.indices.map { Index(it) }
     private val references: List<Reference> = entity.foreignKeys.map { Reference(tableName, it) }
+    private val createSql: String = entity.createSql
 
     override fun toString(): String {
         return StringBuilder()
@@ -25,6 +26,14 @@ class Table(
                     appendln()
                     appendIndicesBlock()
                 }
+            }
+            .apply {
+                appendln("  ")
+                append("Note: ".prependIndent("  "))
+                append("'")
+                append(createSql)
+                append("'")
+                appendln()
             }
             .append("}")
             .apply {
