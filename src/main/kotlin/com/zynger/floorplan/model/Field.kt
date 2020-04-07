@@ -7,5 +7,6 @@ data class Field (
     val fieldPath: String,
     val columnName: String,
     val affinity: String,
-    val notNull: Boolean
+    val notNull: Boolean,
+    val defaultValue: String? = null
 )
