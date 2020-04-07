@@ -22,6 +22,14 @@ class Field(
             .apply {
                 append(" ")
                 append("[")
+                if (field.defaultValue != null) {
+                    append("default:")
+                    append(" ")
+                    append("`")
+                    append(field.defaultValue)
+                    append("`")
+                    append(", ")
+                }
                 if (isPrimaryKey) {
                     append("pk")
                     if (tablePrimaryKey.autoGenerate) {

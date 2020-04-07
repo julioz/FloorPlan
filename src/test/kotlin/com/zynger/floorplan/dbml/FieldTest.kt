@@ -38,6 +38,48 @@ class FieldTest {
     }
 
     @Test
+    fun `non-primary key with default value gets rendered with default note`() {
+        val defaultValue = "defVal"
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "TEXT", true, defaultValue)
+        val tablePrimaryKey = PrimaryKey(emptyList(), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME varchar [default: `$defaultValue`, note: 'not null']
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey).toString()
+        )
+    }
+
+    @Test
+    fun `primary key with default value gets rendered with default note`() {
+        val defaultValue = "defVal"
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "INTEGER", false, defaultValue)
+        val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME int [default: `$defaultValue`, pk]
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey).toString()
+        )
+    }
+
+    @Test
+    fun `non-primary key with default value using quotes gets rendered with default note`() {
+        val defaultValue = "\"quoted\""
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "TEXT", true, defaultValue)
+        val tablePrimaryKey = PrimaryKey(emptyList(), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME varchar [default: `$defaultValue`, note: 'not null']
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey).toString()
+        )
+    }
+
+    @Test
     fun `field with INTEGER type becomes int`() {
         val textField = DbField(FIELD_PATH, COLUMN_NAME, "INTEGER", false)
         val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
