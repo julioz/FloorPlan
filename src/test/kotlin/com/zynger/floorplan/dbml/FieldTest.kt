@@ -52,6 +52,20 @@ class FieldTest {
     }
 
     @Test
+    fun `non-primary key with default value gets rendered with default note even if it is an empty string`() {
+        val defaultValue = ""
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "TEXT", true, defaultValue)
+        val tablePrimaryKey = PrimaryKey(emptyList(), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME varchar [default: ``, note: 'not null']
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey).toString()
+        )
+    }
+
+    @Test
     fun `primary key with default value gets rendered with default note`() {
         val defaultValue = "defVal"
         val textField = DbField(FIELD_PATH, COLUMN_NAME, "INTEGER", false, defaultValue)
