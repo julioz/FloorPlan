@@ -6,38 +6,48 @@ object InputParser {
 
     data class Input(
         val schemaPath: String,
-        val outputPath: String?
+        val outputPath: String?,
+        val creationSqlAsTableNote: Boolean
     )
 
     private const val OUTPUT_ARG_KEY: String = "output"
+    private const val CREATION_SQL_AS_TABLE_NOTES_ARG_KEY: String = "creation-sql-as-table-note"
 
     fun parse(args: Array<String>): Input {
         require(args.isNotEmpty()) {
             """
             Pass the source Room JSON schema as an argument.
-            Optionally, specify an output file for the DBML representation.
+            Optionally, use:
             
-            e.g.: gradlew run --args="<path-to-schema-file> [--output=<output-file-path>]"
+            * output: specify an output file for the DBML representation.
+            * creation-sql-as-table-note: adds the SQL used to create tables as notes in their DBML representation.
+            
+            e.g.: gradlew run --args="<path-to-schema-file> [--output=<output-file-path>] [--creation-sql-as-table-note]"
         """.trimIndent()
         }
 
         val inputFilePath: String = sanitizeFilePath(args.first())
-        val outputFilePath: String? = if (args.containsOutputArg()) sanitizeFilePath(args.extractOutputArg()) else null
+        val outputFilePath: String? = args.getArgumentValue(OUTPUT_ARG_KEY)?.let { sanitizeFilePath(it) }
+        val noteCreationSql = args.argumentExists(CREATION_SQL_AS_TABLE_NOTES_ARG_KEY)
 
-        return Input(inputFilePath, outputFilePath)
+        return Input(inputFilePath, outputFilePath, noteCreationSql)
     }
 
-    private fun Array<String>.containsOutputArg(): Boolean {
-        return any { it.contains("--$OUTPUT_ARG_KEY=") }
-    }
+    private fun Array<String>.getArgumentValue(argKey: String): String? {
+        return if (none { it.contains("--$argKey=") }) {
+            null
+        } else {
+            val argumentPair = find { it.contains("--$argKey=") }!!
+            require(argumentPair.substringAfter("=").trim().isNotEmpty()) {
+                "Please inform a value for the --$argKey argument."
+            }
 
-    private fun Array<String>.extractOutputArg(): String {
-        val outputFileArgumentPair = find { it.contains("--$OUTPUT_ARG_KEY=") }!!
-        require(outputFileArgumentPair.substringAfter("=").trim().isNotEmpty()) {
-            "Please inform an output file path with the --output argument."
+            argumentPair.substringAfter("=").substringBefore(" ")
         }
+    }
 
-        return outputFileArgumentPair.substringAfter("=").substringBefore(" ")
+    private fun Array<String>.argumentExists(argKey: String): Boolean {
+        return any { it == "--$argKey" }
     }
 
     private fun sanitizeFilePath(path: String): String {
