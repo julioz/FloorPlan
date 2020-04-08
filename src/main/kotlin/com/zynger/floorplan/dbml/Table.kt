@@ -1,9 +1,11 @@
 package com.zynger.floorplan.dbml
 
+import com.zynger.floorplan.Settings
 import com.zynger.floorplan.model.Entity
 
 class Table(
-    entity: Entity
+    entity: Entity,
+    private val settings: Settings
 ) {
     private val tableName: String = entity.tableName
     private val fields: List<Field> = entity.fields.map { Field(it, entity.primaryKey) }
@@ -28,12 +30,14 @@ class Table(
                 }
             }
             .apply {
-                appendln("  ")
-                append("Note: ".prependIndent("  "))
-                append("'")
-                append(createSql)
-                append("'")
-                appendln()
+                if (settings.creationSqlAsTableNote) {
+                    appendln("  ")
+                    append("Note: ".prependIndent("  "))
+                    append("'")
+                    append(createSql)
+                    append("'")
+                    appendln()
+                }
             }
             .append("}")
             .apply {
