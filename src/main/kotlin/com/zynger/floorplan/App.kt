@@ -11,11 +11,12 @@ fun main(args: Array<String>) {
     val src = File(input.schemaPath)
     val json = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true, isLenient = true))
 
+    val settings = Settings(input.creationSqlAsTableNote)
     val dbml = json
         .parse(Schema.serializer(), src.readText())
         .database
         .entities
-        .map { Table(it) }
+        .map { Table(it, settings) }
         .joinToString(separator = "\n\n")
 
     if (input.outputPath == null) {

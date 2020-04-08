@@ -1,14 +1,17 @@
 package com.zynger.floorplan.dbml
 
+import com.zynger.floorplan.Settings
 import com.zynger.floorplan.model.Entity
 
 class Table(
-    entity: Entity
+    entity: Entity,
+    private val settings: Settings
 ) {
     private val tableName: String = entity.tableName
     private val fields: List<Field> = entity.fields.map { Field(it, entity.primaryKey) }
     private val indices: List<Index> = entity.indices.map { Index(it) }
     private val references: List<Reference> = entity.foreignKeys.map { Reference(tableName, it) }
+    private val createSql: String = entity.createSql
 
     override fun toString(): String {
         return StringBuilder()
@@ -24,6 +27,16 @@ class Table(
                 if (this@Table.indices.isNotEmpty()) {
                     appendln()
                     appendIndicesBlock()
+                }
+            }
+            .apply {
+                if (settings.creationSqlAsTableNote) {
+                    appendln("  ")
+                    append("Note: ".prependIndent("  "))
+                    append("'")
+                    append(createSql)
+                    append("'")
+                    appendln()
                 }
             }
             .append("}")

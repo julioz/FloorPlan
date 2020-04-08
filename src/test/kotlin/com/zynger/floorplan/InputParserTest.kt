@@ -95,4 +95,27 @@ class InputParserTest {
 
         assertEquals(expected, input.outputPath)
     }
+
+    @Test
+    fun `creation sql is not part of table notes when argument isn't specified`() {
+        val input = InputParser.parse(
+            arrayOf(
+                "samples/db.json"
+            )
+        )
+
+        assertFalse(input.creationSqlAsTableNote)
+    }
+
+    @Test
+    fun `creation sql is part of table notes when argument is specified`() {
+        val input = InputParser.parse(
+            arrayOf(
+                "samples/db.json",
+                "--creation-sql-as-table-note"
+            )
+        )
+
+        assertTrue(input.creationSqlAsTableNote)
+    }
 }

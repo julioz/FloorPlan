@@ -1,5 +1,6 @@
 package com.zynger.floorplan.dbml
 
+import com.zynger.floorplan.Settings
 import com.zynger.floorplan.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -21,6 +22,8 @@ class TableTest {
 
         private val ON_DELETE = ForeignKeyAction.NO_ACTION
         private val ON_UPDATE = ForeignKeyAction.NO_ACTION
+
+        private val DEFAULT_SETTINGS = Settings(creationSqlAsTableNote = false)
     }
 
     @Test
@@ -33,13 +36,40 @@ class TableTest {
                 primaryKey = PrimaryKey(emptyList(), false),
                 indices = emptyList(),
                 foreignKeys = emptyList()
-            )
+            ),
+            DEFAULT_SETTINGS
         )
 
         assertEquals(
             """
                 Table $TABLE_NAME {
                   $COLUMN_NAME_1 varchar [note: 'not null']
+                }
+            """.trimIndent(),
+            table.toString()
+        )
+    }
+
+    @Test
+    fun `table with single field and creation SQL as note`() {
+        val table = Table(
+            Entity(
+                tableName = TABLE_NAME,
+                createSql = CREATE_SQL,
+                fields = listOf(FIELD_1),
+                primaryKey = PrimaryKey(emptyList(), false),
+                indices = emptyList(),
+                foreignKeys = emptyList()
+            ),
+            Settings(creationSqlAsTableNote = true)
+        )
+
+        assertEquals(
+            """
+                Table $TABLE_NAME {
+                  $COLUMN_NAME_1 varchar [note: 'not null']
+                  
+                  Note: '$CREATE_SQL'
                 }
             """.trimIndent(),
             table.toString()
@@ -56,7 +86,8 @@ class TableTest {
                 primaryKey = PrimaryKey(emptyList(), false),
                 indices = emptyList(),
                 foreignKeys = emptyList()
-            )
+            ),
+            DEFAULT_SETTINGS
         )
 
         assertEquals(
@@ -83,7 +114,8 @@ class TableTest {
                     Index(INDEX_1_NAME, true, listOf(COLUMN_NAME_1), CREATE_SQL)
                 ),
                 foreignKeys = emptyList()
-            )
+            ),
+            DEFAULT_SETTINGS
         )
 
         assertEquals(
@@ -113,7 +145,8 @@ class TableTest {
                     Index(INDEX_2_NAME, false, listOf(COLUMN_NAME_2, COLUMN_NAME_3), CREATE_SQL)
                 ),
                 foreignKeys = emptyList()
-            )
+            ),
+            DEFAULT_SETTINGS
         )
 
         assertEquals(
@@ -132,6 +165,40 @@ class TableTest {
     }
 
     @Test
+    fun `table with multiple indices and creation sql as note`() {
+        val table = Table(
+            Entity(
+                tableName = TABLE_NAME,
+                createSql = CREATE_SQL,
+                fields = listOf(FIELD_1),
+                primaryKey = PrimaryKey(emptyList(), false),
+                indices = listOf(
+                    Index(INDEX_1_NAME, true, listOf(COLUMN_NAME_1), CREATE_SQL),
+                    Index(INDEX_2_NAME, false, listOf(COLUMN_NAME_2, COLUMN_NAME_3), CREATE_SQL)
+                ),
+                foreignKeys = emptyList()
+            ),
+            Settings(creationSqlAsTableNote = true)
+        )
+
+        assertEquals(
+            """
+                Table $TABLE_NAME {
+                  $COLUMN_NAME_1 varchar [note: 'not null']
+                
+                  Indexes  {
+                    ($COLUMN_NAME_1) [name:'$INDEX_1_NAME', unique]
+                    ($COLUMN_NAME_2,$COLUMN_NAME_3) [name:'$INDEX_2_NAME']
+                  }
+                  
+                  Note: '$CREATE_SQL'
+                }
+            """.trimIndent(),
+            table.toString()
+        )
+    }
+
+    @Test
     fun `table with single reference`() {
         val table = Table(
             Entity(
@@ -143,7 +210,8 @@ class TableTest {
                 foreignKeys = listOf(
                     ForeignKey(TABLE_NAME_2, listOf(COLUMN_NAME_1), listOf(COLUMN_NAME_3), ON_DELETE, ON_UPDATE)
                 )
-            )
+            ),
+            DEFAULT_SETTINGS
         )
 
         assertEquals(
@@ -171,7 +239,8 @@ class TableTest {
                     ForeignKey(TABLE_NAME_2, listOf(COLUMN_NAME_3), listOf(COLUMN_NAME_1), ON_DELETE, ON_UPDATE),
                     ForeignKey(TABLE_NAME_3, listOf(COLUMN_NAME_1), listOf(COLUMN_NAME_2), ON_DELETE, ON_UPDATE)
                 )
-            )
+            ),
+            DEFAULT_SETTINGS
         )
 
         assertEquals(
@@ -203,7 +272,8 @@ class TableTest {
                     ForeignKey(TABLE_NAME_2, listOf(COLUMN_NAME_3), listOf(COLUMN_NAME_1), ON_DELETE, ON_UPDATE),
                     ForeignKey(TABLE_NAME_3, listOf(COLUMN_NAME_1), listOf(COLUMN_NAME_2), ON_DELETE, ON_UPDATE)
                 )
-            )
+            ),
+            DEFAULT_SETTINGS
         )
 
         assertEquals(
@@ -217,6 +287,48 @@ class TableTest {
                     (userId) [name:'index1', unique]
                     (age,username) [name:'index2']
                   }
+                }
+                
+                Ref: Users.username - Songs.userId [delete: no action, update: no action]
+                Ref: Users.userId - Albums.age [delete: no action, update: no action]
+            """.trimIndent(),
+            table.toString()
+        )
+    }
+
+    @Test
+    fun `table with multiple fields, indices, references and creation sql as note`() {
+        val table = Table(
+            Entity(
+                tableName = TABLE_NAME,
+                createSql = CREATE_SQL,
+                fields = listOf(FIELD_1, FIELD_2, FIELD_3),
+                primaryKey = PrimaryKey(emptyList(), false),
+                indices = listOf(
+                    Index(INDEX_1_NAME, true, listOf(COLUMN_NAME_1), CREATE_SQL),
+                    Index(INDEX_2_NAME, false, listOf(COLUMN_NAME_2, COLUMN_NAME_3), CREATE_SQL)
+                ),
+                foreignKeys = listOf(
+                    ForeignKey(TABLE_NAME_2, listOf(COLUMN_NAME_3), listOf(COLUMN_NAME_1), ON_DELETE, ON_UPDATE),
+                    ForeignKey(TABLE_NAME_3, listOf(COLUMN_NAME_1), listOf(COLUMN_NAME_2), ON_DELETE, ON_UPDATE)
+                )
+            ),
+            Settings(creationSqlAsTableNote = true)
+        )
+
+        assertEquals(
+            """
+                Table Users {
+                  userId varchar [note: 'not null']
+                  age int [note: 'nullable']
+                  username varchar [note: 'not null']
+                
+                  Indexes  {
+                    (userId) [name:'index1', unique]
+                    (age,username) [name:'index2']
+                  }
+                  
+                  Note: '$CREATE_SQL'
                 }
                 
                 Ref: Users.username - Songs.userId [delete: no action, update: no action]
