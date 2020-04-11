@@ -20,6 +20,11 @@ class Field(
             .append(" ")
             .append(type)
             .apply {
+                if (settings.renderNullableFields && field.nullable) {
+                    append("(?)")
+                }
+            }
+            .apply {
                 append(" ")
                 append("[")
                 if (field.defaultValue != null) {
@@ -65,4 +70,7 @@ class Field(
             }
         }
     }
+
+    private val DbField.nullable: Boolean
+        get() = !notNull
 }

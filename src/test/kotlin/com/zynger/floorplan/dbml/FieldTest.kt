@@ -161,6 +161,32 @@ class FieldTest {
     }
 
     @Test
+    fun `field with INTEGER type becomes int(?) when nullable should be rendered`() {
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "INTEGER", false)
+        val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME int(?) [pk]
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey, Settings(renderNullableFields = true)).toString()
+        )
+    }
+
+    @Test
+    fun `field with unrecognized type follows DBML single-word requirement even when nullable should be rendered`() {
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "Decimal (1, 2)", false)
+        val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME decimal(1,2)(?) [pk]
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey, Settings(renderNullableFields = true)).toString()
+        )
+    }
+
+    @Test
     fun `autoincrement primary key`() {
         val textField = DbField(FIELD_PATH, COLUMN_NAME, "TEXT", false)
         val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), true)
