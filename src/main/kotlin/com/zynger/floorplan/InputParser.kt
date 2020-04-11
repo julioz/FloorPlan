@@ -7,11 +7,13 @@ object InputParser {
     data class Input(
         val schemaPath: String,
         val outputPath: String?,
-        val creationSqlAsTableNote: Boolean
+        val creationSqlAsTableNote: Boolean,
+        val renderNullableFields: Boolean
     )
 
     private const val OUTPUT_ARG_KEY: String = "output"
     private const val CREATION_SQL_AS_TABLE_NOTES_ARG_KEY: String = "creation-sql-as-table-note"
+    private const val RENDER_NULLABLE_FIELDS_ARG_KEY: String = "render-nullable-fields"
 
     fun parse(args: Array<String>): Input {
         require(args.isNotEmpty()) {
@@ -22,15 +24,16 @@ object InputParser {
             * output: specify an output file for the DBML representation.
             * creation-sql-as-table-note: adds the SQL used to create tables as notes in their DBML representation.
             
-            e.g.: gradlew run --args="<path-to-schema-file> [--output=<output-file-path>] [--creation-sql-as-table-note]"
+            e.g.: gradlew run --args="<path-to-schema-file> [--output=<output-file-path>] [--creation-sql-as-table-note] [--render-nullable-fields]"
         """.trimIndent()
         }
 
         val inputFilePath: String = sanitizeFilePath(args.first())
         val outputFilePath: String? = args.getArgumentValue(OUTPUT_ARG_KEY)?.let { sanitizeFilePath(it) }
         val noteCreationSql = args.argumentExists(CREATION_SQL_AS_TABLE_NOTES_ARG_KEY)
+        val renderNullableFields = args.argumentExists(RENDER_NULLABLE_FIELDS_ARG_KEY)
 
-        return Input(inputFilePath, outputFilePath, noteCreationSql)
+        return Input(inputFilePath, outputFilePath, noteCreationSql, renderNullableFields)
     }
 
     private fun Array<String>.getArgumentValue(argKey: String): String? {

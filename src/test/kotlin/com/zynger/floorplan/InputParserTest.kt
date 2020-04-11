@@ -118,4 +118,27 @@ class InputParserTest {
 
         assertTrue(input.creationSqlAsTableNote)
     }
+
+    @Test
+    fun `nullable fields aren't rendered when argument isn't specified`() {
+        val input = InputParser.parse(
+            arrayOf(
+                "samples/db.json"
+            )
+        )
+
+        assertFalse(input.renderNullableFields)
+    }
+
+    @Test
+    fun `nullable fields are rendered when argument is specified`() {
+        val input = InputParser.parse(
+            arrayOf(
+                "samples/db.json",
+                "--render-nullable-fields"
+            )
+        )
+
+        assertTrue(input.renderNullableFields)
+    }
 }

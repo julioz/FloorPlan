@@ -1,5 +1,6 @@
 package com.zynger.floorplan.dbml
 
+import com.zynger.floorplan.Settings
 import com.zynger.floorplan.model.PrimaryKey
 import org.junit.Assert.assertEquals
 import com.zynger.floorplan.model.Field as DbField
@@ -9,6 +10,7 @@ class FieldTest {
     companion object {
         private const val FIELD_PATH = "fieldPath"
         private const val COLUMN_NAME = "username"
+        private val DEFAULT_SETTINGS = Settings()
     }
 
     @Test
@@ -20,7 +22,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [note: 'nullable']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -33,7 +35,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [note: 'not null']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -47,7 +49,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [default: `$defaultValue`, note: 'not null']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -61,7 +63,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [default: ``, note: 'not null']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -75,7 +77,7 @@ class FieldTest {
             """
                 $COLUMN_NAME int [default: `$defaultValue`, pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -89,7 +91,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [default: `$defaultValue`, note: 'not null']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -102,7 +104,7 @@ class FieldTest {
             """
                 $COLUMN_NAME int [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -115,7 +117,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -128,7 +130,7 @@ class FieldTest {
             """
                 $COLUMN_NAME real [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -141,7 +143,7 @@ class FieldTest {
             """
                 $COLUMN_NAME blob [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -154,7 +156,33 @@ class FieldTest {
             """
                 $COLUMN_NAME decimal(1,2) [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+        )
+    }
+
+    @Test
+    fun `field with INTEGER type becomes int(?) when nullable should be rendered`() {
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "INTEGER", false)
+        val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME int(?) [pk]
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey, Settings(renderNullableFields = true)).toString()
+        )
+    }
+
+    @Test
+    fun `field with unrecognized type follows DBML single-word requirement even when nullable should be rendered`() {
+        val textField = DbField(FIELD_PATH, COLUMN_NAME, "Decimal (1, 2)", false)
+        val tablePrimaryKey = PrimaryKey(listOf(COLUMN_NAME), false)
+
+        assertEquals(
+            """
+                $COLUMN_NAME decimal(1,2)(?) [pk]
+            """.trimIndent(),
+            Field(textField, tablePrimaryKey, Settings(renderNullableFields = true)).toString()
         )
     }
 
@@ -167,7 +195,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [pk, increment]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey).toString()
+            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 }

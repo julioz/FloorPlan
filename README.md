@@ -31,6 +31,11 @@ gradlew run --args="<path-to-schema-file> --output=<path-to-output-file>"
 gradlew run --args="<path-to-schema-file> --creation-sql-as-table-note"
 ```
 
+- render nullable fields by [appending `(?)` to their data type](https://github.com/julioz/FloorPlan/issues/12). Disabled by default, this option can be enabled by specifying:
+```
+gradlew run --args="<path-to-schema-file> --render-nullable-fields"
+```
+
 ### Tests
 
 The project is unit tested. These can be run via Gradle with:

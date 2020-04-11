@@ -23,7 +23,7 @@ class TableTest {
         private val ON_DELETE = ForeignKeyAction.NO_ACTION
         private val ON_UPDATE = ForeignKeyAction.NO_ACTION
 
-        private val DEFAULT_SETTINGS = Settings(creationSqlAsTableNote = false)
+        private val DEFAULT_SETTINGS = Settings()
     }
 
     @Test
