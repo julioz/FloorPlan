@@ -1,13 +1,13 @@
 package com.zynger.floorplan.dbml
 
-import com.zynger.floorplan.model.Field as DbField
+import com.zynger.floorplan.Settings
 import com.zynger.floorplan.model.PrimaryKey
-import java.lang.IllegalArgumentException
-import java.lang.StringBuilder
+import com.zynger.floorplan.model.Field as DbField
 
 class Field(
     private val field: DbField,
-    private val tablePrimaryKey: PrimaryKey
+    private val tablePrimaryKey: PrimaryKey,
+    private val settings: Settings
 ) {
     private val isPrimaryKey: Boolean
         get() = tablePrimaryKey.columnNames.any { it == this.field.columnName }
