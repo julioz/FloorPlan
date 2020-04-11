@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
     val src = File(input.schemaPath)
     val json = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true, isLenient = true))
 
-    val settings = Settings(input.creationSqlAsTableNote)
+    val settings = Settings(input.creationSqlAsTableNote, input.renderNullableFields)
     val dbml = json
         .parse(Schema.serializer(), src.readText())
         .database
