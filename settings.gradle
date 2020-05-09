@@ -1,2 +1,3 @@
 rootProject.name = 'floorplan'
-
+include 'core'
+include 'floorplan-cli'
