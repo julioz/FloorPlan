@@ -1,0 +1,19 @@
+site_name: FloorPlan
+site_description: 'Translate Room schemas to DBML'
+site_author: 'Julio Zynger'
+repo_name: 'julioz/FloorPlan'
+repo_url: 'https://github.com/julioz/FloorPlan'
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - pymdownx.superfences
+
+theme:
+  name: 'material'
+  features:
+    - tabs
