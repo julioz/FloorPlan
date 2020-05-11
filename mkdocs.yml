@@ -15,5 +15,9 @@ markdown_extensions:
 
 theme:
   name: 'material'
-  features:
-    - tabs
+
+nav:
+  - 'Overview': 'index.md'
+  - 'Run':
+      - 'Introduction': 'run.md'
+      - 'Testing': 'tests.md'
