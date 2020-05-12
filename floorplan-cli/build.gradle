@@ -4,10 +4,6 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 
-ext {
-    javaMainClass = "com.zynger.floorplan.AppKt"
-}
-
 group 'zynger'
 version '0.1-SNAPSHOT'
 
