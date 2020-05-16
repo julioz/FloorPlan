@@ -36,7 +36,16 @@ fun main() {
             Index("index_TrackPolicies_urn", listOf("urn"), unique = true)
         )
     )
+
+    val reference1 = Reference(
+        fromTable = "TrackPolicies",
+        fromColumn = "urn",
+        toTable = "TimeToLives",
+        toColumn = "urn"
+    )
+
     val tables = listOf(table1, table2)
+    val references = listOf(reference1)
 
     println(
         """
@@ -51,8 +60,22 @@ fun main() {
     tables.forEach { println(it.render()) }
 
     println()
+    references.forEach { println(it.render()) }
+
     println("}")
 }
+
+private fun Reference.render(): String {
+    // Foo:2 -> Baz:a [taillabel="a to b" labeltooltip="this is a tooltip"];
+    return "$fromTable:$fromColumn -> $toTable:$toColumn [label=\"${referenceOrder.label}\"]"
+}
+
+private val ReferenceOrder.label: String
+    get() = when (this) {
+        ReferenceOrder.OneToOne -> "1-1"
+        ReferenceOrder.OneToMany -> "1-*"
+        ReferenceOrder.ManyToOne -> "*-*"
+    }
 
 private fun Table.render(): String {
     return buildString {
