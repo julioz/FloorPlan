@@ -2,15 +2,6 @@ package com.zynger.floorplan
 
 import java.io.File
 
-data class Index(val name: String, val columnNames: List<String>? = null, val unique: Boolean = false){
-    // TODO should we enforce column names?
-    //(urn) [name:'index_TimeToLives_urn', unique]
-}
-data class Column(val name: String, val type: String, val note: String? = null, val primaryKey: Boolean = false) {
-    // address varchar(255) [unique, not null, note: 'to include unit number']
-}
-data class Table(val name: String, val columns: List<Column>, val indexes: List<Index> = emptyList())
-
 fun main() {
 //    val src = File("samples/dbml/single-table.dbml")
 //    src.readLines().forEach { println(it) }

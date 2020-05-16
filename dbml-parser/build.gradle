@@ -1,5 +1,4 @@
 plugins {
-    id 'application'
     id 'java'
     id 'org.jetbrains.kotlin.jvm'
 }
@@ -13,7 +12,6 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation project(":dbml-parser")
     testImplementation "junit:junit:4.12"
 }
 
