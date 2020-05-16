@@ -11,6 +11,10 @@ repositories {
     jcenter()
 }
 
+application {
+    mainClassName = "com.zynger.floorplan.Dbml2VizKt"
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation project(":dbml-parser")
