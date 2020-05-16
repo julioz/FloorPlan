@@ -26,7 +26,26 @@ fun main() {
             Index("index_TimeToLives_urn", listOf("urn"), unique = true)
         )
     )
-    val tables = listOf(table1)
+    val table2 = Table(
+        "TrackPolicies",
+        listOf(
+            Column("id", "int", primaryKey = true),
+            Column("urn", "varchar"),
+            Column("monetizable", "int"),
+            Column("blocked", "int"),
+            Column("snipped", "int"),
+            Column("syncable", "int"),
+            Column("sub_mid_tier", "int"),
+            Column("sub_high_tier", "int"),
+            Column("policy", "varchar"),
+            Column("monetization_model", "varchar"),
+            Column("last_updated", "int")
+        ),
+        listOf(
+            Index("index_TrackPolicies_urn", listOf("urn"), unique = true)
+        )
+    )
+    val tables = listOf(table1, table2)
 
     println(
         """
