@@ -4,6 +4,7 @@ import java.lang.IllegalArgumentException
 
 // Ref: trending_shows.show_id - shows.id [delete: cascade, update: cascade]
 data class Reference(
+    val rawValue: String,
     val fromTable: String,
     val fromColumn: String,
     val toTable: String,
