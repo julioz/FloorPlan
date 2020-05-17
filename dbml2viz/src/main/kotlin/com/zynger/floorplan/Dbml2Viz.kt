@@ -10,7 +10,7 @@ fun main() {
     val references = project.reference
 
     // TODO write to .gv file instead of stdout
-    
+
     println(
         """
         digraph {

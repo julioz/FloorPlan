@@ -32,7 +32,7 @@ object Parser {
                 rawValue = it.groups[0]!!.value,
                 name = tableName,
                 columns = parseColumns(tableName, tableContent),
-                indexes = emptyList()
+                indexes = emptyList() // TODO include indexes parsing
             )
         }.toList()
     }
