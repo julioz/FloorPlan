@@ -3,49 +3,11 @@ package com.zynger.floorplan
 import java.io.File
 
 fun main() {
-//    val src = File("samples/dbml/single-table.dbml")
-//    src.readLines().forEach { println(it) }
-
-    val table1 = Table(
-        "TimeToLives",
-        listOf(
-            Column("urn", "varchar"),
-            Column("expireAt", "int"),
-            Column("id", "int", primaryKey = true)
-        ),
-        listOf(
-            Index("index_TimeToLives_urn", listOf("urn"), unique = true)
-        )
-    )
-    val table2 = Table(
-        "TrackPolicies",
-        listOf(
-            Column("id", "int", primaryKey = true),
-            Column("urn", "varchar"),
-            Column("monetizable", "int"),
-            Column("blocked", "int"),
-            Column("snipped", "int"),
-            Column("syncable", "int"),
-            Column("sub_mid_tier", "int"),
-            Column("sub_high_tier", "int"),
-            Column("policy", "varchar"),
-            Column("monetization_model", "varchar"),
-            Column("last_updated", "int")
-        ),
-        listOf(
-            Index("index_TrackPolicies_urn", listOf("urn"), unique = true)
-        )
-    )
-
-    val reference1 = Reference(
-        fromTable = "TrackPolicies",
-        fromColumn = "urn",
-        toTable = "TimeToLives",
-        toColumn = "urn"
-    )
-
-    val tables = listOf(table1, table2)
-    val references = listOf(reference1)
+    val src = sample()
+//    val src = File("samples/dbml/db-track-pol.dbml").readText()
+    val project = Parser.parse(src)
+    val tables = project.tables
+    val references = project.reference
 
     println(
         """
@@ -103,4 +65,37 @@ private fun Table.render(): String {
         }
         append("</table>>];")
     }
+}
+
+fun sample(): String {
+    return """
+Table posts {
+  id int [pk, increment]
+  title varchar [not null]
+}
+
+table comments {
+  id int [pk,increment]
+  comment varchar 
+  post_id int [not null,ref: > posts.id]
+}
+table tags as aliasForTagsTable{
+  id int [pk, increment, not null]
+  title varchar [not null]
+}
+
+table post_tags [note: 'hey table note']{
+  id int [pk]
+  post_id int
+  tag_id int
+}
+
+
+
+
+Ref: "tags"."id" < "post_tags"."tag_id"
+
+Ref: "posts"."id" < "post_tags"."post_id"
+Ref: "posts"."id" - "post_tags"."post_id"
+    """.trimIndent()
 }

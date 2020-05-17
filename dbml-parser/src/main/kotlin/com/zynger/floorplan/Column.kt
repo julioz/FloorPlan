@@ -1,10 +1,14 @@
 package com.zynger.floorplan
 
 data class Column(
+    val rawValue: String,
     val name: String,
     val type: String,
     val note: String? = null,
-    val primaryKey: Boolean = false
+    val primaryKey: Boolean = false,
+    val notNull: Boolean = false,
+    val increment: Boolean = false,
+    val reference: Reference? = null // not null when this column references another through a column attribute
 ) {
-    // address varchar(255) [unique, not null, note: 'to include unit number']
+    // example column: address varchar(255) [unique, not null, note: 'to include unit number']
 }
