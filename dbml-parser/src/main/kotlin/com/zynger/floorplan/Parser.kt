@@ -3,7 +3,14 @@ package com.zynger.floorplan
 class Parser {
 
     fun parse(dbmlInput: String) {
-        val tableMatches = TABLE_REGEX.findAll(dbmlInput).toList()
+        val tables = TABLE_REGEX.findAll(dbmlInput).map {
+            Table(
+                rawValue = it.groups[0]!!.value,
+                name = it.groups[1]!!.value.trim(),
+                columns = emptyList(),
+                indexes = emptyList()
+            )
+        }.toList()
 
         val references = REFERENCE_REGEX.findAll(dbmlInput).map {
             Reference(
