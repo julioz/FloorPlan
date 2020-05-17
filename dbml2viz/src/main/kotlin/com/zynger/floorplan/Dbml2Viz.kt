@@ -9,6 +9,8 @@ fun main() {
     val tables = project.tables
     val references = project.reference
 
+    // TODO write to .gv file instead of stdout
+    
     println(
         """
         digraph {
