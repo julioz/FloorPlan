@@ -205,4 +205,24 @@ class LoneReferenceParserTest {
 
         assertEquals(2, references.size)
     }
+
+    @Test
+    fun `ignores reference notes`() {
+        val input = "Ref: trending_shows.show_id - shows.id [delete: cascade, update: cascade]"
+        val references = LoneReferenceParser.parseReferences(input)
+
+        assertEquals(
+            listOf(
+                Reference(
+                    "Ref: trending_shows.show_id - shows.id",
+                    "trending_shows",
+                    "show_id",
+                    "shows",
+                    "id",
+                    ReferenceOrder.OneToOne
+                )
+            ),
+            references
+        )
+    }
 }
