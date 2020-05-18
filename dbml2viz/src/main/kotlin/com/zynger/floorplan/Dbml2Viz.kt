@@ -1,16 +1,80 @@
 package com.zynger.floorplan
 
-import guru.nidi.graphviz.attribute.Color
+import guru.nidi.graphviz.attribute.*
 import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
-import guru.nidi.graphviz.model.MutableGraph
+import guru.nidi.graphviz.model.*
 import java.io.File
 import guru.nidi.graphviz.model.Factory.*
 
 fun main() {
-    val g: MutableGraph = mutGraph("example1").setDirected(true).add(
-        mutNode("a").add(Color.RED).addLink(mutNode("b"))
-    )
+
+    val project = Parser.parse(sample())
+    val tables = project.tables
+    val references = project.reference
+
+    /*
+    g.graphAttrs()
+            .add(Color.WHITE.gradient(Color.rgb("888888")).background().angle(90))
+            .nodeAttrs().add(Color.WHITE.fill())
+            .nodes().forEach(node ->
+            node.add(
+                    Color.named(node.name().toString()),
+                    Style.lineWidth(4).and(Style.FILLED)));
+     */
+
+    val g: MutableGraph = mutGraph("example1").setDirected(true)
+
+    with(g.graphAttrs()) {
+        add(GraphAttr.pad(0.5))
+        add(Rank.sep(2.0))
+        add(MapAttributes<ForNode>().add("nodesep", 0.5))
+    }
+    with(g.nodeAttrs()) {
+        add(Shape.PLAIN)
+    }
+    // FIXME add rankdir=LR on graph root
+
+//    g.add(
+//        mutNode("a").add(Color.RED).addLink(mutNode("b"))
+//    )
+
+    tables.forEach {
+        val htmlTable = buildString {
+            appendln("<table border=\"0\" cellborder=\"1\" cellspacing=\"0\">")
+            appendln("<tr><td bgcolor=\"darkolivegreen1\"><b>${it.name}</b></td></tr>")
+            it.columns.forEach { column ->
+                append("<tr><td port=\"${it.name}\">")
+                if (column.primaryKey) {
+                    append("<b>")
+                }
+                append("${column.name}: <i>${column.type}</i>")
+                if (column.primaryKey) {
+                    append("</b>")
+                }
+                appendln("</td></tr>")
+            }
+            if (it.indexes.isNotEmpty()) {
+                appendln("<tr><td bgcolor=\"azure3\"><i>Indices</i></td></tr>")
+                it.indexes.forEach { index ->
+                    append("<tr><td>")
+                    append(index.name)
+                    appendln("</td></tr>")
+                }
+            }
+            append("</table>")
+        }
+        val node = mutNode(it.name).add(Label.html(htmlTable))
+        g.add(node)
+    }
+
+//    references.forEach {
+//        val link = Link.between(
+//            port("${it.fromTable}:${it.fromColumn}"),
+//            node("${it.toTable}:${it.toColumn}")
+//        ).with(Label.of("helloLabel"))
+//        g.rootEdges().add(link)
+//    }
     println(Graphviz.fromGraph(g).width(200).render(Format.DOT).toString())
 }
 
