@@ -24,7 +24,6 @@ class LoneReferenceParserTest {
 
     @Test
     fun `parses single lone reference with lowercase ref`() {
-        val referenceRawValue = "ref: posts.id - tags.post_id"
         val input = """
             Table posts {
               id int [pk, increment]
@@ -35,28 +34,21 @@ class LoneReferenceParserTest {
               post_id int 
             }
             
-            $referenceRawValue
+            ref: posts.id - tags.post_id
         """.trimIndent()
         val references = LoneReferenceParser.parseReferences(input)
 
-        assertEquals(
-            listOf(
-                Reference(
-                    referenceRawValue,
-                    "posts",
-                    "id",
-                    "tags",
-                    "post_id",
-                    ReferenceOrder.OneToOne
-                )
-            ),
-            references
-        )
+        assertEquals(1, references.size)
+        val reference = references.first()
+        assertEquals("posts", reference.fromTable)
+        assertEquals("id", reference.fromColumn)
+        assertEquals("tags", reference.toTable)
+        assertEquals("post_id", reference.toColumn)
+        assertEquals(ReferenceOrder.OneToOne, reference.referenceOrder)
     }
 
     @Test
     fun `parses single lone reference with quotes surronding names`() {
-        val referenceRawValue = "Ref: \"posts\".id - tags.\"post_id\""
         val input = """
             Table posts {
               id int [pk, increment]
@@ -67,28 +59,21 @@ class LoneReferenceParserTest {
               post_id int 
             }
             
-            $referenceRawValue
+            Ref: "posts".id - tags."post_id"
         """.trimIndent()
         val references = LoneReferenceParser.parseReferences(input)
 
-        assertEquals(
-            listOf(
-                Reference(
-                    referenceRawValue,
-                    "posts",
-                    "id",
-                    "tags",
-                    "post_id",
-                    ReferenceOrder.OneToOne
-                )
-            ),
-            references
-        )
+        assertEquals(1, references.size)
+        val reference = references.first()
+        assertEquals("posts", reference.fromTable)
+        assertEquals("id", reference.fromColumn)
+        assertEquals("tags", reference.toTable)
+        assertEquals("post_id", reference.toColumn)
+        assertEquals(ReferenceOrder.OneToOne, reference.referenceOrder)
     }
 
     @Test
     fun `parses single lone reference with one to one order`() {
-        val referenceRawValue = "Ref: posts.id - tags.post_id"
         val input = """
             Table posts {
               id int [pk, increment]
@@ -99,28 +84,18 @@ class LoneReferenceParserTest {
               post_id int 
             }
             
-            $referenceRawValue
+            Ref: posts.id - tags.post_id
         """.trimIndent()
+
         val references = LoneReferenceParser.parseReferences(input)
 
-        assertEquals(
-            listOf(
-                Reference(
-                    referenceRawValue,
-                    "posts",
-                    "id",
-                    "tags",
-                    "post_id",
-                    ReferenceOrder.OneToOne
-                )
-            ),
-            references
-        )
+        assertEquals(1, references.size)
+        val reference = references.first()
+        assertEquals(ReferenceOrder.OneToOne, reference.referenceOrder)
     }
 
     @Test
     fun `parses single lone reference with one to many order`() {
-        val referenceRawValue = "Ref: posts.id < tags.post_id"
         val input = """
             Table posts {
               id int [pk, increment]
@@ -131,28 +106,18 @@ class LoneReferenceParserTest {
               post_id int 
             }
             
-            $referenceRawValue
+            Ref: posts.id < tags.post_id
         """.trimIndent()
+
         val references = LoneReferenceParser.parseReferences(input)
 
-        assertEquals(
-            listOf(
-                Reference(
-                    referenceRawValue,
-                    "posts",
-                    "id",
-                    "tags",
-                    "post_id",
-                    ReferenceOrder.OneToMany
-                )
-            ),
-            references
-        )
+        assertEquals(1, references.size)
+        val reference = references.first()
+        assertEquals(ReferenceOrder.OneToMany, reference.referenceOrder)
     }
 
     @Test
     fun `parses single lone reference with many to one order`() {
-        val referenceRawValue = "Ref: posts.id > tags.post_id"
         val input = """
             Table posts {
               id int [pk, increment]
@@ -163,23 +128,14 @@ class LoneReferenceParserTest {
               post_id int 
             }
             
-            $referenceRawValue
+            Ref: posts.id > tags.post_id
         """.trimIndent()
+
         val references = LoneReferenceParser.parseReferences(input)
 
-        assertEquals(
-            listOf(
-                Reference(
-                    referenceRawValue,
-                    "posts",
-                    "id",
-                    "tags",
-                    "post_id",
-                    ReferenceOrder.ManyToOne
-                )
-            ),
-            references
-        )
+        assertEquals(1, references.size)
+        val reference = references.first()
+        assertEquals(ReferenceOrder.ManyToOne, reference.referenceOrder)
     }
 
     @Test
