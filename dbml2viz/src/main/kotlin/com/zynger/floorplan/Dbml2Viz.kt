@@ -1,8 +1,20 @@
 package com.zynger.floorplan
 
+import guru.nidi.graphviz.attribute.Color
+import guru.nidi.graphviz.engine.Format
+import guru.nidi.graphviz.engine.Graphviz
+import guru.nidi.graphviz.model.MutableGraph
 import java.io.File
+import guru.nidi.graphviz.model.Factory.*
 
 fun main() {
+    val g: MutableGraph = mutGraph("example1").setDirected(true).add(
+        mutNode("a").add(Color.RED).addLink(mutNode("b"))
+    )
+    println(Graphviz.fromGraph(g).width(200).render(Format.DOT).toString())
+}
+
+fun main2() {
     val src = sample()
 //    val src = File("samples/dbml/db-track-pol.dbml").readText()
     val project = Parser.parse(src)
