@@ -6,10 +6,12 @@ import com.zynger.floorplan.Reference
 object ColumnParser {
     private val COLUMN_REGEX = Regex("""("\w+"|\w+)+\s+("\w+"|\w+)(\s+\[[^]]*]|)[ ]*\n""")
 
+    // TODO parse column default values
+
     fun parseColumns(tableName: String, columnsInput: String): List<Column> {
         return COLUMN_REGEX.findAll(columnsInput).map {
             val rawValue = it.groups[0]!!.value
-            val name = it.groups[1]!!.value
+            val name = it.groups[1]!!.value.removeSurroundQuotes()
             val type = it.groups[2]!!.value
             val columnProperties = it.groups[3]!!.value.trim()
             val notNull = columnProperties.contains("not null")
@@ -27,5 +29,9 @@ object ColumnParser {
                 reference = reference
             )
         }.toList()
+    }
+
+    private fun String.removeSurroundQuotes(): String {
+        return this.removeSurrounding("\"")
     }
 }
