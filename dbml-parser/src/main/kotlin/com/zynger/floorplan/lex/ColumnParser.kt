@@ -2,9 +2,13 @@ package com.zynger.floorplan.lex
 
 import com.zynger.floorplan.Column
 import com.zynger.floorplan.Reference
+import org.intellij.lang.annotations.Language
 
 object ColumnParser {
-    private val COLUMN_REGEX = Regex("""("\w+"|\w+)+\s+("\w+"|\w+)(\s+\[[^]]*]|)[ ]*\n""")
+    @Language("RegExp") private const val COLUMN_NAME = """("\w+"|\w+)+"""
+    @Language("RegExp") private const val COLUMN_TYPE = """("\w+"|\w+)"""
+    @Language("RegExp") private const val COLUMN_PROPERTIES = """\[[^]]*]"""
+    private val COLUMN_REGEX = Regex("""$COLUMN_NAME\s+$COLUMN_TYPE(\s+$COLUMN_PROPERTIES|)\s*\n""")
 
     // TODO parse column default values
 

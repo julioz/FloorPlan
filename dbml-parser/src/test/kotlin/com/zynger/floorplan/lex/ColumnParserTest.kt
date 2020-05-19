@@ -141,6 +141,21 @@ class ColumnParserTest {
     }
 
     @Test
+    fun `ignores multiple spaces after properties`() {
+        val spaces = "      "
+        val columnsInput = """
+            age int [increment]$spaces
+
+        """.trimIndent()
+
+        val columns = ColumnParser.parseColumns(TABLE_NAME, columnsInput)
+
+        assertEquals("age", columns.first().name)
+        assertEquals("int", columns.first().type)
+        assertEquals(true, columns.first().increment)
+    }
+
+    @Test
     fun `parses multiple columns`() {
         val columnsInput = """
             id int [pk, increment, not null]
