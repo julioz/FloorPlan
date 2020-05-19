@@ -2,9 +2,12 @@ package com.zynger.floorplan.lex
 
 import com.zynger.floorplan.Reference
 import com.zynger.floorplan.ReferenceOrder
+import org.intellij.lang.annotations.Language
 
 object ColumnReferenceParser {
-    private val COLUMN_REFERENCE_REGEX = Regex("""(([Rr]ef)\s*:\s*([<>-])\s*("\w+"|\w+)\.("\w+"|\w+))""")
+    @Language("RegExp") private const val WORD = """("\w+"|\w+)+"""
+    @Language("RegExp") private const val REFERENCE_ORDER = """([-<>])"""
+    private val COLUMN_REFERENCE_REGEX = Regex("""(([Rr]ef)\s*:\s*$REFERENCE_ORDER\s*$WORD\.$WORD)""")
 
     fun parse(tableName: String, fromColumn: String, columnProperties: String): Reference? {
         return if (COLUMN_REFERENCE_REGEX.containsMatchIn(columnProperties)) {

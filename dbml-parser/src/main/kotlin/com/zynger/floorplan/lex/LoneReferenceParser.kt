@@ -2,9 +2,12 @@ package com.zynger.floorplan.lex
 
 import com.zynger.floorplan.Reference
 import com.zynger.floorplan.ReferenceOrder
+import org.intellij.lang.annotations.Language
 
 object LoneReferenceParser {
-    private val REFERENCE_REGEX = Regex("""[Rr]ef:\s*("\w+"|\w+)\.("\w+"|\w+)\s+([-<>])\s+("\w+"|\w+)\.("\w+"|\w+)""")
+    @Language("RegExp") private const val WORD = """("\w+"|\w+)+"""
+    @Language("RegExp") private const val REFERENCE_ORDER = """([-<>])"""
+    private val REFERENCE_REGEX = Regex("""[Rr]ef:\s*$WORD\.$WORD\s+$REFERENCE_ORDER\s+$WORD\.$WORD""")
 
     fun parseReferences(dbmlInput: String): List<Reference> {
         return REFERENCE_REGEX.findAll(dbmlInput).map {
