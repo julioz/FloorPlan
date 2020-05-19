@@ -1,9 +1,14 @@
 package com.zynger.floorplan.lex
 
 import com.zynger.floorplan.Table
+import org.intellij.lang.annotations.Language
 
 object TableParser {
-    private val TABLE_REGEX = Regex("""[Tt]able\s+(."\w+"|\w+.)\s*(\s*as\s+[\w]+|\s*as\s+"[\w]+"|)(\s\[.*]|)\s*\{(\s|\n|[^}]*)}""")
+    @Language("RegExp") private const val TABLE_NAME = """(."\w+"|\w+.)"""
+    @Language("RegExp") private const val TABLE_ALIAS = """(\s*as\s+[\w]+|\s*as\s+"[\w]+"|)"""
+    @Language("RegExp") private const val TABLE_NOTES = """(\s\[.*]|)"""
+    @Language("RegExp") private const val TABLE_CONTENT = """\{(\s|\n|[^}]*)}"""
+    private val TABLE_REGEX = Regex("""[Tt]able\s+$TABLE_NAME\s*$TABLE_ALIAS$TABLE_NOTES\s*$TABLE_CONTENT""")
 
     fun parseTables(dbmlInput: String): List<Table> {
         // TODO: aliases and table notes also get parsed; should we update the modeling to include them?
