@@ -9,11 +9,10 @@ data class Reference(
     val fromColumn: String,
     val toTable: String,
     val toColumn: String,
-    val referenceOrder: ReferenceOrder = ReferenceOrder.OneToOne // TODO adjust later to parse ref. order
+    val referenceOrder: ReferenceOrder
 )
 
 enum class ReferenceOrder {
-    // > many-to-one; < one-to-many; - one-to-one
     OneToOne, OneToMany, ManyToOne;
     companion object {
         fun fromString(str: String): ReferenceOrder {
