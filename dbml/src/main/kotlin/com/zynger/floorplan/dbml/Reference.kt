@@ -1,4 +1,4 @@
-package com.zynger.floorplan
+package com.zynger.floorplan.dbml
 
 import java.lang.IllegalArgumentException
 

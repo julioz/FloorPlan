@@ -1,6 +1,6 @@
 package com.zynger.floorplan.lex
 
-import com.zynger.floorplan.Table
+import com.zynger.floorplan.dbml.Table
 import org.intellij.lang.annotations.Language
 
 object TableParser {

@@ -1,7 +1,7 @@
 package com.zynger.floorplan.lex
 
-import com.zynger.floorplan.Reference
-import com.zynger.floorplan.ReferenceOrder
+import com.zynger.floorplan.dbml.Reference
+import com.zynger.floorplan.dbml.ReferenceOrder
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
