@@ -1,6 +1,6 @@
 package com.zynger.floorplan.lex
 
-import com.zynger.floorplan.Column
+import com.zynger.floorplan.dbml.Column
 import org.junit.Assert.*
 import org.junit.Test
 

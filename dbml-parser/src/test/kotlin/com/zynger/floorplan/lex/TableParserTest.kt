@@ -1,7 +1,7 @@
 package com.zynger.floorplan.lex
 
-import com.zynger.floorplan.Index
-import com.zynger.floorplan.Table
+import com.zynger.floorplan.dbml.Index
+import com.zynger.floorplan.dbml.Table
 import org.junit.Assert.*
 import org.junit.Test
 

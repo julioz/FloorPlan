@@ -1,7 +1,7 @@
 package com.zynger.floorplan.lex
 
-import com.zynger.floorplan.Column
-import com.zynger.floorplan.Reference
+import com.zynger.floorplan.dbml.Column
+import com.zynger.floorplan.dbml.Reference
 import org.intellij.lang.annotations.Language
 
 object ColumnParser {

@@ -1,5 +1,6 @@
 package com.zynger.floorplan
 
+import com.zynger.floorplan.dbml.Project
 import com.zynger.floorplan.lex.LoneReferenceParser
 import com.zynger.floorplan.lex.TableParser
 

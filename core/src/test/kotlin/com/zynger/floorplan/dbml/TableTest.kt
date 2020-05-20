@@ -1,7 +1,7 @@
 package com.zynger.floorplan.dbml
 
 import com.zynger.floorplan.Settings
-import com.zynger.floorplan.model.*
+import com.zynger.floorplan.room.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

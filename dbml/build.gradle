@@ -1,11 +1,7 @@
 plugins {
-    id 'application'
     id 'java'
     id 'org.jetbrains.kotlin.jvm'
 }
-
-group 'zynger'
-version '0.1-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -14,13 +10,7 @@ repositories {
     jcenter()
 }
 
-application {
-    mainClassName = "com.zynger.floorplan.AppKt"
-}
-
 dependencies {
-    implementation project(":core")
-    implementation project(":room-consumer")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
 }
