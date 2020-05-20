@@ -1,7 +1,7 @@
 package com.zynger.floorplan.dbml
 
-import com.zynger.floorplan.model.ForeignKey
-import com.zynger.floorplan.model.ForeignKeyAction
+import com.zynger.floorplan.room.ForeignKey
+import com.zynger.floorplan.room.ForeignKeyAction
 import org.junit.Assert
 import org.junit.Test
 

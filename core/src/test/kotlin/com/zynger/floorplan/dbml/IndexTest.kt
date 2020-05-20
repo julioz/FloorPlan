@@ -1,6 +1,6 @@
 package com.zynger.floorplan.dbml
 
-import com.zynger.floorplan.model.Index as DbIndex
+import com.zynger.floorplan.room.Index as DbIndex
 import org.junit.Assert
 import org.junit.Test
 

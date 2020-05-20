@@ -1,6 +1,6 @@
-package com.zynger.floorplan.model.serializer
+package com.zynger.floorplan.room.serializer
 
-import com.zynger.floorplan.model.ForeignKeyAction
+import com.zynger.floorplan.room.ForeignKeyAction
 import kotlinx.serialization.*
 
 @Serializer(forClass = ForeignKeyAction::class)
