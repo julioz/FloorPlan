@@ -21,7 +21,6 @@ application {
 dependencies {
     implementation project(":core")
     implementation project(":room-consumer")
-    implementation project(":dbml2viz")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
 }
