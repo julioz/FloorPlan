@@ -1,27 +1,20 @@
 package com.zynger.floorplan
 
 import guru.nidi.graphviz.attribute.*
+import guru.nidi.graphviz.attribute.Rank.RankDir
+import guru.nidi.graphviz.attribute.Rank.dir
 import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
-import guru.nidi.graphviz.model.*
-import java.io.File
 import guru.nidi.graphviz.model.Factory.*
+import guru.nidi.graphviz.model.MutableGraph
+
 
 fun main() {
-
-    val project = Parser.parse(sample())
+    val src = sample()
+    //    val src = File("samples/dbml/db-track-pol.dbml").readText()
+    val project = Parser.parse(src)
     val tables = project.tables
     val references = project.reference
-
-    /*
-    g.graphAttrs()
-            .add(Color.WHITE.gradient(Color.rgb("888888")).background().angle(90))
-            .nodeAttrs().add(Color.WHITE.fill())
-            .nodes().forEach(node ->
-            node.add(
-                    Color.named(node.name().toString()),
-                    Style.lineWidth(4).and(Style.FILLED)));
-     */
 
     val g: MutableGraph = mutGraph("example1").setDirected(true)
 
@@ -29,22 +22,20 @@ fun main() {
         add(GraphAttr.pad(0.5))
         add(Rank.sep(2.0))
         add(MapAttributes<ForNode>().add("nodesep", 0.5))
+        add(dir(RankDir.LEFT_TO_RIGHT))
     }
+
     with(g.nodeAttrs()) {
         add(Shape.PLAIN)
     }
-    // FIXME add rankdir=LR on graph root
-
-//    g.add(
-//        mutNode("a").add(Color.RED).addLink(mutNode("b"))
-//    )
 
     tables.forEach {
         val htmlTable = buildString {
             appendln("<table border=\"0\" cellborder=\"1\" cellspacing=\"0\">")
             appendln("<tr><td bgcolor=\"darkolivegreen1\"><b>${it.name}</b></td></tr>")
+
             it.columns.forEach { column ->
-                append("<tr><td port=\"${it.name}\">")
+                append("<tr><td port=\"${column.name}\">")
                 if (column.primaryKey) {
                     append("<b>")
                 }
@@ -68,46 +59,14 @@ fun main() {
         g.add(node)
     }
 
-//    references.forEach {
-//        val link = Link.between(
-//            port("${it.fromTable}:${it.fromColumn}"),
-//            node("${it.toTable}:${it.toColumn}")
-//        ).with(Label.of("helloLabel"))
-//        g.rootEdges().add(link)
-//    }
+    references.forEach {
+        val link = between(port(it.fromColumn), node(it.toTable).port(it.toColumn))
+            .with(Label.of(it.referenceOrder.label))
+            .with(Style.DASHED)
+
+        g.add(mutNode(it.fromTable).addLink(link))
+    }
     println(Graphviz.fromGraph(g).width(200).render(Format.DOT).toString())
-}
-
-fun main2() {
-    val src = sample()
-//    val src = File("samples/dbml/db-track-pol.dbml").readText()
-    val project = Parser.parse(src)
-    val tables = project.tables
-    val references = project.reference
-
-    // TODO write to .gv file instead of stdout
-
-    println(
-        """
-        digraph {
-        graph [pad="0.5", nodesep="0.5", ranksep="2"];
-        node [shape=plain];
-        rankdir=LR;
-        """.trimIndent()
-    )
-    println()
-
-    tables.forEach { println(it.render()) }
-
-    println()
-    references.forEach { println(it.render()) }
-
-    println("}")
-}
-
-private fun Reference.render(): String {
-    // Foo:2 -> Baz:a [taillabel="a to b" labeltooltip="this is a tooltip"];
-    return "$fromTable:$fromColumn -> $toTable:$toColumn [label=\"${referenceOrder.label}\"]"
 }
 
 private val ReferenceOrder.label: String
@@ -116,34 +75,6 @@ private val ReferenceOrder.label: String
         ReferenceOrder.OneToMany -> "1-*"
         ReferenceOrder.ManyToOne -> "*-*"
     }
-
-private fun Table.render(): String {
-    return buildString {
-        appendln("$name [label=<")
-        appendln("<table border=\"0\" cellborder=\"1\" cellspacing=\"0\">")
-        appendln("<tr><td bgcolor=\"darkolivegreen1\"><b>$name</b></td></tr>")
-        columns.forEach {
-            append("<tr><td port=\"${it.name}\">")
-            if (it.primaryKey) {
-                append("<b>")
-            }
-            append("${it.name}: <i>${it.type}</i>")
-            if (it.primaryKey) {
-                append("</b>")
-            }
-            appendln("</td></tr>")
-        }
-        if (!indexes.isEmpty()) {
-            appendln("<tr><td bgcolor=\"azure3\"><i>Indices</i></td></tr>")
-            indexes.forEach { index ->
-                append("<tr><td>")
-                append(index.name)
-                appendln("</td></tr>")
-            }
-        }
-        append("</table>>];")
-    }
-}
 
 fun sample(): String {
     return """
