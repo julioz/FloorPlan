@@ -73,7 +73,7 @@ private val ReferenceOrder.label: String
     get() = when (this) {
         ReferenceOrder.OneToOne -> "1-1"
         ReferenceOrder.OneToMany -> "1-*"
-        ReferenceOrder.ManyToOne -> "*-*"
+        ReferenceOrder.ManyToOne -> "*-1"
     }
 
 fun sample(): String {
