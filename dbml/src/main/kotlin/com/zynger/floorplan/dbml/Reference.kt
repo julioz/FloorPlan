@@ -9,7 +9,7 @@ data class Reference(
     val fromColumn: String,
     val toTable: String,
     val toColumn: String,
-    val referenceOrder: ReferenceOrder
+    val referenceOrder: ReferenceOrder?
 )
 
 enum class ReferenceOrder {
