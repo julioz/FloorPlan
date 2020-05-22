@@ -1,7 +1,7 @@
 package com.zynger.floorplan.dbml
 
 import com.zynger.floorplan.Settings
-import com.zynger.floorplan.model.Entity
+import com.zynger.floorplan.room.Entity
 
 class Table(
     entity: Entity,

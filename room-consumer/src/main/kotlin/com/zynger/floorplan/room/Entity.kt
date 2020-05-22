@@ -1,4 +1,4 @@
-package com.zynger.floorplan.model
+package com.zynger.floorplan.room
 
 import kotlinx.serialization.Serializable
 

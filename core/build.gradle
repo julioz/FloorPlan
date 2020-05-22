@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(":room-consumer") // TODO to be removed https://github.com/julioz/FloorPlan/issues/25
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0" // JVM dependency
     testImplementation "junit:junit:4.12"

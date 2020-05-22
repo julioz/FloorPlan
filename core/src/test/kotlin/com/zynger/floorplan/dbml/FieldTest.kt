@@ -1,9 +1,9 @@
 package com.zynger.floorplan.dbml
 
 import com.zynger.floorplan.Settings
-import com.zynger.floorplan.model.PrimaryKey
+import com.zynger.floorplan.room.PrimaryKey
 import org.junit.Assert.assertEquals
-import com.zynger.floorplan.model.Field as DbField
+import com.zynger.floorplan.room.Field as DbField
 import org.junit.Test
 
 class FieldTest {

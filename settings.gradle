@@ -1,5 +1,7 @@
 rootProject.name = 'floorplan'
 include 'core'
+include 'dbml'
 include 'dbml-parser'
 //include 'dbml2viz'
 include 'floorplan-cli'
+include 'room-consumer'
