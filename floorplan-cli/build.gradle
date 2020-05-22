@@ -20,6 +20,7 @@ application {
 
 dependencies {
     implementation project(":dbml")
+    implementation project(":core")
     implementation project(":room-consumer")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
