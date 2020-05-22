@@ -1,5 +1,6 @@
 package com.zynger.floorplan
 
+import com.zynger.floorplan.Format.*
 import com.zynger.floorplan.dbml.Project
 import com.zynger.floorplan.dbml.ReferenceOrder
 import guru.nidi.graphviz.attribute.*
@@ -12,7 +13,10 @@ import guru.nidi.graphviz.model.MutableGraph
 
 object Dbml2Viz {
 
-    fun render(project: Project) {
+    fun render(
+        project: Project,
+        output: Output
+    ) {
         val tables = project.tables
         val references = project.references
 
@@ -67,8 +71,18 @@ object Dbml2Viz {
             g.add(mutNode(it.fromTable).addLink(link))
         }
 
-        // TODO take in parameters for output format and extra attributes (e.g output path, width, height, etc)
-        println(Graphviz.fromGraph(g).width(200).render(Format.DOT).toString())
+        val graphviz = Graphviz.fromGraph(g)
+        val renderer = when (output.format) {
+            DBML -> TODO("Not yet implemented. Waiting for model unification in https://github.com/julioz/FloorPlan/issues/25")
+            DOT -> graphviz.render(Format.DOT)
+            SVG -> graphviz.render(Format.SVG)
+            PNG -> graphviz.render(Format.PNG)
+        }
+
+        when (output.destination) {
+            Destination.StandardOut -> println(renderer.toString())
+            is Destination.Disk -> renderer.toFile(output.destination.file)
+        }
     }
 
     private val ReferenceOrder.label: String
