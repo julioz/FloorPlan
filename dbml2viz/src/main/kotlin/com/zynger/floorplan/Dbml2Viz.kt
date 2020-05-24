@@ -3,6 +3,7 @@ package com.zynger.floorplan
 import com.zynger.floorplan.Format.*
 import com.zynger.floorplan.dbml.Project
 import com.zynger.floorplan.dbml.ReferenceOrder
+import com.zynger.floorplan.dbml.render.ProjectRenderer
 import guru.nidi.graphviz.attribute.*
 import guru.nidi.graphviz.attribute.Rank.RankDir
 import guru.nidi.graphviz.attribute.Rank.dir
@@ -10,6 +11,7 @@ import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
 import guru.nidi.graphviz.model.Factory.*
 import guru.nidi.graphviz.model.MutableGraph
+import java.lang.IllegalStateException
 
 object Dbml2Viz {
 
@@ -17,6 +19,36 @@ object Dbml2Viz {
         project: Project,
         output: Output
     ) {
+
+        if (output.format == DBML) {
+            //    val settings = Settings(input.creationSqlAsTableNote, input.renderNullableFields)
+            val settings = Settings(false, false) // TODO
+            val dbml = ProjectRenderer.render(project, settings)
+
+            when (output.destination) {
+                Destination.StandardOut -> println(dbml)
+                is Destination.Disk -> {
+                    output.destination.file.parentFile.mkdirs()
+                    output.destination.file.writeText(dbml)
+                }
+            }
+        } else {
+            val graphviz = graph(project)
+            val renderer = when (output.format) {
+                DBML -> throw IllegalStateException()
+                DOT -> graphviz.render(Format.DOT)
+                SVG -> graphviz.render(Format.SVG)
+                PNG -> graphviz.render(Format.PNG)
+            }
+
+            when (output.destination) {
+                Destination.StandardOut -> println(renderer.toString())
+                is Destination.Disk -> renderer.toFile(output.destination.file)
+            }
+        }
+    }
+
+    private fun graph(project: Project): Graphviz {
         val tables = project.tables
         val references = project.references
 
@@ -71,18 +103,7 @@ object Dbml2Viz {
             g.add(mutNode(it.fromTable).addLink(link))
         }
 
-        val graphviz = Graphviz.fromGraph(g)
-        val renderer = when (output.format) {
-            DBML -> TODO("Not yet implemented. Waiting for model unification in https://github.com/julioz/FloorPlan/issues/25")
-            DOT -> graphviz.render(Format.DOT)
-            SVG -> graphviz.render(Format.SVG)
-            PNG -> graphviz.render(Format.PNG)
-        }
-
-        when (output.destination) {
-            Destination.StandardOut -> println(renderer.toString())
-            is Destination.Disk -> renderer.toFile(output.destination.file)
-        }
+        return Graphviz.fromGraph(g)
     }
 
     private val ReferenceOrder.label: String
