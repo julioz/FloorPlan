@@ -13,16 +13,16 @@ import guru.nidi.graphviz.model.Factory.*
 import guru.nidi.graphviz.model.MutableGraph
 import java.lang.IllegalStateException
 
-object Dbml2Viz {
+object FloorPlan {
 
     fun render(
         project: Project,
         output: Output
     ) {
 
-        if (output.format == DBML) {
-            //    val settings = Settings(input.creationSqlAsTableNote, input.renderNullableFields)
-            val settings = Settings(false, false) // TODO
+        if (output.format is DBML) {
+            val config = output.format.config
+            val settings = Settings(config.creationSqlAsTableNote, config.renderNullableFields)
             val dbml = ProjectRenderer.render(project, settings)
 
             when (output.destination) {
@@ -35,7 +35,7 @@ object Dbml2Viz {
         } else {
             val graphviz = graph(project)
             val renderer = when (output.format) {
-                DBML -> throw IllegalStateException()
+                is DBML -> throw IllegalStateException()
                 DOT -> graphviz.render(Format.DOT)
                 SVG -> graphviz.render(Format.SVG)
                 PNG -> graphviz.render(Format.PNG)
