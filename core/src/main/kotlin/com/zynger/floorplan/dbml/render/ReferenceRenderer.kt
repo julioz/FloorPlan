@@ -3,10 +3,10 @@ package com.zynger.floorplan.dbml.render
 import com.zynger.floorplan.dbml.Reference
 import java.lang.StringBuilder
 
-class ReferenceRenderer(private val reference: Reference) {
+class ReferenceRenderer(reference: Reference) {
     private val fromTable = reference.fromTable
     private val fromColumn = reference.fromColumn
-    private val toTable = reference.fromTable
+    private val toTable = reference.toTable
     private val toColumn = reference.toColumn
     private val deleteAction = reference.deleteAction
     private val updateAction = reference.updateAction
