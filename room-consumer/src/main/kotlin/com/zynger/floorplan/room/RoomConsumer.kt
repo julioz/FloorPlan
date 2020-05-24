@@ -36,7 +36,7 @@ object RoomConsumer {
                         fromColumn = fromColumn,
                         toTable = toTable,
                         toColumn = toColumn,
-                        referenceOrder = null // Room does not provide the order in its schema
+                        referenceOrder = ReferenceOrder.OneToOne // Room does not provide the order in its schema, we will assume one to one
                     )
                 }
             }.flatten()

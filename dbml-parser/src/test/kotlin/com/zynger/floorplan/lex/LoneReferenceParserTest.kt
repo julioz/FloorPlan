@@ -170,12 +170,12 @@ class LoneReferenceParserTest {
         assertEquals(
             listOf(
                 Reference(
-                    "Ref: trending_shows.show_id - shows.id",
-                    "trending_shows",
-                    "show_id",
-                    "shows",
-                    "id",
-                    ReferenceOrder.OneToOne
+                    rawValue = "Ref: trending_shows.show_id - shows.id",
+                    fromTable = "trending_shows",
+                    fromColumn = "show_id",
+                    toTable = "shows",
+                    toColumn = "id",
+                    referenceOrder = ReferenceOrder.OneToOne
                 )
             ),
             references

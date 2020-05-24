@@ -8,7 +8,7 @@ data class Reference(
     val fromColumn: String,
     val toTable: String,
     val toColumn: String,
-    val referenceOrder: ReferenceOrder?,
+    val referenceOrder: ReferenceOrder,
     val updateAction: String? = null,
     val deleteAction: String? = null,
     val rawValue: String = "$fromTable.$fromColumn $referenceOrder $toTable.$toColumn"
