@@ -1,51 +1,43 @@
-package com.zynger.floorplan.dbml
+package com.zynger.floorplan.dbml.render
 
 import com.zynger.floorplan.Settings
-import com.zynger.floorplan.room.PrimaryKey
-import com.zynger.floorplan.room.Field as DbField
+import com.zynger.floorplan.dbml.Column
 
-class Field(
-    private val field: DbField,
-    private val tablePrimaryKey: PrimaryKey,
+class ColumnRenderer(
+    private val column: Column,
     private val settings: Settings
 ) {
-    private val isPrimaryKey: Boolean
-        get() = tablePrimaryKey.columnNames.any { it == this.field.columnName }
-
-    private val type: String
-        get() = this.field.affinity.toType()
-
-    override fun toString(): String {
-        return StringBuilder(field.columnName)
+    fun render(): String {
+        return StringBuilder(column.name)
             .append(" ")
-            .append(type)
+            .append(column.type.toType())
             .apply {
-                if (settings.renderNullableFields && field.nullable) {
+                if (settings.renderNullableFields && column.nullable) {
                     append("(?)")
                 }
             }
             .apply {
                 append(" ")
                 append("[")
-                if (field.defaultValue != null) {
+                if (column.defaultValue != null) {
                     append("default:")
                     append(" ")
                     append("`")
-                    append(field.defaultValue)
+                    append(column.defaultValue)
                     append("`")
                     append(", ")
                 }
-                if (isPrimaryKey) {
+                if (column.primaryKey) {
                     append("pk")
-                    if (tablePrimaryKey.autoGenerate) {
+                    if (column.increment) {
                         append(", increment")
                     }
-                    if (field.notNull) {
+                    if (column.notNull) {
                         append(", not null")
                     }
                 } else {
                     append("note: ")
-                    append(if (field.notNull) "'not null'" else "'nullable'")
+                    append(if (column.notNull) "'not null'" else "'nullable'")
                 }
                 append("]")
             }
@@ -71,6 +63,6 @@ class Field(
         }
     }
 
-    private val DbField.nullable: Boolean
+    private val Column.nullable: Boolean
         get() = !notNull
 }

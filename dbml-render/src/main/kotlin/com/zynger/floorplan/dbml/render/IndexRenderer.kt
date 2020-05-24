@@ -1,15 +1,12 @@
-package com.zynger.floorplan.dbml
+package com.zynger.floorplan.dbml.render
 
+import com.zynger.floorplan.dbml.Index
 import java.lang.StringBuilder
-import com.zynger.floorplan.room.Index as DbIndex
 
-class Index(
-    private val index: DbIndex
+class IndexRenderer(
+    private val index: Index
 ) {
-
-    override fun toString(): String {
-        //    (merchant_id, status) [name:'product_status']
-        //    id [unique]
+    fun render(): String {
         return StringBuilder()
             .append("(")
             .append(index.columnNames.joinToString(","))
