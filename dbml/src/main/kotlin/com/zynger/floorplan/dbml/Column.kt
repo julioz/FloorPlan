@@ -5,6 +5,7 @@ data class Column(
     val name: String,
     val type: String,
     val note: String? = null,
+    val defaultValue: String? = null,
     val primaryKey: Boolean = false,
     val notNull: Boolean = false,
     val increment: Boolean = false,

@@ -10,7 +10,7 @@ class TableRenderer(
     private val settings: Settings
 ) {
 
-    private val columnRenderers: List<ColumnRenderer> = table.columns.map { ColumnRenderer(it) }
+    private val columnRenderers: List<ColumnRenderer> = table.columns.map { ColumnRenderer(it, settings) }
     private val indexRenderers: List<IndexRenderer> = table.indexes.map { IndexRenderer(it) }
     private val referenceRenderers: List<ReferenceRenderer> = referencesFromTable.map { ReferenceRenderer(it) }
 
