@@ -8,7 +8,8 @@ import java.io.File
 fun main(args: Array<String>) {
     val src = File("samples/db-track-pol.json")
     val project: Project = RoomConsumer.read(src)
-    println(DbmlRenderer.render(project))
+    val settings = Settings(false, false) // TODO
+    println(DbmlRenderer.render(project, settings))
 
 //    val input = InputParser.parse(args)
 //    val src = File(input.schemaPath)
