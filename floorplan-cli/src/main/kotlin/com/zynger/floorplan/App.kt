@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
                     input.renderNullableFields
                 )
             ),
-            Destination.StandardOut
+            if (input.outputPath == null) Destination.StandardOut else Destination.Disk(File(input.outputPath))
         )
     )
 }
