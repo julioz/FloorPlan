@@ -32,7 +32,6 @@ object RoomConsumer {
                 val edges: List<Pair<String, String>> = foreignKey.edges()
                 edges.map { (fromColumn, toColumn) ->
                     Reference(
-                        rawValue = "$fromTable.$fromColumn - $toTable.$toColumn",
                         fromTable = fromTable,
                         fromColumn = fromColumn,
                         toTable = toTable,

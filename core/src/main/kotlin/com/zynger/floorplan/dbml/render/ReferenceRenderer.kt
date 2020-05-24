@@ -8,6 +8,7 @@ class ReferenceRenderer(reference: Reference) {
     private val fromColumn = reference.fromColumn
     private val toTable = reference.toTable
     private val toColumn = reference.toColumn
+    private val referenceOrder = reference.referenceOrder
     private val deleteAction = reference.deleteAction
     private val updateAction = reference.updateAction
 
@@ -16,7 +17,7 @@ class ReferenceRenderer(reference: Reference) {
             .append(fromTable)
             .append(".")
             .append(fromColumn)
-            .append(" - ")
+            .append(" $referenceOrder ")
             .append(toTable)
             .append(".")
             .append(toColumn)
