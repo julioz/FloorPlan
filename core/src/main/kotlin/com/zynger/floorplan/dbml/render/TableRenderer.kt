@@ -1,16 +1,18 @@
 package com.zynger.floorplan.dbml.render
 
 import com.zynger.floorplan.Settings
+import com.zynger.floorplan.dbml.Reference
 import com.zynger.floorplan.dbml.Table
 
 class TableRenderer(
     private val table: Table,
+    referencesFromTable: List<Reference>,
     private val settings: Settings
 ) {
 
     private val columnRenderers: List<ColumnRenderer> = table.columns.map { ColumnRenderer(it) }
     private val indexRenderers: List<IndexRenderer> = table.indexes.map { IndexRenderer(it) }
-    private val referenceRenderers: List<ReferenceRenderer> = emptyList()//table..map { ReferenceRenderer(it) }
+    private val referenceRenderers: List<ReferenceRenderer> = referencesFromTable.map { ReferenceRenderer(it) }
 
     fun render() : String {
         return StringBuilder()

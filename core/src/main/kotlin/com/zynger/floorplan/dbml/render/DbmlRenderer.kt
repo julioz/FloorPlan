@@ -5,6 +5,9 @@ import com.zynger.floorplan.dbml.Project
 
 object DbmlRenderer {
     fun render(project: Project, settings: Settings): String {
-        return project.tables.map { TableRenderer(it, settings).render() }.joinToString(separator = "\n\n")
+        return project.tables.map {
+            val referencesFromTable = project.references.filter { reference -> reference.fromTable == it.name }
+            TableRenderer(it, referencesFromTable, settings).render()
+        }.joinToString(separator = "\n\n")
     }
 }
