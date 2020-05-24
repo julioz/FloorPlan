@@ -6,7 +6,7 @@ import org.junit.Assert.assertEquals
 import com.zynger.floorplan.room.Field as DbField
 import org.junit.Test
 
-class FieldTest {
+class RoomFieldRendererTest {
     companion object {
         private const val FIELD_PATH = "fieldPath"
         private const val COLUMN_NAME = "username"
@@ -22,7 +22,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [note: 'nullable']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -35,7 +35,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [note: 'not null']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -49,7 +49,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [default: `$defaultValue`, note: 'not null']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -63,7 +63,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [default: ``, note: 'not null']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -77,7 +77,7 @@ class FieldTest {
             """
                 $COLUMN_NAME int [default: `$defaultValue`, pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -91,7 +91,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [default: `$defaultValue`, note: 'not null']
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -104,7 +104,7 @@ class FieldTest {
             """
                 $COLUMN_NAME int [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -117,7 +117,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -130,7 +130,7 @@ class FieldTest {
             """
                 $COLUMN_NAME real [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -143,7 +143,7 @@ class FieldTest {
             """
                 $COLUMN_NAME blob [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -156,7 +156,7 @@ class FieldTest {
             """
                 $COLUMN_NAME decimal(1,2) [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 
@@ -169,7 +169,7 @@ class FieldTest {
             """
                 $COLUMN_NAME int(?) [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, Settings(renderNullableFields = true)).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, Settings(renderNullableFields = true)).toString()
         )
     }
 
@@ -182,7 +182,7 @@ class FieldTest {
             """
                 $COLUMN_NAME decimal(1,2)(?) [pk]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, Settings(renderNullableFields = true)).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, Settings(renderNullableFields = true)).toString()
         )
     }
 
@@ -195,7 +195,7 @@ class FieldTest {
             """
                 $COLUMN_NAME varchar [pk, increment]
             """.trimIndent(),
-            Field(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
+            RoomFieldRenderer(textField, tablePrimaryKey, DEFAULT_SETTINGS).toString()
         )
     }
 }

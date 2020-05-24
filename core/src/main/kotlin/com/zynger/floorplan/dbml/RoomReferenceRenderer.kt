@@ -4,7 +4,7 @@ import com.zynger.floorplan.room.ForeignKey
 import com.zynger.floorplan.room.ForeignKeyAction
 import java.lang.StringBuilder
 
-class Reference(
+class RoomReferenceRenderer(
     private val fromTable: String,
     private val foreignKey: ForeignKey
 ) {

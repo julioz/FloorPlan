@@ -4,7 +4,7 @@ import com.zynger.floorplan.room.Index as DbIndex
 import org.junit.Assert
 import org.junit.Test
 
-class IndexTest {
+class RoomIndexRendererTest {
 
     companion object {
         private const val INDEX_NAME = "aRandomIndex"
@@ -25,7 +25,7 @@ class IndexTest {
             """
                 ($COLUMN_NAME) [name:'$INDEX_NAME']
             """.trimIndent(),
-            Index(index).toString()
+            RoomIndexRenderer(index).toString()
         )
     }
 
@@ -44,7 +44,7 @@ class IndexTest {
             """
                 ($COLUMN_NAME,$column2,$column3) [name:'$INDEX_NAME']
             """.trimIndent(),
-            Index(index).toString()
+            RoomIndexRenderer(index).toString()
         )
     }
 
@@ -61,7 +61,7 @@ class IndexTest {
             """
                 ($COLUMN_NAME) [name:'$INDEX_NAME', unique]
             """.trimIndent(),
-            Index(index).toString()
+            RoomIndexRenderer(index).toString()
         )
     }
 }

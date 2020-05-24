@@ -4,7 +4,7 @@ import com.zynger.floorplan.Settings
 import com.zynger.floorplan.room.PrimaryKey
 import com.zynger.floorplan.room.Field as DbField
 
-class Field(
+class RoomFieldRenderer(
     private val field: DbField,
     private val tablePrimaryKey: PrimaryKey,
     private val settings: Settings

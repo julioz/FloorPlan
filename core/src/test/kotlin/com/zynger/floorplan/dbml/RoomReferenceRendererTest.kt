@@ -5,7 +5,7 @@ import com.zynger.floorplan.room.ForeignKeyAction
 import org.junit.Assert
 import org.junit.Test
 
-class ReferenceTest {
+class RoomReferenceRendererTest {
 
     companion object {
         private const val FROM_TABLE = "referrer"
@@ -18,7 +18,7 @@ class ReferenceTest {
 
     @Test
     fun `references from 1 column to 1 column`() {
-        val reference = Reference(FROM_TABLE,
+        val reference = RoomReferenceRenderer(FROM_TABLE,
             ForeignKey(TO_TABLE, listOf(FROM_COLUMN), listOf(TO_COLUMN), ON_DELETE, ON_UPDATE)
         )
 
@@ -32,7 +32,7 @@ class ReferenceTest {
 
     @Test
     fun `only pick the first referenced column`() {
-        val reference = Reference(FROM_TABLE,
+        val reference = RoomReferenceRenderer(FROM_TABLE,
             ForeignKey(TO_TABLE, listOf(FROM_COLUMN, "another_col"), listOf(TO_COLUMN, "col2"), ON_DELETE, ON_UPDATE)
         )
 
@@ -46,7 +46,7 @@ class ReferenceTest {
 
     @Test
     fun `foreign key action gets translated for RESTRICT action`() {
-        val reference = Reference(FROM_TABLE,
+        val reference = RoomReferenceRenderer(FROM_TABLE,
             ForeignKey(TO_TABLE, listOf(FROM_COLUMN), listOf(TO_COLUMN), ForeignKeyAction.RESTRICT, ForeignKeyAction.RESTRICT)
         )
 
@@ -60,7 +60,7 @@ class ReferenceTest {
 
     @Test
     fun `foreign key action gets translated for SET NULL action`() {
-        val reference = Reference(FROM_TABLE,
+        val reference = RoomReferenceRenderer(FROM_TABLE,
             ForeignKey(TO_TABLE, listOf(FROM_COLUMN), listOf(TO_COLUMN), ForeignKeyAction.SET_NULL, ForeignKeyAction.SET_NULL)
         )
 
@@ -74,7 +74,7 @@ class ReferenceTest {
 
     @Test
     fun `foreign key action gets translated for SET DEFAULT action`() {
-        val reference = Reference(FROM_TABLE,
+        val reference = RoomReferenceRenderer(FROM_TABLE,
             ForeignKey(TO_TABLE, listOf(FROM_COLUMN), listOf(TO_COLUMN), ForeignKeyAction.SET_DEFAULT, ForeignKeyAction.SET_DEFAULT)
         )
 
@@ -88,7 +88,7 @@ class ReferenceTest {
 
     @Test
     fun `foreign key action gets translated for CASCADE action`() {
-        val reference = Reference(FROM_TABLE,
+        val reference = RoomReferenceRenderer(FROM_TABLE,
             ForeignKey(TO_TABLE, listOf(FROM_COLUMN), listOf(TO_COLUMN), ForeignKeyAction.CASCADE, ForeignKeyAction.CASCADE)
         )
 

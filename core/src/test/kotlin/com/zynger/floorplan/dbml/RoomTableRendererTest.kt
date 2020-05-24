@@ -5,7 +5,7 @@ import com.zynger.floorplan.room.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class TableTest {
+class RoomTableRendererTest {
     companion object {
         private const val TABLE_NAME = "Users"
         private const val TABLE_NAME_2 = "Songs"
@@ -28,7 +28,7 @@ class TableTest {
 
     @Test
     fun `table with single field`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,
@@ -52,7 +52,7 @@ class TableTest {
 
     @Test
     fun `table with single field and creation SQL as note`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,
@@ -78,7 +78,7 @@ class TableTest {
 
     @Test
     fun `table with multiple fields`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,
@@ -104,7 +104,7 @@ class TableTest {
 
     @Test
     fun `table with single index`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,
@@ -134,7 +134,7 @@ class TableTest {
 
     @Test
     fun `table with multiple indices`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,
@@ -166,7 +166,7 @@ class TableTest {
 
     @Test
     fun `table with multiple indices and creation sql as note`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,
@@ -200,7 +200,7 @@ class TableTest {
 
     @Test
     fun `table with single reference`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,
@@ -228,7 +228,7 @@ class TableTest {
 
     @Test
     fun `table with multiple references`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,
@@ -258,7 +258,7 @@ class TableTest {
 
     @Test
     fun `table with multiple fields, indices and references`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,
@@ -298,7 +298,7 @@ class TableTest {
 
     @Test
     fun `table with multiple fields, indices, references and creation sql as note`() {
-        val table = Table(
+        val table = RoomTableRenderer(
             Entity(
                 tableName = TABLE_NAME,
                 createSql = CREATE_SQL,

@@ -1,9 +1,7 @@
 package com.zynger.floorplan
 
 import com.zynger.floorplan.dbml.Project
-import com.zynger.floorplan.dbml.Table
 import com.zynger.floorplan.dbml.render.DbmlRenderer
-import com.zynger.floorplan.room.Database
 import com.zynger.floorplan.room.RoomConsumer
 import java.io.File
 

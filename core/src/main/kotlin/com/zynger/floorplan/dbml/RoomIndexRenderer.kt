@@ -3,7 +3,7 @@ package com.zynger.floorplan.dbml
 import java.lang.StringBuilder
 import com.zynger.floorplan.room.Index as DbIndex
 
-class Index(
+class RoomIndexRenderer(
     private val index: DbIndex
 ) {
 

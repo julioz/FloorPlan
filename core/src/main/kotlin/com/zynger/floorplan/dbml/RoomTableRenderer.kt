@@ -3,14 +3,14 @@ package com.zynger.floorplan.dbml
 import com.zynger.floorplan.Settings
 import com.zynger.floorplan.room.Entity
 
-class Table(
+class RoomTableRenderer(
     entity: Entity,
     private val settings: Settings
 ) {
     private val tableName: String = entity.tableName
-    private val fields: List<Field> = entity.fields.map { Field(it, entity.primaryKey, settings) }
-    private val indices: List<Index> = entity.indices.map { Index(it) }
-    private val references: List<Reference> = entity.foreignKeys.map { Reference(tableName, it) }
+    private val roomFieldRenderers: List<RoomFieldRenderer> = entity.fields.map { RoomFieldRenderer(it, entity.primaryKey, settings) }
+    private val roomIndexRenderers: List<RoomIndexRenderer> = entity.indices.map { RoomIndexRenderer(it) }
+    private val roomReferenceRenderers: List<RoomReferenceRenderer> = entity.foreignKeys.map { RoomReferenceRenderer(tableName, it) }
     private val createSql: String = entity.createSql
 
     override fun toString(): String {
@@ -20,11 +20,11 @@ class Table(
             .append("{")
             .appendln()
             .apply {
-                append(fields.joinToString("\n") { it.toString().prependIndent("  ") })
+                append(roomFieldRenderers.joinToString("\n") { it.toString().prependIndent("  ") })
             }
             .appendln()
             .apply {
-                if (this@Table.indices.isNotEmpty()) {
+                if (this@RoomTableRenderer.roomIndexRenderers.isNotEmpty()) {
                     appendln()
                     appendIndicesBlock()
                 }
@@ -41,10 +41,10 @@ class Table(
             }
             .append("}")
             .apply {
-                if (this@Table.references.isNotEmpty()) {
+                if (this@RoomTableRenderer.roomReferenceRenderers.isNotEmpty()) {
                     appendln()
                     appendln()
-                    append(references.joinToString("\n") { it.toString() })
+                    append(roomReferenceRenderers.joinToString("\n") { it.toString() })
                 }
             }
             .toString()
@@ -55,7 +55,7 @@ class Table(
         append("Indexes")
         append("  ")
         appendln("{")
-        this@Table.indices.forEach { appendln(it.toString().prependIndent("    ")) }
+        this@RoomTableRenderer.roomIndexRenderers.forEach { appendln(it.toString().prependIndent("    ")) }
         append("  ")
         appendln("}")
     }
