@@ -97,6 +97,29 @@ class InputParserTest {
     }
 
     @Test
+    fun `output format is not defined when argument isn't specified`() {
+        val input = InputParser.parse(
+            arrayOf(
+                "samples/db.json"
+            )
+        )
+
+        assertNull(input.format)
+    }
+
+    @Test
+    fun `output format is defined when argument is specified`() {
+        val input = InputParser.parse(
+            arrayOf(
+                "samples/db.json",
+                "--format=svg"
+            )
+        )
+
+        assertEquals("svg", input.format)
+    }
+
+    @Test
     fun `creation sql is not part of table notes when argument isn't specified`() {
         val input = InputParser.parse(
             arrayOf(
