@@ -21,3 +21,4 @@ nav:
   - 'Run':
       - 'Introduction': 'run.md'
       - 'Testing': 'tests.md'
+  - 'Architecture': 'architecture.md'
