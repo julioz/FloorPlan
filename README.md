@@ -1,6 +1,6 @@
 # FloorPlan
 
-Translate [Room](https://developer.android.com/topic/libraries/architecture/room) schemas to [Database Markup Language (DBML)](https://www.dbml.org/home/).
+Render [Room](https://developer.android.com/topic/libraries/architecture/room) schemas into ER diagrams.
 
 See [documentation page](https://julioz.github.io/FloorPlan/) for details.
 
