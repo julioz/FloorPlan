@@ -19,9 +19,9 @@ application {
 }
 
 dependencies {
-    implementation project(":dbml")
-    implementation project(":dbml2viz")
-    implementation project(":room-consumer")
+    implementation 'composite-builds:dbml:1.0'
+    implementation 'composite-builds:dbml2viz:1.0'
+    implementation 'composite-builds:room-consumer:1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
 }

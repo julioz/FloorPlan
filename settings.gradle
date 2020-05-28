@@ -1,7 +1,31 @@
 rootProject.name = 'floorplan'
-include 'dbml-render'
-include 'dbml'
+//include 'dbml-render'
+//include 'dbml'
 include 'dbml-parser'
-include 'dbml2viz'
+//include 'dbml2viz'
 include 'floorplan-cli'
-include 'room-consumer'
+include 'gradle-plugin-sample-app'
+//include 'room-consumer'
+includeBuild('gradle-plugin')
+include(":gradle-plugin-sample-app")
+
+includeBuild("dbml") {
+    dependencySubstitution {
+        substitute(module("composite-builds:dbml")).with(project(":"))
+    }
+}
+includeBuild("dbml-render") {
+    dependencySubstitution {
+        substitute(module("composite-builds:dbml-render")).with(project(":"))
+    }
+}
+includeBuild("dbml2viz") {
+    dependencySubstitution {
+        substitute(module("composite-builds:dbml2viz")).with(project(":"))
+    }
+}
+includeBuild("room-consumer") {
+    dependencySubstitution {
+        substitute(module("composite-builds:room-consumer")).with(project(":"))
+    }
+}
