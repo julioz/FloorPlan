@@ -14,6 +14,11 @@ repositories {
     jcenter()
 }
 
+floorPlan {
+    schemaLocation = "$projectDir/schemas".toString()
+    outputLocation = "$projectDir/schemas".toString()
+}
+
 dependencies {
     implementation 'composite-builds:dbml:1.0'
     implementation 'composite-builds:dbml2viz:1.0'
