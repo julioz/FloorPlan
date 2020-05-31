@@ -17,6 +17,12 @@ repositories {
 floorPlan {
     schemaLocation = "$projectDir/schemas".toString()
     outputLocation = "$projectDir/schemas".toString()
+    outputFormat {
+        dbml // this one takes a closure
+        png
+        svg
+        dot
+    }
 }
 
 dependencies {

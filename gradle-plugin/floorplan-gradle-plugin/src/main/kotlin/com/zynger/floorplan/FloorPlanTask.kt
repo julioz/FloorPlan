@@ -6,19 +6,17 @@ import java.io.File
 
 open class FloorPlanTask : DefaultTask() {
 
-    data class FloorPlanInput(
-        val schemaLocation: String,
-        val outputLocation: String
-    )
-
     @get:InputDirectory
     lateinit var schemaLocation: File
+
+    @get:Nested
+    var outputFormat: OutputFormat? = null
 
     @OutputDirectory
     lateinit var outputLocation: File
 
     @TaskAction
     fun generateFloorPlan() {
-        println("Hello FloorPlan gradle!")
+        println("Hello FloorPlan gradle! $outputFormat")
     }
 }
