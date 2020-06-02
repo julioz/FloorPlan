@@ -1,7 +1,6 @@
-package com.zynger.floorplan
+package com.zynger.floorplan.gradle.extension
 
 open class FloorPlanExtension {
     var schemaLocation: String = ""
     var outputLocation: String = ""
-    // TODO add outputFormat as nested extension object
 }

@@ -1,5 +1,9 @@
 package com.zynger.floorplan
 
+import com.zynger.floorplan.gradle.model.DbmlConfiguration
+import com.zynger.floorplan.gradle.FloorPlanTask
+import com.zynger.floorplan.gradle.model.OutputFormat
+import com.zynger.floorplan.gradle.extension.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
@@ -28,7 +32,10 @@ class FloorPlanPlugin: Plugin<Project> {
         ensureOnlyOneOutputFormatIsEnabled(this)
         return when (val output = getEnabledOutputFormats(this).first()) {
             is DbmlConfigurationExtension -> OutputFormat.DBML(
-                DbmlConfiguration(output.creationSqlAsTableNote.get(), output.renderNullableFields.get())
+                DbmlConfiguration(
+                    output.creationSqlAsTableNote.get(),
+                    output.renderNullableFields.get()
+                )
             )
             is SvgConfigurationExtension -> OutputFormat.SVG
             is PngConfigurationExtension -> OutputFormat.PNG

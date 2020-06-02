@@ -1,4 +1,4 @@
-package com.zynger.floorplan
+package com.zynger.floorplan.gradle.extension
 
 import org.gradle.api.Action
 import org.gradle.api.model.ObjectFactory
@@ -11,10 +11,14 @@ constructor(
     objects: ObjectFactory
 ) {
 
-    val dbmlConfiguration: DbmlConfigurationExtension = objects.newInstance(DbmlConfigurationExtension::class.java)
-    val svgConfiguration: SvgConfigurationExtension = objects.newInstance(SvgConfigurationExtension::class.java)
-    val pngConfiguration: PngConfigurationExtension = objects.newInstance(PngConfigurationExtension::class.java)
-    val dotConfiguration: DotConfigurationExtension = objects.newInstance(DotConfigurationExtension::class.java)
+    val dbmlConfiguration: DbmlConfigurationExtension = objects.newInstance(
+        DbmlConfigurationExtension::class.java)
+    val svgConfiguration: SvgConfigurationExtension = objects.newInstance(
+        SvgConfigurationExtension::class.java)
+    val pngConfiguration: PngConfigurationExtension = objects.newInstance(
+        PngConfigurationExtension::class.java)
+    val dotConfiguration: DotConfigurationExtension = objects.newInstance(
+        DotConfigurationExtension::class.java)
 
     fun dbml(action: Action<DbmlConfigurationExtension>) {
         action.execute(dbmlConfiguration)

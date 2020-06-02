@@ -1,4 +1,4 @@
-package com.zynger.floorplan
+package com.zynger.floorplan.gradle.model
 
 sealed class OutputFormat {
     data class DBML(val config: DbmlConfiguration): OutputFormat()
