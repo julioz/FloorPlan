@@ -10,7 +10,7 @@ open class FloorPlanTask : DefaultTask() {
     lateinit var schemaLocation: File
 
     @get:Nested
-    var outputFormat: OutputFormat? = null
+    lateinit var outputFormat: OutputFormat
 
     @OutputDirectory
     lateinit var outputLocation: File
