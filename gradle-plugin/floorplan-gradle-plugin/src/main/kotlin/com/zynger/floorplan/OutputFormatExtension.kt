@@ -12,9 +12,9 @@ constructor(
 ) {
 
     val dbmlConfiguration: DbmlConfigurationExtension = objects.newInstance(DbmlConfigurationExtension::class.java)
-    val svgConfiguration: OutputFormatConfiguration = objects.newInstance(OutputFormatConfiguration::class.java)
-    val pngConfiguration: OutputFormatConfiguration = objects.newInstance(OutputFormatConfiguration::class.java)
-    val dotConfiguration: OutputFormatConfiguration = objects.newInstance(OutputFormatConfiguration::class.java)
+    val svgConfiguration: SvgConfigurationExtension = objects.newInstance(SvgConfigurationExtension::class.java)
+    val pngConfiguration: PngConfigurationExtension = objects.newInstance(PngConfigurationExtension::class.java)
+    val dotConfiguration: DotConfigurationExtension = objects.newInstance(DotConfigurationExtension::class.java)
 
     fun dbml(action: Action<DbmlConfigurationExtension>) {
         action.execute(dbmlConfiguration)
@@ -28,31 +28,14 @@ constructor(
     fun dot(action: Action<OutputFormatConfiguration>) {
         action.execute(dotConfiguration)
     }
-
-    override fun toString(): String {
-        return "OutputFormatExtension(" +
-                "dbmlConfiguration=$dbmlConfiguration, " +
-                "svgConfiguration=$svgConfiguration, " +
-                "pngConfiguration=$pngConfiguration, " +
-                "dotConfiguration=$dotConfiguration" +
-                ")"
-    }
 }
 
-abstract class OutputFormatConfiguration
-@Inject
-constructor(
-    objects: ObjectFactory
-) {
+sealed class OutputFormatConfiguration(objects: ObjectFactory) {
     val enabled: Property<Boolean> = objects.property(Boolean::class.java).also { it.convention(false) }
 
     fun enabled(value: Boolean) {
         enabled.set(value)
         enabled.disallowChanges()
-    }
-
-    override fun toString(): String {
-        return "OutputFormatConfiguration(enabled=${enabled.get()})"
     }
 }
 
@@ -73,12 +56,22 @@ constructor(
         renderNullableFields.set(enabled)
         renderNullableFields.disallowChanges()
     }
-
-    override fun toString(): String {
-        return "DbmlConfigurationExtension(" +
-                "enabled=${enabled.get()}, " +
-                "creationSqlAsTableNote=${creationSqlAsTableNote.get()}, " +
-                "renderNullableFields=${renderNullableFields.get()}" +
-                ")"
-    }
 }
+
+open class SvgConfigurationExtension
+@Inject
+constructor(
+    objects: ObjectFactory
+):  OutputFormatConfiguration(objects)
+
+open class PngConfigurationExtension
+@Inject
+constructor(
+    objects: ObjectFactory
+):  OutputFormatConfiguration(objects)
+
+open class DotConfigurationExtension
+@Inject
+constructor(
+    objects: ObjectFactory
+):  OutputFormatConfiguration(objects)
