@@ -23,6 +23,7 @@ gradlePlugin {
 dependencies {
     implementation 'composite-builds:dbml2viz:1.0'
     implementation 'composite-builds:dbml:1.0'
+    implementation 'composite-builds:room-consumer:1.0'
     implementation gradleApi()
     implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
