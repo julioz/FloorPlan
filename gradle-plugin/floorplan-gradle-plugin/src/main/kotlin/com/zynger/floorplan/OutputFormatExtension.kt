@@ -22,11 +22,20 @@ constructor(
     var dot: String? = null
 }
 
+abstract class OutputFormatConfiguration(objects: ObjectFactory) {
+    val enabled: Property<Boolean> = objects.property(Boolean::class.java).also { it.convention(false) }
+
+    fun enabled(value: Boolean) {
+        enabled.set(value)
+        enabled.disallowChanges()
+    }
+}
+
 open class DbmlConfigurationExtension
 @Inject
 constructor(
     objects: ObjectFactory
-) {
+): OutputFormatConfiguration(objects) {
     val creationSqlAsTableNote: Property<Boolean> = objects.property(Boolean::class.java).also { it.convention(false) }
     val renderNullableFields: Property<Boolean> = objects.property(Boolean::class.java).also { it.convention(false) }
 
