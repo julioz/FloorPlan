@@ -24,7 +24,7 @@ class FloorPlanPlugin: Plugin<Project> {
     }
 
     private fun OutputFormatExtension.getFormat(): OutputFormat {
-        println(this.svg.isPresent)
+        println(this)
         return OutputFormat.SVG
     }
 }

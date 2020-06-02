@@ -18,10 +18,16 @@ floorPlan {
     schemaLocation = "$projectDir/schemas".toString()
     outputLocation = "$projectDir/schemas".toString()
     outputFormat {
-        dbml // this one takes a closure
-        png
-        svg
-        dot
+        dbml {
+            enabled = true
+            creationSqlAsTableNote = true
+            renderNullableFields = true
+        }
+        svg {}
+        png {
+            enabled = true
+        }
+        dot {}
     }
 }
 
