@@ -3,10 +3,22 @@ package com.zynger.floorplan
 import java.io.File
 
 sealed class Format {
-    data class DBML(val config: DbmlConfiguration): Format()
-    object DOT: Format()
-    object SVG: Format()
-    object PNG: Format()
+    abstract val extension: String
+    data class DBML(val config: DbmlConfiguration): Format() {
+        override val extension: String = "dbml"
+    }
+
+    object DOT: Format() {
+        override val extension: String = "dot"
+    }
+
+    object SVG: Format() {
+        override val extension: String = "svg"
+    }
+
+    object PNG: Format() {
+        override val extension: String = "png"
+    }
 }
 
 data class DbmlConfiguration(
