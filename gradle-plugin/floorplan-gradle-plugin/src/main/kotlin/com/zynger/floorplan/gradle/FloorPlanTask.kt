@@ -26,19 +26,17 @@ open class FloorPlanTask : DefaultTask() {
     @TaskAction
     fun generateFloorPlan() {
         val schemas: List<File> = schemaLocation.findRoomSchemas()
-        println("Found Room schemas $schemas")
         schemas.forEach { schema ->
             val project: Project = RoomConsumer.read(schema)
+            val outputFormat = outputFormat.mapOutputFormat()
+            val outputFileName = "${schema.nameWithoutExtension}.${outputFormat.extension}"
+            val outputFile = File(outputLocation, outputFileName)
 
             FloorPlan.render(
                 project = project,
-                output = Output(
-                    outputFormat.mapOutputFormat(),
-                    Destination.Disk(outputLocation)
-                )
+                output = Output(outputFormat, Destination.Disk(outputFile))
             )
         }
-        println("Hello FloorPlan gradle! $outputFormat")
     }
 
     private fun File.findRoomSchemas(): List<File> {
