@@ -1,0 +1,21 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.zynger.floorplan.gradle.sample"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:1.1.0"
+
+    testImplementation "junit:junit:4.13"
+}
