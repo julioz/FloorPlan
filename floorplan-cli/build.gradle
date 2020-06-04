@@ -4,7 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 
-group 'zynger'
+group 'com.zynger.floorplan'
 version '0.1-SNAPSHOT'
 
 sourceCompatibility = 1.8

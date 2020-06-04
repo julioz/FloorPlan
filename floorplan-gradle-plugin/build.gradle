@@ -4,7 +4,7 @@ plugins {
     id 'maven'
 }
 
-group 'zynger'
+group 'com.zynger.floorplan'
 version '0.1-SNAPSHOT'
 
 repositories {
