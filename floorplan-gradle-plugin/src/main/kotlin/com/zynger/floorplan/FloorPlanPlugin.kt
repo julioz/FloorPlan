@@ -21,8 +21,11 @@ class FloorPlanPlugin: Plugin<Project> {
             project.tasks
                 .register("generateFloorPlan", FloorPlanTask::class.java)
                 .configure { task ->
-                    task.schemaLocation = File(floorPlanExtension.schemaLocation)
-                    task.outputLocation = File(floorPlanExtension.outputLocation)
+                    check(floorPlanExtension.schemaLocation.isPresent) { "Missing schemaLocation property." }
+                    check(floorPlanExtension.outputLocation.isPresent) { "Missing outputLocation property." }
+
+                    task.schemaLocation = File(floorPlanExtension.schemaLocation.get())
+                    task.outputLocation = File(floorPlanExtension.outputLocation.get())
                     task.outputFormat = outputFormatExtension.getFormat()
                 }
         }
