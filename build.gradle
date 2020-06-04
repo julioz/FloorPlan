@@ -16,7 +16,6 @@ plugins {
 subprojects {
     group 'com.zynger.floorplan'
     version '0.1-SNAPSHOT'
-    apply plugin: 'maven-publish'
 }
 
 repositories {
