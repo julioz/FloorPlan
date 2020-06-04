@@ -1,10 +1,26 @@
 plugins {
+    id 'java'
     id 'java-gradle-plugin'
+    id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 repositories {
     mavenCentral()
+}
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+        }
+    }
+}
+
+shadowJar {
+    minimize()
+    classifier = ''
 }
 
 gradlePlugin {
@@ -18,7 +34,7 @@ gradlePlugin {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation gradleApi()
+    compileOnly gradleApi()
     implementation project(":dbml")
     implementation project(":dbml2viz")
     implementation project(":room-consumer")
