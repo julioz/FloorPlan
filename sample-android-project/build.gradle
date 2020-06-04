@@ -20,6 +20,18 @@ android {
     }
 }
 
+floorPlan {
+    schemaLocation = "$projectDir/schemas".toString()
+    outputLocation = "$projectDir/schemas".toString()
+    outputFormat {
+        dbml {
+            enabled = true
+            creationSqlAsTableNote = true
+            renderNullableFields = true
+        }
+    }
+}
+
 dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0"
 
