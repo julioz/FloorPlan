@@ -6,7 +6,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
-        classpath "com.zynger.floorplan:floorplan-gradle-plugin:0.1-SNAPSHOT"
+        // Uncomment when developing with the plugin's sample application
+        // classpath "com.zynger.floorplan:floorplan-gradle-plugin:0.1-SNAPSHOT"
     }
 }
 plugins {

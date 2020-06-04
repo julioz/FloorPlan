@@ -6,4 +6,6 @@ include 'dbml2viz'
 include 'floorplan-cli'
 include 'room-consumer'
 include 'floorplan-gradle-plugin'
-include 'sample-android-project'
+
+// Uncomment when developing with the plugin's sample application
+//include 'sample-android-project'
