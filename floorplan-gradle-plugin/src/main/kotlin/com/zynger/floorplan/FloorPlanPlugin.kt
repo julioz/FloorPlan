@@ -8,7 +8,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import java.io.File
-import java.lang.IllegalArgumentException
 
 class FloorPlanPlugin: Plugin<Project> {
 
@@ -32,8 +31,11 @@ class FloorPlanPlugin: Plugin<Project> {
     }
 
     private fun OutputFormatExtension.getFormat(): OutputFormat {
-        ensureOnlyOneOutputFormatIsEnabled(this)
-        return when (val output = getEnabledOutputFormats(this).first()) {
+        val outputFormats = getEnabledOutputFormats(this)
+        check(outputFormats.isNotEmpty()) { "There are no enabled output formats." }
+        check(outputFormats.size == 1) { "There can only be one enabled output format." }
+
+        return when (val output = outputFormats.first()) {
             is DbmlConfigurationExtension -> OutputFormat.DBML(
                 DbmlConfiguration(
                     output.creationSqlAsTableNote.get(),
@@ -43,17 +45,6 @@ class FloorPlanPlugin: Plugin<Project> {
             is SvgConfigurationExtension -> OutputFormat.SVG
             is PngConfigurationExtension -> OutputFormat.PNG
             is DotConfigurationExtension -> OutputFormat.DOT
-        }
-    }
-
-    private fun ensureOnlyOneOutputFormatIsEnabled(outputFormatExtension: OutputFormatExtension) {
-        val enabled = getEnabledOutputFormats(outputFormatExtension)
-
-        if (enabled.isEmpty()) {
-            throw IllegalArgumentException("There are no enabled output formats.")
-        }
-        if (enabled.size != 1) {
-            throw IllegalArgumentException("There can only be one enabled output format.")
         }
     }
 
