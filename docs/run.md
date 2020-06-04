@@ -1,4 +1,4 @@
-# Run FloorPlan
+# Run FloorPlan from the command line
 
 After checking out this repository, [make sure you have Gradle installed](https://gradle.org/install/) and run:
 ```
