@@ -1,13 +1,18 @@
 buildscript {
+    apply from: "arguments.gradle"
+
     repositories {
         google()
         jcenter()
-        mavenLocal()
+        if (includeSampleApp) {
+            mavenLocal()
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
-        // Uncomment when developing with the plugin's sample application
-        // classpath "com.zynger.floorplan:floorplan-gradle-plugin:0.1-SNAPSHOT"
+        if (includeSampleApp) {
+            classpath "com.zynger.floorplan:floorplan-gradle-plugin:0.1-SNAPSHOT"
+        }
     }
 }
 plugins {
