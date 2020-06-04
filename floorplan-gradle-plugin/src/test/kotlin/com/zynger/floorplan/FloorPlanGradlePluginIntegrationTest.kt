@@ -3,6 +3,7 @@ package com.zynger.floorplan
 import com.google.common.truth.Truth.assertThat
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -205,6 +206,28 @@ class FloorPlanGradlePluginIntegrationTest {
              |    svg {
              |      enabled = true
              |    }
+             |  }
+             |}""".trimMargin()
+        )
+        floorPlanRunner()
+            .build()
+            .withSuccessfulMessage()
+    }
+
+    @Ignore("Unsupported feature. To be worked on.")
+    @Test
+    fun testSingleOutputFormatEnabledWithCollapsibleStatement() {
+        createSchemasDirectory()
+        writeBuildGradle(
+            """plugins {
+             |  id "com.zynger.floorplan"
+             |}
+             |
+             |floorPlan {
+             |  schemaLocation = "schemas"
+             |  outputLocation = "schemas"
+             |  outputFormat {
+             |    svg.enabled = true
              |  }
              |}""".trimMargin()
         )
