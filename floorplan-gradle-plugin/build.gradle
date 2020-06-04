@@ -1,0 +1,33 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'maven'
+}
+
+group 'zynger'
+version '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'com.zynger.floorplan'
+            implementationClass = 'com.zynger.floorplan.FloorPlanPlugin'
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
