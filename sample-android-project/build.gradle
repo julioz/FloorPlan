@@ -1,5 +1,11 @@
 plugins {
     id 'com.android.application'
+    id 'com.zynger.floorplan'
+}
+
+repositories {
+    mavenCentral()
+    google()
 }
 
 android {
