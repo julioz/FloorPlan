@@ -1,0 +1,39 @@
+plugins {
+    id 'com.android.application'
+    id 'com.zynger.floorplan'
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.zynger.floorplan.gradle.sample"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
+
+floorPlan {
+    schemaLocation = "$projectDir/schemas".toString()
+    outputLocation = "$projectDir/schemas".toString()
+    outputFormat {
+        dbml {
+            enabled = true
+            creationSqlAsTableNote = true
+            renderNullableFields = true
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:1.1.0"
+
+    testImplementation "junit:junit:4.13"
+}

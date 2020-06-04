@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+        }
+    }
+}
+
+shadowJar {
+    minimize {
+        /**
+         * graphviz-java bundles graphviz, a native dependency, accessed via reflection through System.load()
+         * we should not minimize it, otherwise the native code gets stripped.
+         */
+        exclude(dependency('guru.nidi:.*:.*'))
+    }
+    classifier = ''
+}
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'com.zynger.floorplan'
+            implementationClass = 'com.zynger.floorplan.FloorPlanPlugin'
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compileOnly gradleApi()
+    implementation project(":dbml")
+    implementation project(":dbml2viz")
+    implementation project(":room-consumer")
+
+    testImplementation gradleTestKit()
+    testImplementation "junit:junit:4.12"
+    testImplementation "com.google.truth:truth:1.0.1"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}

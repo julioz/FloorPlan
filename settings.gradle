@@ -1,3 +1,5 @@
+apply from: "arguments.gradle"
+
 rootProject.name = 'floorplan'
 include 'dbml-render'
 include 'dbml'
@@ -5,3 +7,8 @@ include 'dbml-parser'
 include 'dbml2viz'
 include 'floorplan-cli'
 include 'room-consumer'
+include 'floorplan-gradle-plugin'
+
+if (includeSampleApp) {
+    include 'sample-android-project'
+}

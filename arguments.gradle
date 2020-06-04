@@ -1,0 +1,3 @@
+ext {
+  includeSampleApp = (properties['floorplan.includeSampleApp'] ?: 'false').toBoolean()
+}

@@ -12,13 +12,15 @@ markdown_extensions:
   - codehilite:
       guess_lang: false
   - pymdownx.superfences
+  - mdx_truly_sane_lists
 
 theme:
   name: 'material'
 
 nav:
   - 'Overview': 'index.md'
-  - 'Run':
-      - 'Introduction': 'run.md'
-      - 'Testing': 'tests.md'
+  - 'Usage':
+      - 'Command-line': 'run.md'
+      - 'Gradle Plugin': 'gradle-plugin.md'
+  - 'Contributing': 'contributing.md'
   - 'Architecture': 'architecture.md'

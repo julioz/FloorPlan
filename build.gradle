@@ -1,9 +1,28 @@
+buildscript {
+    apply from: "arguments.gradle"
+
+    repositories {
+        google()
+        jcenter()
+        if (includeSampleApp) {
+            mavenLocal()
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.3'
+        if (includeSampleApp) {
+            classpath "com.zynger.floorplan:floorplan-gradle-plugin:0.1-SNAPSHOT"
+        }
+    }
+}
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.71' apply false
 }
 
-group 'zynger'
-version '0.1-SNAPSHOT'
+subprojects {
+    group 'com.zynger.floorplan'
+    version '0.1-SNAPSHOT'
+}
 
 repositories {
     mavenCentral()
