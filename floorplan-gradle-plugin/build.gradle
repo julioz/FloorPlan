@@ -1,11 +1,7 @@
 plugins {
     id 'java-gradle-plugin'
     id 'org.jetbrains.kotlin.jvm'
-    id 'maven'
 }
-
-group 'com.zynger.floorplan'
-version '0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
