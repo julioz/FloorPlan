@@ -19,7 +19,13 @@ publishing {
 }
 
 shadowJar {
-    minimize()
+    minimize {
+        /**
+         * graphviz-java bundles graphviz, a native dependency, accessed via reflection through System.load()
+         * we should not minimize it, otherwise the native code gets stripped.
+         */
+        exclude(dependency('guru.nidi:.*:.*'))
+    }
     classifier = ''
 }
 
