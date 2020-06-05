@@ -5,13 +5,31 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id "com.gradle.plugin-publish" version "0.12.0"
+    id 'signing'
 }
 
 repositories {
     mavenCentral()
 }
 
+def isReleaseBuild = !version.toString().endsWith("SNAPSHOT")
+
 publishing {
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            if (isReleaseBuild) {
+                url = releasesRepoUrl
+            } else {
+                url = snapshotsRepoUrl
+            }
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
     publications {
         shadow(MavenPublication) { publication ->
             project.shadow.component(publication)
@@ -41,8 +59,6 @@ gradlePlugin {
     }
 }
 
-
-
 pluginBundle {
     website = "https://github.com/julioz/FloorPlan"
     vcsUrl = "https://github.com/julioz/FloorPlan"
@@ -52,6 +68,26 @@ pluginBundle {
         artifactId = "floorplan-gradle-plugin"
         groupId = project.group.toString()
     }
+}
+
+task sourceJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier "javadoc"
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+}
+
+signing {
+    required = isReleaseBuild
 }
 
 dependencies {
