@@ -32,6 +32,7 @@ publishing {
     }
     publications {
         shadow(MavenPublication) { publication ->
+            customizePom(pom)
             project.shadow.component(publication)
         }
     }
@@ -88,6 +89,47 @@ artifacts {
 
 signing {
     required = isReleaseBuild
+}
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        // eliminate test-scoped dependencies (no need in maven central POMs)
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        // add all items necessary for maven central publication
+        root.children().last() + {
+            resolveStrategy = Closure.DELEGATE_FIRST
+
+            description project.description
+            name 'FloorPlan'
+            url 'https://github.com/julioz/FloorPlan'
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/julioz/FloorPlan/issues'
+            }
+            licenses {
+                license {
+                    name 'The Apache License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+            scm {
+                url 'https://github.com/julioz/FloorPlan'
+                connection 'scm:git:git://github.com/julioz/FloorPlan.git'
+                developerConnection 'scm:git:ssh://github.com/julioz/FloorPlan.git'
+            }
+            developers {
+                developer {
+                    id 'julioz'
+                    name 'Julio Zynger'
+                }
+            }
+        }
+    }
 }
 
 dependencies {
