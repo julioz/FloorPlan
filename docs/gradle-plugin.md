@@ -2,7 +2,7 @@
 
 ### Apply the plugin
 
-Apply the gradle plugin in your root `build.gradle` file:
+Apply the [gradle plugin](https://plugins.gradle.org/plugin/com.zynger.floorplan) in your root `build.gradle` file:
 
 ```
 buildscript {
