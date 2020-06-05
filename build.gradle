@@ -11,7 +11,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
         if (includeSampleApp) {
-            classpath "com.zynger.floorplan:floorplan-gradle-plugin:0.1-SNAPSHOT"
+            classpath "com.juliozynger.floorplan:floorplan-gradle-plugin:0.1-SNAPSHOT"
         }
     }
 }
@@ -20,7 +20,7 @@ plugins {
 }
 
 subprojects {
-    group 'com.zynger.floorplan'
+    group 'com.juliozynger.floorplan'
     version '0.1-SNAPSHOT'
 }
 

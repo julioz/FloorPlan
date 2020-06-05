@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.application'
-    id 'com.zynger.floorplan'
+    id 'com.juliozynger.floorplan'
 }
 
 repositories {

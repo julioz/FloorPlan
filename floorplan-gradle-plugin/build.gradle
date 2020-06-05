@@ -33,7 +33,7 @@ shadowJar {
 gradlePlugin {
     plugins {
         floorplan {
-            id = "com.zynger.floorplan"
+            id = "com.juliozynger.floorplan"
             displayName = "FloorPlan"
             description = "Render database schemas into ER diagrams"
             implementationClass = 'com.zynger.floorplan.FloorPlanPlugin'
