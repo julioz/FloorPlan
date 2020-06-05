@@ -4,6 +4,7 @@ plugins {
     id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id "com.gradle.plugin-publish" version "0.12.0"
 }
 
 repositories {
@@ -31,10 +32,25 @@ shadowJar {
 
 gradlePlugin {
     plugins {
-        simplePlugin {
-            id = 'com.zynger.floorplan'
+        floorplan {
+            id = "com.zynger.floorplan"
+            displayName = "FloorPlan"
+            description = "Render database schemas into ER diagrams"
             implementationClass = 'com.zynger.floorplan.FloorPlanPlugin'
         }
+    }
+}
+
+
+
+pluginBundle {
+    website = "https://github.com/julioz/FloorPlan"
+    vcsUrl = "https://github.com/julioz/FloorPlan"
+    tags = ["room", "diagram", "er", "graphviz", "android", "floorplan"]
+
+    mavenCoordinates {
+        artifactId = "floorplan-gradle-plugin"
+        groupId = project.group.toString()
     }
 }
 
