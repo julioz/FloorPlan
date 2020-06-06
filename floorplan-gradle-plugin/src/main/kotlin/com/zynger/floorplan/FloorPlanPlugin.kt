@@ -20,6 +20,9 @@ class FloorPlanPlugin: Plugin<Project> {
             project.tasks
                 .register("generateFloorPlan", FloorPlanTask::class.java)
                 .configure { task ->
+                    task.group = TASK_GROUP
+                    task.description = "Translates database schemas into DBML or ER diagrams."
+
                     check(floorPlanExtension.schemaLocation.isPresent) { "Missing schemaLocation property." }
                     check(floorPlanExtension.outputLocation.isPresent) { "Missing outputLocation property." }
 
@@ -56,5 +59,9 @@ class FloorPlanPlugin: Plugin<Project> {
             outputFormatExtension.dotConfiguration
         )
         return outputFormats.associateWith { it.enabled.get() }.filter { it.value }.map { it.key }
+    }
+
+    companion object {
+        const val TASK_GROUP = "FloorPlan"
     }
 }
