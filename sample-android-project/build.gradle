@@ -37,3 +37,12 @@ dependencies {
 
     testImplementation "junit:junit:4.13"
 }
+
+afterEvaluate { project ->
+    project.tasks.lint {
+        onlyIf  {
+            println 'Skipping Lint task for sample-android-project...'
+            return false
+        }
+    }
+}
