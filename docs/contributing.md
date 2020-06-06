@@ -44,3 +44,82 @@ Deploy it locally:
 ```
 mkdocs serve
 ```
+
+## Release
+
+* Create a local release branch from `master`
+```
+git checkout master
+git pull
+git checkout -b release_<next-release-version>
+```
+
+* Update `version` in the [root `build.gradle`](https://github.com/julioz/FloorPlan/blob/master/build.gradle) (remove `-SNAPSHOT`)
+```gradle
+version = "<next-release-version>"
+```
+
+* Update `docs/changelog.md` after checking out all changes:
+  - https://github.com/julioz/FloorPlan/compare/v`<current-release-version>`...master
+
+* Take one last look
+```
+git diff
+```
+
+* Commit all local changes
+```
+git commit -am "Prepare <next-release-version> release."
+```
+
+* Perform a clean build
+```
+./gradlew clean
+./gradlew build
+```
+
+* Create a tag and push it
+```
+git tag v<next-release-version>
+git push origin v<next-release-version>
+```
+
+* Make sure you have valid credentials in `~/.gradle/gradle.properties` to upload the artifacts
+```
+SONATYPE_NEXUS_USERNAME=
+SONATYPE_NEXUS_PASSWORD=
+```
+
+* Upload the artifacts to Sonatype OSS Nexus
+```
+./gradlew publish --no-daemon --no-parallel
+```
+
+* Release to Maven Central
+  - Login to [Sonatype OSS Nexus](https://oss.sonatype.org/)
+  - Click on **Staging Repositories**
+  - Scroll to the bottom, you should see an entry named `comjuliozynger-XXXX`
+  - Check the box next to the `comjuliozynger-XXXX` entry, click **Close** then **Confirm**
+  - Wait a bit, hit **Refresh**, until the *Status* for that column changes to *Closed*.
+  - Check the box next to the `comjuliozynger-XXXX` entry, click **Release** then **Confirm**
+
+* Merge the release branch to master
+```
+git checkout master
+git pull
+git merge --no-ff release_<next-release-version>
+```
+* Update `version` in `build.gradle` (increase version and add `-SNAPSHOT`)
+```gradle
+version = "REPLACE_WITH_NEXT_VERSION_NUMBER-SNAPSHOT"
+```
+
+* Commit your changes
+```
+git commit -am "Prepare for next development iteration."
+```
+
+* Push your changes
+```
+git push
+```
