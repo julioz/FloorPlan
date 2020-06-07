@@ -21,7 +21,7 @@ plugins {
 
 subprojects {
     group 'com.juliozynger.floorplan'
-    version '0.1-SNAPSHOT'
+    version '0.1'
 }
 
 repositories {
