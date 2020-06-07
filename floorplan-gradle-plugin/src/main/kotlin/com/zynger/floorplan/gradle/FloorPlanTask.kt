@@ -30,7 +30,7 @@ open class FloorPlanTask : DefaultTask() {
             val project: Project = RoomConsumer.read(schema)
             val outputFormat = outputFormat.mapOutputFormat()
             val outputFileName = "${schema.nameWithoutExtension}.${outputFormat.extension}"
-            val outputFile = File(outputLocation, outputFileName)
+            val outputFile = File(getOutputFileParentDirectory(schema), outputFileName)
 
             FloorPlan.render(
                 project = project,
@@ -41,6 +41,19 @@ open class FloorPlanTask : DefaultTask() {
 
     private fun File.findRoomSchemas(): List<File> {
         return walk().filter { it.extension == "json" }.toList()
+    }
+
+    private fun getOutputFileParentDirectory(schema: File): File {
+        val relativizedPathToSchemaInput = schemaLocation.toURI().relativize(schema.toURI()).path
+        return if (relativizedPathToSchemaInput.contains(File.separator)) {
+            // schema is stored under a sub-directory,
+            // we must relativize the directory structure to point to the parent dir.
+            val relativizedPath = relativizedPathToSchemaInput.substringBeforeLast(File.separator)
+            File(outputLocation.path + File.separator + relativizedPath)
+        } else {
+            // schema is directly under [outputLocation], so the parent is [outputLocation] itself.
+            outputLocation
+        }
     }
 
     private fun OutputFormat.mapOutputFormat(): Format {
