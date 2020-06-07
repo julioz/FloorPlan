@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.application'
-    id 'com.zynger.floorplan'
+    id 'com.juliozynger.floorplan'
 }
 
 repositories {
@@ -36,4 +36,13 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0"
 
     testImplementation "junit:junit:4.13"
+}
+
+afterEvaluate { project ->
+    project.tasks.lint {
+        onlyIf  {
+            println 'Skipping Lint task for sample-android-project...'
+            return false
+        }
+    }
 }

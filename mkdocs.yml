@@ -24,3 +24,4 @@ nav:
       - 'Gradle Plugin': 'gradle-plugin.md'
   - 'Contributing': 'contributing.md'
   - 'Architecture': 'architecture.md'
+  - 'Changelog': 'changelog.md'

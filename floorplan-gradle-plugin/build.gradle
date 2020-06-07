@@ -4,15 +4,35 @@ plugins {
     id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id "com.gradle.plugin-publish" version "0.12.0"
+    id 'signing'
 }
 
 repositories {
     mavenCentral()
 }
 
+def isReleaseBuild = !version.toString().endsWith("SNAPSHOT")
+
 publishing {
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            if (isReleaseBuild) {
+                url = releasesRepoUrl
+            } else {
+                url = snapshotsRepoUrl
+            }
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
     publications {
         shadow(MavenPublication) { publication ->
+            customizePom(pom)
             project.shadow.component(publication)
         }
     }
@@ -31,9 +51,83 @@ shadowJar {
 
 gradlePlugin {
     plugins {
-        simplePlugin {
-            id = 'com.zynger.floorplan'
+        floorplan {
+            id = "com.juliozynger.floorplan"
+            displayName = "FloorPlan"
+            description = "Render database schemas into ER diagrams"
             implementationClass = 'com.zynger.floorplan.FloorPlanPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = "https://github.com/julioz/FloorPlan"
+    vcsUrl = "https://github.com/julioz/FloorPlan"
+    tags = ["room", "diagram", "er", "graphviz", "android", "floorplan"]
+
+    mavenCoordinates {
+        artifactId = "floorplan-gradle-plugin"
+        groupId = project.group.toString()
+    }
+}
+
+task sourceJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier "javadoc"
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+}
+
+signing {
+    required = isReleaseBuild
+}
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        // eliminate test-scoped dependencies (no need in maven central POMs)
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        // add all items necessary for maven central publication
+        root.children().last() + {
+            resolveStrategy = Closure.DELEGATE_FIRST
+
+            description project.description
+            name 'FloorPlan'
+            url 'https://github.com/julioz/FloorPlan'
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/julioz/FloorPlan/issues'
+            }
+            licenses {
+                license {
+                    name 'The Apache License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+            scm {
+                url 'https://github.com/julioz/FloorPlan'
+                connection 'scm:git:git://github.com/julioz/FloorPlan.git'
+                developerConnection 'scm:git:ssh://github.com/julioz/FloorPlan.git'
+            }
+            developers {
+                developer {
+                    id 'julioz'
+                    name 'Julio Zynger'
+                }
+            }
         }
     }
 }

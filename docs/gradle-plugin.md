@@ -2,12 +2,12 @@
 
 ### Apply the plugin
 
-Apply the gradle plugin in your root `build.gradle` file:
+Apply the [gradle plugin](https://plugins.gradle.org/plugin/com.juliozynger.floorplan) in your root `build.gradle` file:
 
 ```
 buildscript {
   dependencies {
-    classpath "com.zynger.floorplan:floorplan-gradle-plugin:<version>"
+    classpath "com.juliozynger.floorplan:floorplan-gradle-plugin:<version>"
   }
 }
 ```
@@ -19,7 +19,7 @@ For example, in an Android application module:
 ```
 plugins {
     id 'com.android.application' // could be library or any other module
-    id 'com.zynger.floorplan'
+    id 'com.juliozynger.floorplan'
 }
 ```
 
