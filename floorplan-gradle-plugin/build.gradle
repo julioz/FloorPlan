@@ -12,11 +12,43 @@ repositories {
     mavenCentral()
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 def isReleaseBuild = !version.toString().endsWith("SNAPSHOT")
 
+gradlePlugin {
+    plugins {
+        floorplan {
+            id = "com.juliozynger.floorplan"
+            displayName = "FloorPlan"
+            description = "Render database schemas into ER diagrams"
+            implementationClass = 'com.zynger.floorplan.FloorPlanPlugin'
+        }
+    }
+}
+
+// For publishing to the Gradle Plugin Portal
+// https://plugins.gradle.org/docs/publish-plugin
+pluginBundle {
+    website = "https://github.com/julioz/FloorPlan"
+    vcsUrl = "https://github.com/julioz/FloorPlan"
+    tags = ["room", "diagram", "er", "graphviz", "android", "floorplan"]
+
+    mavenCoordinates {
+        artifactId = "floorplan-gradle-plugin"
+        groupId = project.group.toString()
+    }
+}
+
+// For publishing to other repositories
 publishing {
     repositories {
         maven {
+            name = "sonatype"
+
             def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
             def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
             if (isReleaseBuild) {
@@ -30,10 +62,72 @@ publishing {
             }
         }
     }
+    afterEvaluate {
+        publications {
+            withType(MavenPublication) { publication ->
+                signing.sign(publication)
+                // customize all publications here
+                pom {
+                    description = "Render database schemas into ER diagrams"
+                    name = "FloorPlan"
+                    url = "https://github.com/julioz/FloorPlan"
+                    issueManagement {
+                        system = "GitHub"
+                        url = "https://github.com/julioz/FloorPlan/issues"
+                    }
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+                    scm {
+                        url = "https://github.com/julioz/FloorPlan"
+                        connection = "scm:git:git://github.com/julioz/FloorPlan.git"
+                        developerConnection = "scm:git:ssh://github.com/julioz/FloorPlan.git"
+                    }
+                    developers {
+                        developer {
+                            id = "julioz"
+                            name = "Julio Zynger"
+                        }
+                    }
+                }
+            }
+        }
+    }
     publications {
         shadow(MavenPublication) { publication ->
-            customizePom(pom)
             project.shadow.component(publication)
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                description = "Render database schemas into ER diagrams"
+                name = "FloorPlan"
+                url = "https://github.com/julioz/FloorPlan"
+                issueManagement {
+                    system = "GitHub"
+                    url = "https://github.com/julioz/FloorPlan/issues"
+                }
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                scm {
+                    url = "https://github.com/julioz/FloorPlan"
+                    connection = "scm:git:git://github.com/julioz/FloorPlan.git"
+                    developerConnection = "scm:git:ssh://github.com/julioz/FloorPlan.git"
+                }
+                developers {
+                    developer {
+                        id = "julioz"
+                        name = "Julio Zynger"
+                    }
+                }
+            }
         }
     }
 }
@@ -49,87 +143,8 @@ shadowJar {
     classifier = ''
 }
 
-gradlePlugin {
-    plugins {
-        floorplan {
-            id = "com.juliozynger.floorplan"
-            displayName = "FloorPlan"
-            description = "Render database schemas into ER diagrams"
-            implementationClass = 'com.zynger.floorplan.FloorPlanPlugin'
-        }
-    }
-}
-
-pluginBundle {
-    website = "https://github.com/julioz/FloorPlan"
-    vcsUrl = "https://github.com/julioz/FloorPlan"
-    tags = ["room", "diagram", "er", "graphviz", "android", "floorplan"]
-
-    mavenCoordinates {
-        artifactId = "floorplan-gradle-plugin"
-        groupId = project.group.toString()
-    }
-}
-
-task sourceJar(type: Jar) {
-    classifier "sources"
-    from sourceSets.main.allJava
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier "javadoc"
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives jar
-    archives sourceJar
-    archives javadocJar
-}
-
 signing {
     required = isReleaseBuild
-}
-
-def customizePom(pom) {
-    pom.withXml {
-        def root = asNode()
-
-        // eliminate test-scoped dependencies (no need in maven central POMs)
-        root.dependencies.removeAll { dep ->
-            dep.scope == "test"
-        }
-
-        // add all items necessary for maven central publication
-        root.children().last() + {
-            resolveStrategy = Closure.DELEGATE_FIRST
-
-            description project.description
-            name 'FloorPlan'
-            url 'https://github.com/julioz/FloorPlan'
-            issueManagement {
-                system 'GitHub'
-                url 'https://github.com/julioz/FloorPlan/issues'
-            }
-            licenses {
-                license {
-                    name 'The Apache License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                }
-            }
-            scm {
-                url 'https://github.com/julioz/FloorPlan'
-                connection 'scm:git:git://github.com/julioz/FloorPlan.git'
-                developerConnection 'scm:git:ssh://github.com/julioz/FloorPlan.git'
-            }
-            developers {
-                developer {
-                    id 'julioz'
-                    name 'Julio Zynger'
-                }
-            }
-        }
-    }
 }
 
 dependencies {
