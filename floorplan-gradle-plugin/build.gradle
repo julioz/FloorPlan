@@ -43,22 +43,27 @@ pluginBundle {
     }
 }
 
+def sonatypeUsername = (project.properties['sonatypeUsername'] ?: System.getenv('sonatypeUsername'))?.toString()
+def sonatypePassword = (project.properties['sonatypePassword'] ?: System.getenv('sonatypePassword'))?.toString()
+
 // For publishing to other repositories
 publishing {
     repositories {
-        maven {
-            name = "sonatype"
+        if (sonatypeUsername != null && sonatypePassword != null) {
+            maven {
+                name = "sonatype"
 
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            if (isReleaseBuild) {
-                url = releasesRepoUrl
-            } else {
-                url = snapshotsRepoUrl
-            }
-            credentials {
-                username sonatypeUsername
-                password sonatypePassword
+                def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                if (isReleaseBuild) {
+                    url = releasesRepoUrl
+                } else {
+                    url = snapshotsRepoUrl
+                }
+                credentials {
+                    username sonatypeUsername
+                    password sonatypePassword
+                }
             }
         }
     }
