@@ -22,6 +22,9 @@ nav:
   - 'Usage':
       - 'Command-line': 'run.md'
       - 'Gradle Plugin': 'gradle-plugin.md'
+      - 'Recipes':
+        - 'Android Room': 'recipes/android-room.md'
+        - 'SQLDelight': 'recipes/sqldelight.md'
   - 'Contributing': 'contributing.md'
   - 'Architecture': 'architecture.md'
   - 'Changelog': 'changelog.md'
