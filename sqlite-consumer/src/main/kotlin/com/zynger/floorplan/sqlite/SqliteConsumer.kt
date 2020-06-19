@@ -13,16 +13,19 @@ object SqliteConsumer {
             val allTables = mutableListOf<Table>()
             val allReferences = mutableListOf<Reference>()
 
-            it.getTables().forEach { table ->
-                val tableName = table.name
-                allTables += Table(
-                    rawValue = table.sql,
-                    name = tableName,
-                    columns = it.getColumns(tableName),
-                    indexes = it.getIndexes(tableName)
-                )
-                allReferences += it.getReferences(tableName)
-            }
+            it.getTables()
+                .filterNot { table -> table.isSystemTable() }
+                .forEach { table ->
+                    val tableName = table.name
+
+                    allTables += Table(
+                        rawValue = table.sql,
+                        name = tableName,
+                        columns = it.getColumns(tableName),
+                        indexes = it.getIndexes(tableName)
+                    )
+                    allReferences += it.getReferences(tableName)
+                }
 
             Project(
                 tables = allTables,
@@ -115,4 +118,9 @@ object SqliteConsumer {
     }
 
     private data class SQLiteTable(val name: String, val sql: String)
+
+    private fun SQLiteTable.isSystemTable(): Boolean {
+        // https://www.techonthenet.com/sqlite/sys_tables/index.php
+        return name.startsWith("sqlite_")
+    }
 }
