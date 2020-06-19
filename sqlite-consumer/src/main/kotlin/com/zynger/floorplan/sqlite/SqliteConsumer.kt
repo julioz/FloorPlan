@@ -1,27 +1,33 @@
 package com.zynger.floorplan.sqlite
 
-import com.zynger.floorplan.dbml.Column
-import com.zynger.floorplan.dbml.Index
-import com.zynger.floorplan.dbml.Project
+import com.zynger.floorplan.dbml.*
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
 
 object SqliteConsumer {
+
     fun read(src: File): Project {
-        DriverManager.getConnection("jdbc:sqlite:${src.path}").use {
-            val tables = it.getTables()
+        return DriverManager.getConnection("jdbc:sqlite:${src.path}").use {
+            val allTables = mutableListOf<Table>()
+            val allReferences = mutableListOf<Reference>()
 
-            tables.forEach { table ->
+            it.getTables().forEach { table ->
                 val tableName = table.name
-                val columns = it.getColumns(tableName)
-                val indexes = it.getIndexes(tableName)
-                TODO("Hey $indexes")
-
+                allTables += Table(
+                    rawValue = table.sql,
+                    name = tableName,
+                    columns = it.getColumns(tableName),
+                    indexes = it.getIndexes(tableName)
+                )
+                allReferences += it.getReferences(tableName)
             }
 
-            TODO("Hey $tables")
+            Project(
+                tables = allTables,
+                references = allReferences
+            )
         }
     }
 
@@ -59,6 +65,24 @@ object SqliteConsumer {
             )
         }
         return columns
+    }
+
+    private fun Connection.getReferences(tableName: String): List<Reference> {
+        val references = mutableListOf<Reference>()
+        val foreignKeys = createStatement().executeQuery("PRAGMA foreign_key_list($tableName);")
+
+        while (foreignKeys.next()) {
+            references += Reference(
+                fromTable = tableName,
+                toTable = foreignKeys.getString("table"),
+                fromColumn = foreignKeys.getString("from"),
+                toColumn = foreignKeys.getString("to"),
+                referenceOrder = ReferenceOrder.OneToOne, // FIXME: how to precise the reference order?
+                updateAction = foreignKeys.getString("on_update"),
+                deleteAction = foreignKeys.getString("on_delete")
+            )
+        }
+        return references
     }
 
     private fun Connection.getIndexes(tableName: String): List<Index> {
