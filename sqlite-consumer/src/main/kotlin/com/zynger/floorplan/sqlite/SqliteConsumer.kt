@@ -1,6 +1,7 @@
 package com.zynger.floorplan.sqlite
 
 import com.zynger.floorplan.dbml.Column
+import com.zynger.floorplan.dbml.Index
 import com.zynger.floorplan.dbml.Project
 import java.io.File
 import java.sql.Connection
@@ -15,8 +16,8 @@ object SqliteConsumer {
             tables.forEach { table ->
                 val tableName = table.name
                 val columns = it.getColumns(tableName)
-
-                TODO("Hey $columns")
+                val indexes = it.getIndexes(tableName)
+                TODO("Hey $indexes")
 
             }
 
@@ -31,7 +32,8 @@ object SqliteConsumer {
             SELECT name, sql FROM sqlite_master
             WHERE type='table'
             ORDER BY name;
-            """.trimIndent())
+            """.trimIndent()
+            )
 
         val tables = mutableListOf<SQLiteTable>()
         while (tablesResultSet.next()) {
@@ -57,6 +59,35 @@ object SqliteConsumer {
             )
         }
         return columns
+    }
+
+    private fun Connection.getIndexes(tableName: String): List<Index> {
+        val indexes = mutableListOf<Index>()
+        val indexesResultSet: ResultSet = createStatement().executeQuery("PRAGMA index_list($tableName);")
+        while (indexesResultSet.next()) {
+            val indexName: String = indexesResultSet.getString("name")
+            val unique: Boolean = indexesResultSet.getBoolean("unique")
+
+            indexes += Index(
+                name = indexName,
+                columnNames = getIndexTargetColumns(indexName),
+                unique = unique
+            )
+        }
+        return indexes
+    }
+
+    private fun Connection.getIndexTargetColumns(indexName: String): List<String> {
+        val indexInfos: ResultSet = createStatement().executeQuery("PRAGMA index_xinfo($indexName);")
+
+        val columnTargets = mutableListOf<String>()
+        while (indexInfos.next()) {
+            val columnName: String? = indexInfos.getString("name")
+            if (columnName != null) {
+                columnTargets += columnName
+            }
+        }
+        return columnTargets
     }
 
     private data class SQLiteTable(val name: String, val sql: String)
