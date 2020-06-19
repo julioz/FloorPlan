@@ -131,6 +131,7 @@ dependencies {
     implementation project(":dbml")
     implementation project(":dbml2viz")
     implementation project(":room-consumer")
+    implementation project(":sqlite-consumer")
 
     testImplementation gradleTestKit()
     testImplementation "junit:junit:4.12"
