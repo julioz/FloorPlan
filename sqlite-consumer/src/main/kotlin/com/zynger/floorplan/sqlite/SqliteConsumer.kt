@@ -58,16 +58,23 @@ object SqliteConsumer {
         val columns = mutableListOf<Column>()
         val columnsResultSet: ResultSet = createStatement().executeQuery("PRAGMA table_info($tableName);")
         while (columnsResultSet.next()) {
+            val primaryKey = columnsResultSet.getBoolean("Pk")
             columns += Column(
                 name = columnsResultSet.getString("name"),
                 type = columnsResultSet.getString("type"),
                 defaultValue = columnsResultSet.getString("Dflt_value"),
-                primaryKey = columnsResultSet.getBoolean("Pk"),
+                primaryKey = primaryKey,
                 notNull = columnsResultSet.getBoolean("Notnull"),
-                increment = false // FIXME check indexes (https://stopbyte.com/t/how-to-check-if-a-column-is-autoincrement-primary-key-or-not-in-sqlite/174/2 or https://stackoverflow.com/questions/20979239/how-to-tell-if-a-sqlite-column-is-autoincrement)
+                increment = if (primaryKey) isAutoIncrement(tableName) else false
             )
         }
         return columns
+    }
+
+    private fun Connection.isAutoIncrement(tableName: String): Boolean {
+        val autoIncrementResultSet =
+            createStatement().executeQuery("SELECT * FROM sqlite_master WHERE tbl_name=\"$tableName\" AND sql LIKE \"%AUTOINCREMENT%\"")
+        return autoIncrementResultSet.next()
     }
 
     private fun Connection.getReferences(tableName: String): List<Reference> {
