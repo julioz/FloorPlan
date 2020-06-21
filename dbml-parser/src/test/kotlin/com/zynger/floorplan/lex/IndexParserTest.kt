@@ -1,6 +1,7 @@
 package com.zynger.floorplan.lex
 
 import org.junit.Assert.*
+import org.junit.Ignore
 import org.junit.Test
 
 class IndexParserTest {
@@ -33,6 +34,7 @@ class IndexParserTest {
         assertEquals(0, indexes.size)
     }
 
+    @Ignore(value = "Unsupported: advanced usage of index.")
     @Test
     fun `index with no explicit name`() {
         val input = """
@@ -51,8 +53,9 @@ class IndexParserTest {
         assertEquals("post_id", indexes[0].name)
     }
 
+    @Ignore(value = "Unsupported: advanced usage of index.")
     @Test
-    fun `index with no expression`() {
+    fun `index as expression`() {
         val input = """
           id int [pk]
           post_id int
@@ -86,6 +89,26 @@ class IndexParserTest {
 
         assertEquals("index_post_tags_post_id", indexes[0].name)
         assertEquals("index_post_tags_tag_id", indexes[1].name)
+    }
+
+    @Ignore(value = "Unsupported: advanced usage of index.")
+    @Test
+    fun `generates name of index when not explicitly specified`() {
+        val input = """
+          id int [pk]
+          post_id int
+          tag_id int
+        
+          Indexes  {
+            (post_id)
+            (tag_id, post_id)
+          }
+        """.trimIndent()
+
+        val indexes = IndexParser.parseIndexes(input)
+
+        assertEquals("unnamed_index", indexes[0].name)
+        assertEquals("unnamed_index", indexes[1].name)
     }
 
     @Test
