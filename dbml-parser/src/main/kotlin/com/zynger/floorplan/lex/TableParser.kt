@@ -7,7 +7,7 @@ object TableParser {
     @Language("RegExp") private const val TABLE_NAME = """(."\w+"|\w+.)"""
     @Language("RegExp") private const val TABLE_ALIAS = """(\s*as\s+[\w]+|\s*as\s+"[\w]+"|)"""
     @Language("RegExp") private const val TABLE_NOTES = """(\s\[.*]|)"""
-    @Language("RegExp") private const val TABLE_CONTENT = """\{(\s|\n|[^}]*)}"""
+    @Language("RegExp") private const val TABLE_CONTENT = """\{(\s|\n|[^}]*}*)\s*}"""
     private val TABLE_REGEX = Regex("""[Tt]able\s+$TABLE_NAME\s*$TABLE_ALIAS$TABLE_NOTES\s*$TABLE_CONTENT""")
 
     fun parseTables(dbmlInput: String): List<Table> {
@@ -15,21 +15,27 @@ object TableParser {
 
         return TABLE_REGEX.findAll(dbmlInput).map {
             val tableName = it.groups[1]!!.value.trim()
-            val tableContent = it.groups[4]!!.value.run {
-                // TODO BUG, hack: the TABLE_REGEX doesn't take in account the Indexes block properly
-                val indexesMatchResult = Regex("""Indexes\s+\{""").find(this)
-                if (indexesMatchResult != null) {
-                    this.substringBefore(indexesMatchResult.value)
-                } else {
-                    this
-                }
-            }
+            val tableContent = it.groups[4]!!.value
+
             Table(
                 rawValue = it.groups[0]!!.value,
                 name = tableName,
-                columns = ColumnParser.parseColumns(tableName, tableContent),
-                indexes = emptyList() // TODO include indexes parsing
+                columns = ColumnParser.parseColumns(tableName, removeIndexes(tableContent)),
+                indexes = IndexParser.parseIndexes(tableContent)
             )
         }.toList()
+    }
+
+    private fun removeIndexes(tableContent: String): String {
+        val indexesGroup = IndexParser.INDEXES_BLOCK_REGEX.find(tableContent)
+        return if (indexesGroup != null) {
+            tableContent.remove(indexesGroup.groups.first()!!.value)
+        } else {
+            tableContent
+        }
+    }
+
+    private fun String.remove(substring: String): String {
+        return replace(substring, "")
     }
 }
