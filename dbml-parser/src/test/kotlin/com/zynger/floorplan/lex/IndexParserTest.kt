@@ -53,6 +53,25 @@ class IndexParserTest {
         assertEquals("post_id", indexes[0].name)
     }
 
+    @Test
+    fun `unique index with no explicit name`() {
+        val input = """
+          id int [pk]
+          post_id int
+          tag_id int
+        
+          indexes  {
+            (id, post_id) [unique]
+          }
+        """.trimIndent()
+
+        val indexes = IndexParser.parseIndexes(input)
+
+        assertEquals(1, indexes.size)
+        assertEquals("unnamed_index", indexes[0].name)
+        assertEquals(true, indexes[0].unique)
+    }
+
     @Ignore(value = "Unsupported: advanced usage of index.")
     @Test
     fun `index as expression`() {
