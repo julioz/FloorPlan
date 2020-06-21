@@ -1,6 +1,5 @@
 package com.zynger.floorplan.lex
 
-import com.zynger.floorplan.dbml.Index
 import com.zynger.floorplan.dbml.Table
 import org.junit.Assert.*
 import org.junit.Test
@@ -77,7 +76,7 @@ class TableParserTest {
     }
 
     @Test
-    fun `ignores indexes`() {
+    fun `passes index content to be parsed by delegation`() {
         val input = """
             table post_tags [note: 'hey table note']{
               id int [pk]
@@ -86,12 +85,13 @@ class TableParserTest {
 
               Indexes  {
                 (post_id) [name:'index_post_tags_post_id', unique]
+                (tag_id) [name:'index_post_tags_tag_id']
               }
             }
         """.trimIndent()
 
         val tables = TableParser.parseTables(input)
 
-        assertEquals(emptyList<Index>(), tables[0].indexes)
+        assertEquals(2, tables.first().indexes.size)
     }
 }
