@@ -117,6 +117,11 @@ shadowJar {
          * we should not minimize it, otherwise the native code gets stripped.
          */
         exclude(dependency('guru.nidi:.*:.*'))
+        /**
+         * sqlite-jdbc bundles a native dependency and accesses SQLite code via reflection.
+         * We should not minimize it, otherwise the native code gets stripped and the reflection calls lead nowhere.
+         */
+        exclude(dependency('org.xerial:.*:.*'))
     }
     classifier = ''
 }
