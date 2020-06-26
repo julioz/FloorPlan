@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(":consumer")
     implementation project(":dbml")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'org.xerial:sqlite-jdbc:3.31.1'

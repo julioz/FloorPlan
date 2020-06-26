@@ -1,8 +1,6 @@
 package com.zynger.floorplan
 
 import com.zynger.floorplan.dbml.Project
-import com.zynger.floorplan.room.RoomConsumer
-import com.zynger.floorplan.sqlite.SqliteConsumer
 import java.io.File
 import java.lang.IllegalArgumentException
 
@@ -11,11 +9,9 @@ fun main(args: Array<String>) {
 
     val src = File(input.schemaPath)
 
-    val project: Project = when (src.extension) {
-        "json" -> RoomConsumer.read(src)
-        "db" -> SqliteConsumer.read(src)
-        else -> throw IllegalArgumentException("Unknown file extension: ${src.extension}")
-    }
+    val project: Project = FloorPlanConsumerSniffer
+        .sniff(src)
+        .read(src)
 
     FloorPlan.render(
         project = project,

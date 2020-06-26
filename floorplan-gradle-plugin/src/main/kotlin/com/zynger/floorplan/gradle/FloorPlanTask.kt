@@ -3,12 +3,9 @@ package com.zynger.floorplan.gradle
 import com.zynger.floorplan.*
 import com.zynger.floorplan.dbml.Project
 import com.zynger.floorplan.gradle.model.OutputFormat
-import com.zynger.floorplan.room.RoomConsumer
-import com.zynger.floorplan.sqlite.SqliteConsumer
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
 import java.io.File
-import java.lang.IllegalArgumentException
 
 open class FloorPlanTask : DefaultTask() {
 
@@ -33,11 +30,9 @@ open class FloorPlanTask : DefaultTask() {
             val outputFormat: Format = outputHandler.format(outputFormat)
             val outputFile: File = outputHandler.file(outputLocation, outputFormat)
 
-            val project: Project = when (schema.extension) {
-                "json" -> RoomConsumer.read(schema)
-                "db" -> SqliteConsumer.read(schema)
-                else -> throw IllegalArgumentException("Unknown file extension: ${schema.extension}")
-            }
+            val project: Project = FloorPlanConsumerSniffer
+                .sniff(schema)
+                .read(schema)
 
             FloorPlan.render(
                 project = project,
@@ -47,6 +42,6 @@ open class FloorPlanTask : DefaultTask() {
     }
 
     private fun File.findSchemas(): List<File> {
-        return walk().filter { it.extension == "json" || it.extension == "db" }.toList()
+        return walk().filter { FloorPlanConsumerSniffer.isConsumable(it) }.toList()
     }
 }

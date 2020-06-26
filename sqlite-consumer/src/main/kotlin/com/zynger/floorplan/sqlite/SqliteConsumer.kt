@@ -1,14 +1,15 @@
 package com.zynger.floorplan.sqlite
 
+import com.zynger.floorplan.Consumer
 import com.zynger.floorplan.dbml.*
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
 
-object SqliteConsumer {
+object SqliteConsumer: Consumer {
 
-    fun read(src: File): Project {
+    override fun read(src: File): Project {
         return DriverManager.getConnection("jdbc:sqlite:${src.path}").use {
             val allTables = mutableListOf<Table>()
             val allReferences = mutableListOf<Reference>()
