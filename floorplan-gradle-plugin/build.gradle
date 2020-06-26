@@ -130,7 +130,7 @@ dependencies {
     compileOnly gradleApi()
     implementation project(":dbml")
     implementation project(":dbml2viz")
-    implementation project(":room-consumer")
+    implementation project(":consumer-sniffer")
 
     testImplementation gradleTestKit()
     testImplementation "junit:junit:4.12"

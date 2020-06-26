@@ -1,7 +1,6 @@
 package com.zynger.floorplan
 
 import com.zynger.floorplan.dbml.Project
-import com.zynger.floorplan.room.RoomConsumer
 import java.io.File
 import java.lang.IllegalArgumentException
 
@@ -9,7 +8,10 @@ fun main(args: Array<String>) {
     val input = InputParser.parse(args)
 
     val src = File(input.schemaPath)
-    val project: Project = RoomConsumer.read(src)
+
+    val project: Project = FloorPlanConsumerSniffer
+        .sniff(src)
+        .read(src)
 
     FloorPlan.render(
         project = project,

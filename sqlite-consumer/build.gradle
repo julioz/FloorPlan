@@ -1,5 +1,4 @@
 plugins {
-    id 'application'
     id 'java'
     id 'org.jetbrains.kotlin.jvm'
 }
@@ -11,15 +10,12 @@ repositories {
     jcenter()
 }
 
-application {
-    mainClassName = "com.zynger.floorplan.AppKt"
-}
-
 dependencies {
+    implementation project(":consumer")
     implementation project(":dbml")
-    implementation project(":dbml2viz")
-    implementation project(":consumer-sniffer")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'org.xerial:sqlite-jdbc:3.31.1'
+
     testImplementation "junit:junit:4.12"
 }
 
