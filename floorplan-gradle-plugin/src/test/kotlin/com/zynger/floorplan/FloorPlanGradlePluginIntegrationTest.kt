@@ -41,7 +41,7 @@ class FloorPlanGradlePluginIntegrationTest {
              |}
              |
              |floorPlan {
-             |  outputLocation = "schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
              |  outputFormat {
              |    svg {
              |      enabled = true
@@ -62,7 +62,7 @@ class FloorPlanGradlePluginIntegrationTest {
              |}
              |
              |floorPlan {
-             |  schemaLocation = "schemas"
+             |  schemaLocation = "${"\$projectDir"}/schemas"
              |  outputFormat {
              |    svg {
              |      enabled = true
@@ -84,8 +84,8 @@ class FloorPlanGradlePluginIntegrationTest {
              |}
              |
              |floorPlan {
-             |  schemaLocation = "schemas"
-             |  outputLocation = "schemas"
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
              |}""".trimMargin()
         )
         floorPlanRunner()
@@ -102,8 +102,8 @@ class FloorPlanGradlePluginIntegrationTest {
              |}
              |
              |floorPlan {
-             |  schemaLocation = "schemas"
-             |  outputLocation = "schemas"
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
              |  outputFormat {
              |  }
              |}""".trimMargin()
@@ -122,8 +122,8 @@ class FloorPlanGradlePluginIntegrationTest {
              |}
              |
              |floorPlan {
-             |  schemaLocation = "schemas"
-             |  outputLocation = "schemas"
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
              |  outputFormat {
              |    dbml {
              |      enabled = false
@@ -148,8 +148,8 @@ class FloorPlanGradlePluginIntegrationTest {
              |}
              |
              |floorPlan {
-             |  schemaLocation = "schemas"
-             |  outputLocation = "schemas"
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
              |  outputFormat {
              |    dbml {
              |      enabled = true
@@ -174,8 +174,8 @@ class FloorPlanGradlePluginIntegrationTest {
              |}
              |
              |floorPlan {
-             |  schemaLocation = "schemas"
-             |  outputLocation = "schemas"
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
              |  outputFormat {
              |    svg {
              |      enabled = true
@@ -197,8 +197,8 @@ class FloorPlanGradlePluginIntegrationTest {
              |}
              |
              |floorPlan {
-             |  schemaLocation = "schemas"
-             |  outputLocation = "schemas"
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
              |  outputFormat {
              |    dbml {
              |      enabled = false
@@ -224,8 +224,8 @@ class FloorPlanGradlePluginIntegrationTest {
              |}
              |
              |floorPlan {
-             |  schemaLocation = "schemas"
-             |  outputLocation = "schemas"
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
              |  outputFormat {
              |    svg.enabled = true
              |  }

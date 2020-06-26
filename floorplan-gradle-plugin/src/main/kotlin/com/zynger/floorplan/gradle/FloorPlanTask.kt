@@ -6,6 +6,7 @@ import com.zynger.floorplan.gradle.model.OutputFormat
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
 import java.io.File
+import java.lang.IllegalArgumentException
 
 open class FloorPlanTask : DefaultTask() {
 
@@ -20,9 +21,14 @@ open class FloorPlanTask : DefaultTask() {
 
     @TaskAction
     fun generateFloorPlan() {
+        if (!schemaLocation.exists()) {
+            throw IllegalArgumentException("FloorPlan could not find the directory to search for the schemas: ${schemaLocation.absolutePath}")
+        }
+
         val schemas: List<File> = schemaLocation.findSchemas()
+
         if (schemas.isEmpty()) {
-            logger.info("FloorPlan could not find any schema in specified location.")
+            logger.info("FloorPlan could not find any schema in specified location ${schemaLocation.absolutePath}")
         }
 
         schemas.forEach { schema ->
