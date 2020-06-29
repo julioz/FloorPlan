@@ -1,11 +1,10 @@
 <idea-plugin>
-    <id>com.juliozynger.floorplan-intellij-plugin</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>com.juliozynger.floorplan.floorplan-intellij-plugin</id>
+    <name>FloorPlan</name>
+    <vendor url="http://www.juliozynger.com">Julio Zynger</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    Navigate between database schema files and generated ER diagrams.<br>
     ]]></description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
