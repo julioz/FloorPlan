@@ -13,6 +13,12 @@
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.kotlin</depends>
 
+    <project-components>
+        <component>
+            <implementation-class>com.juliozynger.floorplan.ideaplugin.FloorPlanProjectHandler</implementation-class>
+        </component>
+    </project-components>
+
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.lineMarkerProvider
                 language="JAVA"
