@@ -1,0 +1,17 @@
+Table Track {
+  id int [pk, increment, not null]
+  title varchar [note: 'not null']
+}
+
+Table User {
+  id int [pk, increment, not null]
+  name varchar [note: 'not null']
+}
+
+Table TrackCreator {
+  track_id int [pk, not null]
+  user_id int [pk, not null]
+}
+
+Ref: TrackCreator.track_id - Track.id
+Ref: TrackCreator.user_id - User.id

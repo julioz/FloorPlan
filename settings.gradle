@@ -10,6 +10,7 @@ include 'consumer'
 include 'consumer-sniffer'
 include 'room-consumer'
 include 'sqlite-consumer'
+include 'dbml-consumer'
 include 'floorplan-gradle-plugin'
 
 if (includeSampleApp) {

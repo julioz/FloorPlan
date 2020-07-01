@@ -11,11 +11,12 @@ repositories {
 }
 
 dependencies {
-    api project(":consumer")
-    api project(":room-consumer")
-    api project(":sqlite-consumer")
-    api project(":dbml-consumer")
+    implementation project(":consumer")
+    implementation project(":dbml")
+    implementation project(":dbml-parser")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    testImplementation "junit:junit:4.12"
 }
 
 compileKotlin {
