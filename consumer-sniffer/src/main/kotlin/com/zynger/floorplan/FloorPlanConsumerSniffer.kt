@@ -1,5 +1,6 @@
 package com.zynger.floorplan
 
+import com.zynger.floorplan.dbml.DbmlConsumer
 import com.zynger.floorplan.room.RoomConsumer
 import com.zynger.floorplan.sqlite.SqliteConsumer
 import java.io.File
@@ -10,6 +11,7 @@ object FloorPlanConsumerSniffer {
         return when (inputSourceFile.extension) {
             "json" -> RoomConsumer
             "db" -> SqliteConsumer
+            "dbml" -> DbmlConsumer
             else -> throw IllegalArgumentException("Unknown file extension: ${inputSourceFile.extension}")
         }
     }
