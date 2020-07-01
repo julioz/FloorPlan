@@ -23,9 +23,10 @@ This module has no logic in it other than housing the domain representations of 
 This stage of the processing pipeline is responsible for translating the user input files into DBML models, representing each of the entities and relationships.
 
 So far, FloorPlan processes:
- - [Room](https://developer.android.com/topic/libraries/architecture/room) schemas, by deserializing their JSON representations (see [sample](https://github.com/julioz/FloorPlan/blob/master/samples/tivi-26.json)) on the [`:room-consumer`](https://github.com/julioz/FloorPlan/tree/master/room-consumer) module.
- - [SQLite](https://www.sqlite.org/) `db` files, by connecting to them via a JDBC driver and query metadata of entities and relationships.
- - [DBML](https://dbml.org/) schema files.
+
+- [Room](https://developer.android.com/topic/libraries/architecture/room) schemas, by deserializing their JSON representations (see [sample](https://github.com/julioz/FloorPlan/blob/master/samples/tivi-26.json)) on the [`:room-consumer`](https://github.com/julioz/FloorPlan/tree/master/room-consumer) module.
+- [SQLite](https://www.sqlite.org/) `db` files, by connecting to them via a JDBC driver and query metadata of entities and relationships.
+- [DBML](https://dbml.org/) schema files.
 
 ### Visualization
 
