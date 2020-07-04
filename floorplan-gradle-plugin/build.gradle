@@ -17,12 +17,13 @@ java {
     withSourcesJar()
 }
 
+apply from: "../versioning.gradle"
 def isReleaseBuild = !version.toString().endsWith("SNAPSHOT")
 
 gradlePlugin {
     plugins {
         floorplan {
-            id = "com.juliozynger.floorplan"
+            id = floorPlanGroup
             displayName = "FloorPlan"
             description = "Render database schemas into ER diagrams"
             implementationClass = 'com.zynger.floorplan.FloorPlanPlugin'
