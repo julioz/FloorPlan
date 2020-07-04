@@ -103,15 +103,20 @@ SONATYPE_NEXUS_PASSWORD=
   - Wait a bit, hit **Refresh**, until the *Status* for that column changes to *Closed*.
   - Check the box next to the `comjuliozynger-XXXX` entry, click **Release** then **Confirm**
 
+* Release to Gradle Plugin Portal
+```
+./gradlew publishPlugins
+```
+
 * Merge the release branch to master
 ```
 git checkout master
 git pull
 git merge --no-ff release_<next-release-version>
 ```
-* Update `version` in `build.gradle` (increase version and add `-SNAPSHOT`)
+* Update `floorPlanVersion` in `versioning.gradle` (increase version and add `-SNAPSHOT`)
 ```gradle
-version = "REPLACE_WITH_NEXT_VERSION_NUMBER-SNAPSHOT"
+floorPlanVersion = "REPLACE_WITH_NEXT_VERSION_NUMBER-SNAPSHOT"
 ```
 
 * Commit your changes
