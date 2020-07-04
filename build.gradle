@@ -1,5 +1,6 @@
 buildscript {
     apply from: "arguments.gradle"
+    apply from: "versioning.gradle"
 
     repositories {
         google()
@@ -11,7 +12,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
         if (includeSampleApp) {
-            classpath "com.juliozynger.floorplan:floorplan-gradle-plugin:0.2-SNAPSHOT"
+            classpath "com.juliozynger.floorplan:floorplan-gradle-plugin:$floorPlanVersion"
         }
     }
 }
@@ -19,9 +20,10 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.71' apply false
 }
 
+apply from: "versioning.gradle"
 subprojects {
-    group 'com.juliozynger.floorplan'
-    version '0.2-SNAPSHOT'
+    group floorPlanGroup
+    version floorPlanVersion
 }
 
 repositories {

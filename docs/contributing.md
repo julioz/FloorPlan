@@ -54,9 +54,9 @@ git pull
 git checkout -b release_<next-release-version>
 ```
 
-* Update `version` in the [root `build.gradle`](https://github.com/julioz/FloorPlan/blob/master/build.gradle) (remove `-SNAPSHOT`)
+* Update `floorPlanVersion` in the [`versioning.gradle`](https://github.com/julioz/FloorPlan/blob/master/versioning.gradle) (remove `-SNAPSHOT`)
 ```gradle
-version = "<next-release-version>"
+floorPlanVersion = "<next-release-version>"
 ```
 
 * Update `docs/changelog.md` after checking out all changes:
