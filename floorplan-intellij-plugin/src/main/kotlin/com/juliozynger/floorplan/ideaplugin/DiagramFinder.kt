@@ -1,6 +1,7 @@
 package com.juliozynger.floorplan.ideaplugin
 
 import com.intellij.openapi.fileTypes.FileTypeManager
+import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
@@ -12,10 +13,12 @@ object DiagramFinder {
 
     fun findDiagrams(project: Project, databaseFqName: String): List<PsiFile> {
         val extensions = listOf("dbml", "svg", "png", "dot")
+        val fileTypes = listOf(PlainTextFileType.INSTANCE) + extensions.map {
+            FileTypeManager.getInstance().getFileTypeByExtension(it)
+        }
 
-        return extensions
+        return fileTypes
             .asSequence()
-            .map { FileTypeManager.getInstance().getFileTypeByExtension(it) }
             .map { FileTypeIndex.getFiles(it, GlobalSearchScope.projectScope(project)) }
             .flatten()
             .filter { virtualFile: VirtualFile ->
