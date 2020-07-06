@@ -24,12 +24,12 @@ class DatabaseLineMarkerProvider: RelatedItemLineMarkerProvider() {
         if (uElement is UClass) {
             if (uElement.includesAnnotation(CLASS_DATABASE)) {
                 val databaseQualifiedName: String = uElement.qualifiedName!!
-                log.warn("$databaseQualifiedName has database annotation")
+                log.debug("$databaseQualifiedName has database annotation")
                 val project: Project = element.project
                 val schemaFiles: List<PsiFile> = DiagramFinder.findDiagrams(project, databaseQualifiedName)
 
                 if (schemaFiles.isNotEmpty()) {
-                    log.warn("${uElement.qualifiedName} found $schemaFiles")
+                    log.debug("${uElement.qualifiedName} found $schemaFiles")
                     // Add the property to a collection of line marker info
                     val builder = NavigationGutterIconBuilder.create(FloorPlanIcons.FILE)
                         .setTargets(schemaFiles)
