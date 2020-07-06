@@ -22,9 +22,10 @@ class DatabaseLineMarkerProvider: RelatedItemLineMarkerProvider() {
         val uElement = element.toUElement()
         if (uElement is UClass) {
             if (uElement.includesAnnotation(CLASS_DATABASE)) {
-                log.warn("${uElement.qualifiedName} has database annotation")
+                val databaseQualifiedName: String = uElement.qualifiedName!!
+                log.warn("$databaseQualifiedName has database annotation")
                 val project: Project = element.project
-                val properties: List<DatabaseSchema> = DiagramFinder.findDiagrams(project)
+                val properties: List<DatabaseSchema> = DiagramFinder.findDiagrams(project, databaseQualifiedName)
 
                 if (properties.isEmpty()) {
                     log.warn("${uElement.qualifiedName} found $properties")
