@@ -7,6 +7,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.juliozynger.floorplan.ideaplugin.RoomConstants.CLASS_DATABASE
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.toUElement
@@ -25,13 +26,13 @@ class DatabaseLineMarkerProvider: RelatedItemLineMarkerProvider() {
                 val databaseQualifiedName: String = uElement.qualifiedName!!
                 log.warn("$databaseQualifiedName has database annotation")
                 val project: Project = element.project
-                val properties: List<DatabaseSchema> = DiagramFinder.findDiagrams(project, databaseQualifiedName)
+                val schemaFiles: List<PsiFile> = DiagramFinder.findDiagrams(project, databaseQualifiedName)
 
-                if (properties.isEmpty()) {
-                    log.warn("${uElement.qualifiedName} found $properties")
+                if (schemaFiles.isNotEmpty()) {
+                    log.warn("${uElement.qualifiedName} found $schemaFiles")
                     // Add the property to a collection of line marker info
                     val builder = NavigationGutterIconBuilder.create(FloorPlanIcons.FILE)
-                        .setTargets(properties)
+                        .setTargets(schemaFiles)
                         .setTooltipText("Navigate to database ER diagram")
                     result.add(builder.createLineMarkerInfo(element))
                 }
