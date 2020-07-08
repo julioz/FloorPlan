@@ -12,6 +12,7 @@ include 'room-consumer'
 include 'sqlite-consumer'
 include 'dbml-consumer'
 include 'floorplan-gradle-plugin'
+include 'floorplan-intellij-plugin'
 
 if (includeSampleApp) {
     include 'sample-android-project'

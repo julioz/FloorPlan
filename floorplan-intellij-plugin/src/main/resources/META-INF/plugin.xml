@@ -1,0 +1,34 @@
+<idea-plugin>
+    <id>com.juliozynger.floorplan.floorplan-intellij-plugin</id>
+    <name>FloorPlan</name>
+    <vendor url="http://www.juliozynger.com">Julio Zynger</vendor>
+
+    <description><![CDATA[
+    Navigate between database schema files and generated ER diagrams.<br>
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <project-components>
+        <component>
+            <implementation-class>com.juliozynger.floorplan.ideaplugin.FloorPlanProjectHandler</implementation-class>
+        </component>
+    </project-components>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.lineMarkerProvider
+                language="JAVA"
+                implementationClass="com.juliozynger.floorplan.ideaplugin.DatabaseLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider
+                language="kotlin"
+                implementationClass="com.juliozynger.floorplan.ideaplugin.DatabaseLineMarkerProvider" />
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>

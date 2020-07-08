@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '0.4.21'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version 'IC-2019.3.3' // Android Studio 4.0: https://developer.android.com/studio/releases#4.0-idea-2019-3-3
+    pluginName 'FloorPlan'
+    plugins = [
+            'java',
+            "org.jetbrains.kotlin:1.3.72-release-IJ2019.3-5"
+    ]
+}
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+patchPluginXml {
+    changeNotes """
+      Initial release.
+      Find DBML, DOT, SVG and PNG ER diagrams generated with FloorPlan."""
+}
