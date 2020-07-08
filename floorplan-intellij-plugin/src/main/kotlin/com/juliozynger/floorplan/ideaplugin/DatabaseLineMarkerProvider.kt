@@ -9,7 +9,9 @@ import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.juliozynger.floorplan.ideaplugin.RoomConstants.CLASS_DATABASE
+import org.jetbrains.uast.UAnnotation
 import org.jetbrains.uast.UClass
+import org.jetbrains.uast.UIdentifier
 import org.jetbrains.uast.toUElement
 
 class DatabaseLineMarkerProvider: RelatedItemLineMarkerProvider() {
@@ -21,15 +23,17 @@ class DatabaseLineMarkerProvider: RelatedItemLineMarkerProvider() {
         result: MutableCollection<in RelatedItemLineMarkerInfo<*>?>
     ) {
         val uElement = element.toUElement()
-        if (uElement is UClass) {
-            if (uElement.includesAnnotation(CLASS_DATABASE)) {
-                val databaseQualifiedName: String = uElement.qualifiedName!!
+        val parent = uElement?.uastParent
+        val grandparent = parent?.uastParent
+        if (uElement is UIdentifier && parent is UAnnotation && grandparent is UClass) {
+            if (grandparent.includesAnnotation(CLASS_DATABASE)) {
+                val databaseQualifiedName: String = grandparent.qualifiedName!!
                 log.debug("$databaseQualifiedName has database annotation")
                 val project: Project = element.project
                 val schemaFiles: List<PsiFile> = DiagramFinder.findDiagrams(project, databaseQualifiedName)
 
                 if (schemaFiles.isNotEmpty()) {
-                    log.debug("${uElement.qualifiedName} found $schemaFiles")
+                    log.debug("${grandparent.qualifiedName} found $schemaFiles")
                     // Add the property to a collection of line marker info
                     val builder = NavigationGutterIconBuilder.create(FloorPlanIcons.FILE)
                         .setTargets(schemaFiles)
