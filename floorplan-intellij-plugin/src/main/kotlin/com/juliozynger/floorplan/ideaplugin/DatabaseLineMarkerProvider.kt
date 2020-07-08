@@ -26,7 +26,7 @@ class DatabaseLineMarkerProvider: RelatedItemLineMarkerProvider() {
         val parent = uElement?.uastParent
         val grandparent = parent?.uastParent
         if (uElement is UIdentifier && parent is UAnnotation && grandparent is UClass) {
-            if (grandparent.includesAnnotation(CLASS_DATABASE)) {
+            if (parent.qualifiedName == CLASS_DATABASE) {
                 val databaseQualifiedName: String = grandparent.qualifiedName!!
                 log.debug("$databaseQualifiedName has database annotation")
                 val project: Project = element.project
@@ -42,18 +42,5 @@ class DatabaseLineMarkerProvider: RelatedItemLineMarkerProvider() {
                 }
             }
         }
-    }
-
-    private fun UClass.includesAnnotation(annotationName: String): Boolean {
-        return findAnnotation(this, annotationName) != null
-    }
-
-    private fun findAnnotation(element: UClass, annotationName: String): PsiAnnotation? {
-        for (psiAnnotation in element.getAnnotations()) {
-            if (annotationName == psiAnnotation.qualifiedName) {
-                return psiAnnotation
-            }
-        }
-        return null
     }
 }

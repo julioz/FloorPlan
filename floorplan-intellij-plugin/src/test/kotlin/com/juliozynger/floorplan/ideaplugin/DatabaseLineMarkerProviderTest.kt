@@ -72,6 +72,29 @@ class DatabaseLineMarkerProviderTest: LightJavaCodeInsightFixtureTestCase() {
         assertEquals("diagram.svg", navTargetName)
     }
 
+    fun testDatabaseAnnotationPresentWithSecondAnnotationInFile() {
+        myFixture.configureByFiles(
+            getTestName(false) + ".kt",
+            "Database.kt",
+            "com.sampledata.floorplan.MyDatabase/diagram.svg"
+        )
+
+        val editor: Editor = myFixture.editor
+        val project: Project = myFixture.project
+
+        myFixture.doHighlighting()
+
+        val infoList = DaemonCodeAnalyzerImpl.getLineMarkers(editor.document, project)
+        assertEquals(1, infoList.size)
+        val lineMarker = infoList.first()
+        assertEquals("Navigate to database ER diagram", lineMarker.lineMarkerTooltip)
+        assertTrue(lineMarker is RelatedItemLineMarkerInfo)
+        val relatedItem = (lineMarker as RelatedItemLineMarkerInfo).createGotoRelatedItems().first()
+        assertTrue(relatedItem.element is XmlFile)
+        val navTargetName = (relatedItem.element as XmlFile).name
+        assertEquals("diagram.svg", navTargetName)
+    }
+
     override fun tearDown() {
         checkJavaSwingTimersAreDisposed()
         super.tearDown()
