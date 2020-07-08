@@ -1,11 +1,15 @@
 package com.juliozynger.floorplan.ideaplugin
 
+import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo
 import com.intellij.codeInsight.daemon.impl.DaemonCodeAnalyzerImpl
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
+import com.intellij.psi.xml.XmlFile
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import com.intellij.util.ReflectionUtil
+import org.jetbrains.kotlin.asJava.namedUnwrappedElement
 import org.junit.Ignore
+import java.lang.IllegalStateException
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.util.concurrent.DelayQueue
@@ -18,7 +22,10 @@ class DatabaseLineMarkerProviderTest: LightJavaCodeInsightFixtureTestCase() {
     }
 
     fun testNoDatabaseAnnotationPresent() {
-        myFixture.configureByFiles(getTestName(false) + ".kt")
+        myFixture.configureByFiles(
+            getTestName(false) + ".kt",
+            "Database.kt"
+        )
         val editor: Editor = myFixture.editor
         val project: Project = myFixture.project
 
@@ -29,7 +36,10 @@ class DatabaseLineMarkerProviderTest: LightJavaCodeInsightFixtureTestCase() {
     }
 
     fun testDatabaseAnnotationPresentButNoDiagrams() {
-        myFixture.configureByFiles(getTestName(false) + ".kt")
+        myFixture.configureByFiles(
+            getTestName(false) + ".kt",
+            "Database.kt"
+        )
         val editor: Editor = myFixture.editor
         val project: Project = myFixture.project
 
@@ -39,9 +49,12 @@ class DatabaseLineMarkerProviderTest: LightJavaCodeInsightFixtureTestCase() {
         assertEquals(0, infoList.size)
     }
 
-    @Ignore("Annotation does not get picked up on the PSI tree.")
-    fun ignored_testDatabaseAnnotationPresentWithOneDiagram() {
-        myFixture.configureByFiles(getTestName(false) + ".kt", "com.sampledata.floorplan.MyDatabase/diagram.svg")
+    fun testDatabaseAnnotationPresentWithOneDiagram() {
+        myFixture.configureByFiles(
+            getTestName(false) + ".kt",
+            "Database.kt",
+            "com.sampledata.floorplan.MyDatabase/diagram.svg"
+        )
 
         val editor: Editor = myFixture.editor
         val project: Project = myFixture.project
@@ -50,6 +63,13 @@ class DatabaseLineMarkerProviderTest: LightJavaCodeInsightFixtureTestCase() {
 
         val infoList = DaemonCodeAnalyzerImpl.getLineMarkers(editor.document, project)
         assertEquals(1, infoList.size)
+        val lineMarker = infoList.first()
+        assertEquals("Navigate to database ER diagram", lineMarker.lineMarkerTooltip)
+        assertTrue(lineMarker is RelatedItemLineMarkerInfo)
+        val relatedItem = (lineMarker as RelatedItemLineMarkerInfo).createGotoRelatedItems().first()
+        assertTrue(relatedItem.element is XmlFile)
+        val navTargetName = (relatedItem.element as XmlFile).name
+        assertEquals("diagram.svg", navTargetName)
     }
 
     override fun tearDown() {
