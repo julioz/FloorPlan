@@ -9,7 +9,7 @@ The plug-in will scan the file system for FloorPlan's output files and display t
 ## Download and install
 
 Given the incubating nature of the plugin, it is not distributed through [JetBrains plug-in repository](https://plugins.jetbrains.com/).
-Download the plug-in `zip` file and [follow the 'instalation from disk' steps](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk).
+[Download](https://github.com/julioz/FloorPlan/tree/master/floorplan-intellij-plugin/distributions) the plug-in `zip` file and [follow the 'instalation from disk' steps](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk).
 
 ## Building
 
