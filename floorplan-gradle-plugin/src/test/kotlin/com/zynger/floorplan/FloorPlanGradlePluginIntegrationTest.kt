@@ -214,7 +214,7 @@ class FloorPlanGradlePluginIntegrationTest {
             .withSuccessfulMessage()
     }
 
-    @Ignore("Unsupported feature. To be worked on.")
+    @Ignore("Unsupported feature. To be worked on. See https://github.com/julioz/FloorPlan/issues/34")
     @Test
     fun testSingleOutputFormatEnabledWithCollapsibleStatement() {
         createSchemasDirectory()
