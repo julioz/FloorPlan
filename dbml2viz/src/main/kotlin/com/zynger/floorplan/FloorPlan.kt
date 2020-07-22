@@ -19,7 +19,6 @@ object FloorPlan {
         project: Project,
         output: Output
     ) {
-
         if (output.format is DBML) {
             val config = output.format.config
             val settings = Settings(config.creationSqlAsTableNote, config.renderNullableFields)

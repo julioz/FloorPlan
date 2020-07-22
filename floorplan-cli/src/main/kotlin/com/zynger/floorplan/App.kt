@@ -13,17 +13,21 @@ fun main(args: Array<String>) {
         .sniff(src)
         .read(src)
 
-    FloorPlan.render(
-        project = project,
-        output = Output(
-            input.mapOutputFormat(),
-            if (input.outputPath == null) Destination.StandardOut else Destination.Disk(File(input.outputPath))
+    val outputFormats = input.mapOutputFormats()
+
+    outputFormats.forEach { outputFormat ->
+        FloorPlan.render(
+            project = project,
+            output = Output(
+                outputFormat,
+                if (input.outputPath == null) Destination.StandardOut else Destination.Disk(File(input.outputPath))
+            )
         )
-    )
+    }
 }
 
-private fun InputParser.Input.mapOutputFormat(): Format {
-    return format?.let {
+private fun InputParser.Input.mapOutputFormats(): List<Format> {
+    return formats?.map {
         when (it.trim().toLowerCase()) {
             "dbml" -> Format.DBML(
                 DbmlConfiguration(
@@ -36,10 +40,12 @@ private fun InputParser.Input.mapOutputFormat(): Format {
             "dot" -> Format.DOT
             else -> throw IllegalArgumentException("Unrecognized rendering format: $it. Must be one of dbml, svg, png, dot.")
         }
-    } ?: Format.DBML(
-        DbmlConfiguration(
-            creationSqlAsTableNote,
-            renderNullableFields
+    } ?: listOf(
+        Format.DBML(
+            DbmlConfiguration(
+                creationSqlAsTableNote,
+                renderNullableFields
+            )
         )
     )
 }

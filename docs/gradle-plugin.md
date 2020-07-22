@@ -43,7 +43,7 @@ floorPlan {
 
 FloorPlan is able to output different file formats.
 
-Take a look at what a full configuration would look like, defining `DBML` as an output format (and providing [extra configurations for `DBML`](../run/#output-format)):
+Take a look at what a full configuration would look like, defining `DBML` and `SVG` as output formats (and providing [extra configurations for `DBML`](../run/#output-format)):
 
 ```
 floorPlan {
@@ -56,7 +56,7 @@ floorPlan {
             renderNullableFields = false
         }
         svg {
-            enabled = false
+            enabled = true
         }
         png {
             enabled = false
@@ -67,9 +67,6 @@ floorPlan {
     }
 }
 ```
-
-!!! warning
-    So far, you can only specify one output format per run, by defining which one is `enabled`.
 
 ### Generate Floor Plan
 

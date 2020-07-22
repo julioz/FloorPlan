@@ -10,8 +10,8 @@ class OutputParameterHandler(
     private val schemaLocation: File
 ) {
 
-    fun format(outputFormat: OutputFormat): Format {
-        return outputFormat.mapOutputFormat()
+    fun formats(outputFormats: List<OutputFormat>): List<Format> {
+        return outputFormats.map { it.mapOutputFormat() }
     }
 
     private fun OutputFormat.mapOutputFormat(): Format {

@@ -7,7 +7,7 @@ object InputParser {
     data class Input(
         val schemaPath: String,
         val outputPath: String?,
-        val format: String?,
+        val formats: List<String>?,
         val creationSqlAsTableNote: Boolean,
         val renderNullableFields: Boolean
     )
@@ -25,7 +25,7 @@ object InputParser {
             Optionally, use:
             
             * $OUTPUT_ARG_KEY: specify an output file for the rendering content.
-            * $FORMAT_ARG_KEY: specify an output format for the rendering content [one of DBML, SVG, PNG, DOT].
+            * $FORMAT_ARG_KEY: specify an output format for the rendering content [one or more of DBML, SVG, PNG, DOT].
             * $CREATION_SQL_AS_TABLE_NOTES_ARG_KEY: adds the SQL used to create tables as notes $onlyDbmlNote.
             * $RENDER_NULLABLE_FIELDS_ARG_KEY: changes the rendering of the data type of nullable fields $onlyDbmlNote.
             
@@ -35,11 +35,11 @@ object InputParser {
 
         val inputFilePath: String = sanitizeFilePath(args.first())
         val outputFilePath: String? = args.getArgumentValue(OUTPUT_ARG_KEY)?.let { sanitizeFilePath(it) }
-        val format: String? = args.getArgumentValue(FORMAT_ARG_KEY)
+        val formats: List<String>? = args.getArgumentList(FORMAT_ARG_KEY)
         val noteCreationSql = args.argumentExists(CREATION_SQL_AS_TABLE_NOTES_ARG_KEY)
         val renderNullableFields = args.argumentExists(RENDER_NULLABLE_FIELDS_ARG_KEY)
 
-        return Input(inputFilePath, outputFilePath, format, noteCreationSql, renderNullableFields)
+        return Input(inputFilePath, outputFilePath, formats, noteCreationSql, renderNullableFields)
     }
 
     private fun Array<String>.getArgumentValue(argKey: String): String? {
@@ -52,6 +52,19 @@ object InputParser {
             }
 
             argumentPair.substringAfter("=").substringBefore(" ")
+        }
+    }
+
+    private fun Array<String>.getArgumentList(argKey: String, delimiter: String = ","): List<String>? {
+        return if (none { it.contains("--$argKey=") }) {
+            null
+        } else {
+            val argumentPair = find { it.contains("--$argKey=") }!!
+            require(argumentPair.substringAfter("=").trim().isNotEmpty()) {
+                "Please inform a value for the --$argKey argument."
+            }
+
+            argumentPair.substringAfter("=").substringBefore(" ").split(delimiters = *arrayOf(delimiter))
         }
     }
 

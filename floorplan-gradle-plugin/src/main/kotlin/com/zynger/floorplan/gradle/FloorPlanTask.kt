@@ -14,7 +14,7 @@ open class FloorPlanTask : DefaultTask() {
     lateinit var schemaLocation: File
 
     @get:Nested
-    lateinit var outputFormat: OutputFormat
+    lateinit var outputFormats: List<OutputFormat>
 
     @OutputDirectory
     lateinit var outputLocation: File
@@ -33,17 +33,20 @@ open class FloorPlanTask : DefaultTask() {
 
         schemas.forEach { schema ->
             val outputHandler = OutputParameterHandler(schema, schemaLocation)
-            val outputFormat: Format = outputHandler.format(outputFormat)
-            val outputFile: File = outputHandler.file(outputLocation, outputFormat)
+            val outputFormats: List<Format> = outputHandler.formats(outputFormats)
 
             val project: Project = FloorPlanConsumerSniffer
                 .sniff(schema)
                 .read(schema)
 
-            FloorPlan.render(
-                project = project,
-                output = Output(outputFormat, Destination.Disk(outputFile))
-            )
+            outputFormats.forEach { outputFormat ->
+                val outputFile: File = outputHandler.file(outputLocation, outputFormat)
+
+                FloorPlan.render(
+                    project = project,
+                    output = Output(outputFormat, Destination.Disk(outputFile))
+                )
+            }
         }
     }
 

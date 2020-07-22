@@ -22,12 +22,15 @@ android {
 
 floorPlan {
     schemaLocation = "$projectDir/schemas".toString()
-    outputLocation = "$projectDir/schemas".toString()
+    outputLocation = "$projectDir/outputs".toString()
     outputFormat {
         dbml {
             enabled = true
             creationSqlAsTableNote = true
             renderNullableFields = true
+        }
+        svg {
+            enabled = true
         }
     }
 }

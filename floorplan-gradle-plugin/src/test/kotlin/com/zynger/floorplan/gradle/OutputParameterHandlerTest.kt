@@ -14,36 +14,45 @@ class OutputParameterHandlerTest {
     fun `dbml gets mapped to output format`() {
         val outputParameterHandler = OutputParameterHandler(SCHEMA, SCHEMA_LOCATION)
 
-        val format = outputParameterHandler.format(OutputFormat.DBML(GradlePluginDbmlConfiguration()))
+        val format = outputParameterHandler.formats(listOf(OutputFormat.DBML(GradlePluginDbmlConfiguration())))
 
-        assertThat(format).isEqualTo(Format.DBML(DbmlConfiguration()))
+        assertThat(format).isEqualTo(listOf(Format.DBML(DbmlConfiguration())))
     }
 
     @Test
     fun `svg gets mapped to output format`() {
         val outputParameterHandler = OutputParameterHandler(SCHEMA, SCHEMA_LOCATION)
 
-        val format = outputParameterHandler.format(OutputFormat.SVG)
+        val format = outputParameterHandler.formats(listOf(OutputFormat.SVG))
 
-        assertThat(format).isEqualTo(Format.SVG)
+        assertThat(format).isEqualTo(listOf(Format.SVG))
     }
 
     @Test
     fun `png gets mapped to output format`() {
         val outputParameterHandler = OutputParameterHandler(SCHEMA, SCHEMA_LOCATION)
 
-        val format = outputParameterHandler.format(OutputFormat.PNG)
+        val format = outputParameterHandler.formats(listOf(OutputFormat.PNG))
 
-        assertThat(format).isEqualTo(Format.PNG)
+        assertThat(format).isEqualTo(listOf(Format.PNG))
     }
 
     @Test
     fun `dot gets mapped to output format`() {
         val outputParameterHandler = OutputParameterHandler(SCHEMA, SCHEMA_LOCATION)
 
-        val format = outputParameterHandler.format(OutputFormat.DOT)
+        val format = outputParameterHandler.formats(listOf(OutputFormat.DOT))
 
-        assertThat(format).isEqualTo(Format.DOT)
+        assertThat(format).isEqualTo(listOf(Format.DOT))
+    }
+
+    @Test
+    fun `multiple outputs get mapped to output format`() {
+        val outputParameterHandler = OutputParameterHandler(SCHEMA, SCHEMA_LOCATION)
+
+        val format = outputParameterHandler.formats(listOf(OutputFormat.SVG, OutputFormat.DOT))
+
+        assertThat(format).isEqualTo(listOf(Format.SVG, Format.DOT))
     }
 
     @Test

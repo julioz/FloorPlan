@@ -161,8 +161,8 @@ class FloorPlanGradlePluginIntegrationTest {
              |}""".trimMargin()
         )
         floorPlanRunner()
-            .buildAndFail()
-            .withFailureMessage("There can only be one enabled output format.")
+            .build()
+            .withSuccessfulMessage()
     }
 
     @Test
@@ -214,7 +214,7 @@ class FloorPlanGradlePluginIntegrationTest {
             .withSuccessfulMessage()
     }
 
-    @Ignore("Unsupported feature. To be worked on.")
+    @Ignore("Unsupported feature. To be worked on. See https://github.com/julioz/FloorPlan/issues/34")
     @Test
     fun testSingleOutputFormatEnabledWithCollapsibleStatement() {
         createSchemasDirectory()
