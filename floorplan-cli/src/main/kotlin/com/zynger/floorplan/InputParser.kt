@@ -25,7 +25,7 @@ object InputParser {
             Optionally, use:
             
             * $OUTPUT_ARG_KEY: specify an output file for the rendering content.
-            * $FORMAT_ARG_KEY: specify an output format for the rendering content [one of DBML, SVG, PNG, DOT].
+            * $FORMAT_ARG_KEY: specify an output format for the rendering content [one or more of DBML, SVG, PNG, DOT].
             * $CREATION_SQL_AS_TABLE_NOTES_ARG_KEY: adds the SQL used to create tables as notes $onlyDbmlNote.
             * $RENDER_NULLABLE_FIELDS_ARG_KEY: changes the rendering of the data type of nullable fields $onlyDbmlNote.
             
