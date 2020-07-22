@@ -22,6 +22,13 @@ Currently, the supported formats are:
 - PNG
 - DOT
 
+
+!!! info
+    Multiple output formats can be specified through a comma-separated list:
+    ```
+    gradlew run --args="<path-to-schema-file> --format=<format1>,<format2>,<format3>"
+    ```
+
 !!! info
     When not present, DBML is picked as default value as output format.
 
