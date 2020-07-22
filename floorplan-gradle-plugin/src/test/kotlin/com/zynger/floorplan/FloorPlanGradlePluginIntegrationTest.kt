@@ -161,8 +161,8 @@ class FloorPlanGradlePluginIntegrationTest {
              |}""".trimMargin()
         )
         floorPlanRunner()
-            .buildAndFail()
-            .withFailureMessage("There can only be one enabled output format.")
+            .build()
+            .withSuccessfulMessage()
     }
 
     @Test

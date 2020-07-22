@@ -28,26 +28,27 @@ class FloorPlanPlugin: Plugin<Project> {
 
                     task.schemaLocation = File(floorPlanExtension.schemaLocation.get())
                     task.outputLocation = File(floorPlanExtension.outputLocation.get())
-                    task.outputFormat = outputFormatExtension.getFormat()
+                    task.outputFormats = outputFormatExtension.getFormats()
                 }
         }
     }
 
-    private fun OutputFormatExtension.getFormat(): OutputFormat {
+    private fun OutputFormatExtension.getFormats(): List<OutputFormat> {
         val outputFormats = getEnabledOutputFormats(this)
         check(outputFormats.isNotEmpty()) { "There are no enabled output formats." }
-        check(outputFormats.size == 1) { "There can only be one enabled output format." }
 
-        return when (val output = outputFormats.first()) {
-            is DbmlConfigurationExtension -> OutputFormat.DBML(
-                DbmlConfiguration(
-                    output.creationSqlAsTableNote.get(),
-                    output.renderNullableFields.get()
+        return outputFormats.map { output ->
+            when (output) {
+                is DbmlConfigurationExtension -> OutputFormat.DBML(
+                    DbmlConfiguration(
+                        output.creationSqlAsTableNote.get(),
+                        output.renderNullableFields.get()
+                    )
                 )
-            )
-            is SvgConfigurationExtension -> OutputFormat.SVG
-            is PngConfigurationExtension -> OutputFormat.PNG
-            is DotConfigurationExtension -> OutputFormat.DOT
+                is SvgConfigurationExtension -> OutputFormat.SVG
+                is PngConfigurationExtension -> OutputFormat.PNG
+                is DotConfigurationExtension -> OutputFormat.DOT
+            }
         }
     }
 
