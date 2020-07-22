@@ -104,7 +104,7 @@ class InputParserTest {
             )
         )
 
-        assertNull(input.format)
+        assertNull(input.formats)
     }
 
     @Test
@@ -116,7 +116,19 @@ class InputParserTest {
             )
         )
 
-        assertEquals("svg", input.format)
+        assertEquals(listOf("svg"), input.formats)
+    }
+
+    @Test
+    fun `multi output format is defined when argument is specified`() {
+        val input = InputParser.parse(
+            arrayOf(
+                "samples/db.json",
+                "--format=svg,png,dot"
+            )
+        )
+
+        assertEquals(listOf("svg", "png", "dot"), input.formats)
     }
 
     @Test
