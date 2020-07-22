@@ -32,6 +32,6 @@ sealed class Destination {
 }
 
 data class Output(
-    val formats: List<Format>,
+    val format: Format,
     val destination: Destination
 )

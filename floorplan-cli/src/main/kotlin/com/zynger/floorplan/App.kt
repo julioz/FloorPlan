@@ -13,13 +13,17 @@ fun main(args: Array<String>) {
         .sniff(src)
         .read(src)
 
-    FloorPlan.render(
-        project = project,
-        output = Output(
-            input.mapOutputFormats(),
-            if (input.outputPath == null) Destination.StandardOut else Destination.Disk(File(input.outputPath))
+    val outputFormats = input.mapOutputFormats()
+
+    outputFormats.forEach { outputFormat ->
+        FloorPlan.render(
+            project = project,
+            output = Output(
+                outputFormat,
+                if (input.outputPath == null) Destination.StandardOut else Destination.Disk(File(input.outputPath))
+            )
         )
-    )
+    }
 }
 
 private fun InputParser.Input.mapOutputFormats(): List<Format> {

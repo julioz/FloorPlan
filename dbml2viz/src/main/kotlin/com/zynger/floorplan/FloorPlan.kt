@@ -19,32 +19,30 @@ object FloorPlan {
         project: Project,
         output: Output
     ) {
-        output.formats.forEach { outputFormat ->
-            if (outputFormat is DBML) {
-                val config = outputFormat.config
-                val settings = Settings(config.creationSqlAsTableNote, config.renderNullableFields)
-                val dbml = ProjectRenderer.render(project, settings)
+        if (output.format is DBML) {
+            val config = output.format.config
+            val settings = Settings(config.creationSqlAsTableNote, config.renderNullableFields)
+            val dbml = ProjectRenderer.render(project, settings)
 
-                when (output.destination) {
-                    Destination.StandardOut -> println(dbml)
-                    is Destination.Disk -> {
-                        output.destination.file.parentFile.mkdirs()
-                        output.destination.file.writeText(dbml)
-                    }
+            when (output.destination) {
+                Destination.StandardOut -> println(dbml)
+                is Destination.Disk -> {
+                    output.destination.file.parentFile.mkdirs()
+                    output.destination.file.writeText(dbml)
                 }
-            } else {
-                val graphviz = graph(project)
-                val renderer = when (outputFormat) {
-                    is DBML -> throw IllegalStateException()
-                    DOT -> graphviz.render(Format.DOT)
-                    SVG -> graphviz.render(Format.SVG)
-                    PNG -> graphviz.render(Format.PNG)
-                }
+            }
+        } else {
+            val graphviz = graph(project)
+            val renderer = when (output.format) {
+                is DBML -> throw IllegalStateException()
+                DOT -> graphviz.render(Format.DOT)
+                SVG -> graphviz.render(Format.SVG)
+                PNG -> graphviz.render(Format.PNG)
+            }
 
-                when (output.destination) {
-                    Destination.StandardOut -> println(renderer.toString())
-                    is Destination.Disk -> renderer.toFile(output.destination.file)
-                }
+            when (output.destination) {
+                Destination.StandardOut -> println(renderer.toString())
+                is Destination.Disk -> renderer.toFile(output.destination.file)
             }
         }
     }
