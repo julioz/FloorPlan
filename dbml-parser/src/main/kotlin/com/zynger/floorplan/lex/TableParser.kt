@@ -16,12 +16,14 @@ object TableParser {
         return TABLE_REGEX.findAll(dbmlInput).map {
             val tableName = it.groups[1]!!.value.trim().removeSurroundQuotes()
             val tableContent = it.groups[4]!!.value
+            val indexes = IndexParser.parseIndexes(tableContent)
+            val primaryKeysFromIndexes = IndexParser.parseCompositePrimaryKeys(tableContent)
 
             Table(
                 rawValue = it.groups[0]!!.value,
                 name = tableName,
-                columns = ColumnParser.parseColumns(tableName, removeIndexes(tableContent)),
-                indexes = IndexParser.parseIndexes(tableContent)
+                columns = ColumnParser.parseColumns(tableName, removeIndexes(tableContent), primaryKeysFromIndexes),
+                indexes = indexes
             )
         }.toList()
     }

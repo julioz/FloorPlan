@@ -1,6 +1,7 @@
 package com.zynger.floorplan.lex
 
 import com.zynger.floorplan.dbml.Column
+import com.zynger.floorplan.dbmlparser.CompositePrimaryKey
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -86,6 +87,28 @@ class ColumnParserTest {
         val columns = ColumnParser.parseColumns(TABLE_NAME, columnsInput)
 
         assertEquals(true, columns.first().primaryKey)
+    }
+
+    @Test
+    fun `considers primary key if it is part of a composite primary key`() {
+        val columnsInput = """
+            id int
+            user_id int
+            another_col blob
+
+        """.trimIndent()
+
+        val columns = ColumnParser.parseColumns(
+            TABLE_NAME,
+            columnsInput,
+            compositePrimaryKeys = listOf(
+                CompositePrimaryKey(
+                    listOf("id", "user_id")))
+        )
+
+        assertEquals(true, columns[0].primaryKey)
+        assertEquals(true, columns[1].primaryKey)
+        assertEquals(false, columns[2].primaryKey)
     }
 
     @Test
