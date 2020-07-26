@@ -4,7 +4,7 @@ import com.zynger.floorplan.dbml.Table
 import org.intellij.lang.annotations.Language
 
 object TableParser {
-    @Language("RegExp") private const val TABLE_NAME = """(."\w+"|\w+.)"""
+    @Language("RegExp") private const val TABLE_NAME = """("\w+"|\w+)"""
     @Language("RegExp") private const val TABLE_ALIAS = """(\s*as\s+[\w]+|\s*as\s+"[\w]+"|)"""
     @Language("RegExp") private const val TABLE_NOTES = """(\s\[.*]|)"""
     @Language("RegExp") private const val TABLE_CONTENT = """\{(\s|\n|[^}]*}*)\s*}"""
@@ -14,7 +14,7 @@ object TableParser {
         // TODO: aliases and table notes also get parsed; should we update the modeling to include them?
 
         return TABLE_REGEX.findAll(dbmlInput).map {
-            val tableName = it.groups[1]!!.value.trim()
+            val tableName = it.groups[1]!!.value.trim().removeSurroundQuotes()
             val tableContent = it.groups[4]!!.value
 
             Table(
@@ -24,6 +24,10 @@ object TableParser {
                 indexes = IndexParser.parseIndexes(tableContent)
             )
         }.toList()
+    }
+
+    private fun String.removeSurroundQuotes(): String {
+        return this.removeSurrounding("\"")
     }
 
     private fun removeIndexes(tableContent: String): String {
