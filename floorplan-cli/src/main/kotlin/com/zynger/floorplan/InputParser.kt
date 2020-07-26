@@ -21,7 +21,7 @@ object InputParser {
         require(args.isNotEmpty()) {
             val onlyDbmlNote = "[note: only for DBML outputs]"
             """
-            Pass the source Room JSON schema as an argument.
+            Pass the source schema (.dbml, .db, Room's .json) as an argument.
             Optionally, use:
             
             * $OUTPUT_ARG_KEY: specify an output file for the rendering content.
