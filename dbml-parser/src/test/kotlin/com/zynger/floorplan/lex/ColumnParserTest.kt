@@ -50,6 +50,20 @@ class ColumnParserTest {
     }
 
     @Test
+    fun `parses type with character limit`() {
+        val columnsInput = """
+            "user_id" int(11)
+            "created_at" datetime(6)
+
+        """.trimIndent()
+
+        val columns = ColumnParser.parseColumns(TABLE_NAME, columnsInput)
+
+        assertEquals("int(11)", columns[0].type)
+        assertEquals("datetime(6)", columns[1].type)
+    }
+
+    @Test
     fun `parses name without surrounding quotes`() {
         val columnsInput = """
             "id" int
