@@ -228,4 +228,26 @@ class IndexParserTest {
         assertEquals("user_id", compositePrimaryKeys[0].columnNames[0])
         assertEquals("track_id", compositePrimaryKeys[0].columnNames[1])
     }
+
+    @Test
+    fun `parses composite primary key even with line comment`() {
+        val input = """
+          "user_id" int(11) [not null, default: "0"]
+          "track_id" int(11) [not null, default: "0"]
+          "created_at" datetime(6) [default: NULL]
+
+          Indexes {
+            (user_id, created_at) [name: "index_user_id_created_at"]
+            (track_id, created_at) [name: "index_track_id_created_at"]
+            (user_id, track_id) [pk] // composite primary key
+          }
+        """.trimIndent()
+
+        val compositePrimaryKeys = IndexParser.parseCompositePrimaryKeys(input)
+
+        assertEquals(1, compositePrimaryKeys.size)
+        assertEquals(2, compositePrimaryKeys[0].columnNames.size)
+        assertEquals("user_id", compositePrimaryKeys[0].columnNames[0])
+        assertEquals("track_id", compositePrimaryKeys[0].columnNames[1])
+    }
 }

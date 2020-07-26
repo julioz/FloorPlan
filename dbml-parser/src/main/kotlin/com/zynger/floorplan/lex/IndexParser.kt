@@ -42,14 +42,10 @@ object IndexParser {
 
     fun parseCompositePrimaryKeys(indexContent: String): List<CompositePrimaryKey> {
         return INDEXES_BLOCK_REGEX.find(indexContent)?.let {
-            INDEX_REGEX.findAll(it.groups[1]!!.value).toList().mapNotNull { indexMatch ->
-                val indexColumns = indexMatch.groups[1]!!.value.split(",").map { columnName -> columnName.trim() }
-                val indexProperties = indexMatch.groups[2]!!.value
-                if (indexProperties.contains("pk")) {
-                    CompositePrimaryKey(indexColumns)
-                } else {
-                    null
-                }
+            it.groups[1]!!.value.lines().filter { indexLine -> indexLine.contains("pk") }.map { compositePrimaryKeyLine ->
+                CompositePrimaryKey(
+                    Regex(INDEX_NAME).find(compositePrimaryKeyLine)!!.groups[1]!!.value.split(",").map { columnName -> columnName.trim() }
+                )
             }
         } ?: emptyList()
     }
