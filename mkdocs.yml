@@ -26,6 +26,7 @@ nav:
       - 'Recipes':
         - 'Android Room': 'recipes/android-room.md'
         - 'SQLDelight': 'recipes/sqldelight.md'
+        - 'MySQL / Postgres': 'recipes/mysql-postgres.md'
   - 'Contributing': 'contributing.md'
   - 'Architecture': 'architecture.md'
   - 'Changelog': 'changelog.md'
