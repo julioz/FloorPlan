@@ -108,4 +108,27 @@ class TableParserTest {
 
         assertEquals(2, tables.first().indexes.size)
     }
+
+    @Test
+    fun `passes index content with composite primary keys to be parsed by delegation`() {
+        val input = """
+            table post_tags [note: 'hey table note']{
+              id int [pk]
+              post_id int
+              tag_id int
+
+              Indexes  {
+                (post_id) [name:'index_post_tags_post_id', unique]
+                (tag_id) [name:'index_post_tags_tag_id']
+                (id, post_id) [pk]
+              }
+            }
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals(2, tables.first().indexes.size)
+        assertEquals(true, tables.first().columns[0].primaryKey)
+        assertEquals(true, tables.first().columns[1].primaryKey)
+    }
 }
