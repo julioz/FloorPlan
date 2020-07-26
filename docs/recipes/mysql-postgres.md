@@ -15,7 +15,7 @@ And convert your schema dump:
 
 ```
 # for a Postgres DB:
-dbml2sql schema.dbml -o schema.sql
+sql2dbml --postgres dump.sql -o mydatabase.dbml
 
 # or for MySQL
 sql2dbml --mysql dump.sql -o mydatabase.dbml
