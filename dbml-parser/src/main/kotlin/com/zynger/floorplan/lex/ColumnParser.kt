@@ -2,6 +2,7 @@ package com.zynger.floorplan.lex
 
 import com.zynger.floorplan.dbml.Column
 import com.zynger.floorplan.dbml.Reference
+import com.zynger.floorplan.dbmlparser.CompositePrimaryKey
 import org.intellij.lang.annotations.Language
 
 object ColumnParser {
@@ -13,14 +14,19 @@ object ColumnParser {
 
     // TODO parse column default values
 
-    fun parseColumns(tableName: String, columnsInput: String): List<Column> {
+    fun parseColumns(
+        tableName: String,
+        columnsInput: String,
+        compositePrimaryKeys: List<CompositePrimaryKey> = emptyList()
+    ): List<Column> {
+        val columnNamesFromCompositePrimaryKeys = compositePrimaryKeys.map { compositePrimaryKey -> compositePrimaryKey.columnNames }.flatten()
         return COLUMN_REGEX.findAll(columnsInput).map {
             val rawValue = it.groups[0]!!.value
             val name = it.groups[1]!!.value.removeSurroundQuotes()
             val type = it.groups[2]!!.value
             val columnProperties = it.groups[3]!!.value.trim()
             val notNull = columnProperties.contains("not null")
-            val pk = columnProperties.contains("pk")
+            val pk = columnProperties.contains("pk") || columnNamesFromCompositePrimaryKeys.contains(name)
             val increment = columnProperties.contains("increment")
             val reference: Reference? = ColumnReferenceParser.parse(tableName, name, columnProperties)
 
