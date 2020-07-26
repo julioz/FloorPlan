@@ -72,6 +72,27 @@ class IndexParserTest {
         assertEquals(true, indexes[0].unique)
     }
 
+    @Test
+    fun `composite primary key in indexes block gets removed`() {
+        val input = """
+          "user_id" int(11) [not null, default: "0"]
+          "track_id" int(11) [not null, default: "0"]
+          "created_at" datetime(6) [default: NULL]
+
+          Indexes {
+            (user_id, created_at) [name: "index_user_id_created_at"]
+            (track_id, created_at) [name: "index_track_id_created_at"]
+            (user_id, track_id) [pk]
+          }
+        """.trimIndent()
+
+        val indexes = IndexParser.parseIndexes(input)
+
+        assertEquals(2, indexes.size)
+        assertEquals("index_user_id_created_at", indexes[0].name)
+        assertEquals("index_track_id_created_at", indexes[1].name)
+    }
+
     @Ignore(value = "Unsupported: advanced usage of index.")
     @Test
     fun `index as expression`() {

@@ -16,7 +16,7 @@ object IndexParser {
 
     fun parseIndexes(indexContent: String): List<Index> {
         return INDEXES_BLOCK_REGEX.find(indexContent)?.let {
-            INDEX_REGEX.findAll(it.groups[1]!!.value).toList().map { indexMatch ->
+            INDEX_REGEX.findAll(it.groups[1]!!.value).toList().mapNotNull { indexMatch ->
                 val indexColumns = indexMatch.groups[1]!!.value.split(",").map { columnName -> columnName.trim() }
                 val indexProperties = indexMatch.groups[2]!!.value
 
@@ -26,11 +26,15 @@ object IndexParser {
                 } else {
                     UNNAMED_INDEX
                 }
-                Index(
-                    name = indexName,
-                    columnNames = indexColumns,
-                    unique = indexProperties.contains("unique", ignoreCase = true)
-                )
+                if (indexProperties.contains("pk")) {
+                    null
+                } else {
+                    Index(
+                        name = indexName,
+                        columnNames = indexColumns,
+                        unique = indexProperties.contains("unique", ignoreCase = true)
+                    )
+                }
             }
         } ?: emptyList()
     }
