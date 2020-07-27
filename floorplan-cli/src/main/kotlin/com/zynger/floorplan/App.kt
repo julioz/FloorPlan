@@ -31,8 +31,12 @@ class FloorPlanCli: CliktCommand(
         "--creation-sql-as-table-note",
         help = "adds the SQL used to create tables as notes $onlyDbmlNote"
     ).flag(default = false)
+    private val renderNullableFields by option(
+        "--render-nullable-fields",
+        help = "changes the rendering of the data type of nullable fields $onlyDbmlNote"
+    ).flag(default = false)
     override fun run() {
-        echo("Hello $schemaPath! Outputing to $outputPath, creationAsNote = $creationSqlAsTableNote")
+        echo("Hello $schemaPath! Outputing to $outputPath, creationAsNote = $creationSqlAsTableNote, renderNullableFields = $renderNullableFields")
     }
 }
 
