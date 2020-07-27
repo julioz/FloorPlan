@@ -1,13 +1,23 @@
 package com.zynger.floorplan
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.types.file
 import com.zynger.floorplan.dbml.Project
 import java.io.File
 import java.lang.IllegalArgumentException
 
-class FloorPlanCli: CliktCommand(name = "floorplan") {
+class FloorPlanCli: CliktCommand(
+    name = "floorplan",
+    help = "Render SCHEMAPATH as DBML or ER diagram."
+) {
+    private val schemaPath by argument().file(
+        mustExist = true,
+        canBeFile = true,
+        canBeDir = false
+    )
     override fun run() {
-        echo("Hello World2!")
+        echo("Hello $schemaPath!")
     }
 }
 
