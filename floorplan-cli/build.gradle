@@ -19,6 +19,7 @@ dependencies {
     implementation project(":dbml")
     implementation project(":dbml2viz")
     implementation project(":consumer-sniffer")
+    implementation "com.github.ajalt:clikt:2.8.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
 }
