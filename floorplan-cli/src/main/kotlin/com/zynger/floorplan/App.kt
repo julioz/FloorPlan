@@ -1,10 +1,19 @@
 package com.zynger.floorplan
 
+import com.github.ajalt.clikt.core.CliktCommand
 import com.zynger.floorplan.dbml.Project
 import java.io.File
 import java.lang.IllegalArgumentException
 
-fun main(args: Array<String>) {
+class FloorPlanCli: CliktCommand(name = "floorplan") {
+    override fun run() {
+        echo("Hello World2!")
+    }
+}
+
+fun main(args: Array<String>) = FloorPlanCli().main(args)
+
+/*fun main(args: Array<String>) {
     val input = InputParser.parse(args)
 
     val src = File(input.schemaPath)
@@ -24,7 +33,7 @@ fun main(args: Array<String>) {
             )
         )
     }
-}
+}*/
 
 private fun InputParser.Input.mapOutputFormats(): List<Format> {
     return formats?.map {
