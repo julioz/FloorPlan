@@ -2,6 +2,7 @@ package com.zynger.floorplan
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import com.zynger.floorplan.dbml.Project
 import java.io.File
@@ -16,8 +17,16 @@ class FloorPlanCli: CliktCommand(
         canBeFile = true,
         canBeDir = false
     )
+    private val outputPath by option(
+        names = *arrayOf("-o", "--output"),
+        help = "Output file for the rendering content"
+    ).file(
+        mustExist = false,
+        canBeFile = true,
+        canBeDir = false
+    )
     override fun run() {
-        echo("Hello $schemaPath!")
+        echo("Hello $schemaPath! Outputing to $outputPath")
     }
 }
 
