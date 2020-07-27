@@ -34,7 +34,9 @@ class FloorPlanCli: CliktCommand(
         names = *arrayOf("--format", "-f"),
         help = "Specify an output format for the rendering content [one or more of DBML, SVG, PNG, DOT]"
     ).split(",").validate {
-        require(it.all { format -> validFormats.contains(format) }) { "Unrecognized rendering format: $it. Valid ones are ${validFormats.joinToString()}." }
+        require(it.all { format -> validFormats.contains(format) }) {
+            "Unrecognized rendering format: ${it.minus(validFormats)}. Valid ones are ${validFormats.joinToString()}."
+        }
     }
     private val creationSqlAsTableNote by option(
         "--creation-sql-as-table-note",
