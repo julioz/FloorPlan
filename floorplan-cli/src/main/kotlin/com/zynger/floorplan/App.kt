@@ -4,6 +4,8 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.split
+import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.path
 import com.zynger.floorplan.dbml.Project
@@ -15,6 +17,7 @@ class FloorPlanCli: CliktCommand(
     help = "Render SCHEMAPATH as DBML or ER diagram."
 ) {
     private val onlyDbmlNote = "[note: only for DBML outputs]"
+    private val validFormats = listOf("dbml", "svg", "png", "dot")
     private val schemaPath by argument().path(
         mustExist = true,
         canBeFile = true,
@@ -28,6 +31,12 @@ class FloorPlanCli: CliktCommand(
         canBeFile = true,
         canBeDir = false
     )
+    private val formats by option(
+        names = *arrayOf("--format", "-f"),
+        help = "Specify an output format for the rendering content [one or more of DBML, SVG, PNG, DOT]"
+    ).split(",").validate {
+        require(it.all { format -> validFormats.contains(format) }) { "Unrecognized rendering format: $it. Valid ones are ${validFormats.joinToString()}." }
+    }
     private val creationSqlAsTableNote by option(
         "--creation-sql-as-table-note",
         help = "Adds the SQL used to create tables as notes $onlyDbmlNote"
@@ -38,7 +47,7 @@ class FloorPlanCli: CliktCommand(
     ).flag(default = false)
 
     override fun run() {
-        echo("Hello $schemaPath! Outputing to $outputPath, creationAsNote = $creationSqlAsTableNote, renderNullableFields = $renderNullableFields")
+        echo("Hello $schemaPath! Formats are $formats, outputing to $outputPath, creationAsNote = $creationSqlAsTableNote, renderNullableFields = $renderNullableFields")
     }
 }
 
