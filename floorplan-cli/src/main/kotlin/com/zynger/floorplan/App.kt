@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
+import com.github.ajalt.clikt.parameters.types.path
 import com.zynger.floorplan.dbml.Project
 import java.io.File
 import java.lang.IllegalArgumentException
@@ -14,7 +15,7 @@ class FloorPlanCli: CliktCommand(
     help = "Render SCHEMAPATH as DBML or ER diagram."
 ) {
     private val onlyDbmlNote = "[note: only for DBML outputs]"
-    private val schemaPath by argument().file(
+    private val schemaPath by argument().path(
         mustExist = true,
         canBeFile = true,
         canBeDir = false
@@ -22,7 +23,7 @@ class FloorPlanCli: CliktCommand(
     private val outputPath by option(
         names = *arrayOf("-o", "--output"),
         help = "Output file for the rendering content"
-    ).file(
+    ).path(
         mustExist = false,
         canBeFile = true,
         canBeDir = false
