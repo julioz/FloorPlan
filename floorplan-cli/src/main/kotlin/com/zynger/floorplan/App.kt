@@ -2,6 +2,7 @@ package com.zynger.floorplan
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import com.zynger.floorplan.dbml.Project
@@ -12,6 +13,7 @@ class FloorPlanCli: CliktCommand(
     name = "floorplan",
     help = "Render SCHEMAPATH as DBML or ER diagram."
 ) {
+    private val onlyDbmlNote = "[note: only for DBML outputs]"
     private val schemaPath by argument().file(
         mustExist = true,
         canBeFile = true,
@@ -25,8 +27,12 @@ class FloorPlanCli: CliktCommand(
         canBeFile = true,
         canBeDir = false
     )
+    private val creationSqlAsTableNote by option(
+        "--creation-sql-as-table-note",
+        help = "adds the SQL used to create tables as notes $onlyDbmlNote"
+    ).flag(default = false)
     override fun run() {
-        echo("Hello $schemaPath! Outputing to $outputPath")
+        echo("Hello $schemaPath! Outputing to $outputPath, creationAsNote = $creationSqlAsTableNote")
     }
 }
 
