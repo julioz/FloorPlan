@@ -39,11 +39,11 @@ class FloorPlanCli: CliktCommand(
         }
     }
     private val creationSqlAsTableNote by option(
-        "--creation-sql-as-table-note",
+        "--creation-sql-as-table-note", "--ctn",
         help = "Adds the SQL used to create tables as notes $onlyDbmlNote"
     ).flag(default = false)
     private val renderNullableFields by option(
-        "--render-nullable-fields",
+        "--render-nullable-fields", "--rnf",
         help = "Changes the rendering of the data type of nullable fields $onlyDbmlNote"
     ).flag(default = false)
 
