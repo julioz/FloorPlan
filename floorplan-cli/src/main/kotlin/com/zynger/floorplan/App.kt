@@ -9,7 +9,6 @@ import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.path
 import com.zynger.floorplan.dbml.Project
-import java.io.File
 import java.lang.IllegalArgumentException
 
 class FloorPlanCli: CliktCommand(
@@ -18,7 +17,7 @@ class FloorPlanCli: CliktCommand(
 ) {
     private val onlyDbmlNote = "[note: only for DBML outputs]"
     private val validFormats = listOf("dbml", "svg", "png", "dot")
-    private val schemaPath by argument().path(
+    private val schemaFile by argument().file(
         mustExist = true,
         canBeFile = true,
         canBeDir = false
@@ -47,54 +46,42 @@ class FloorPlanCli: CliktCommand(
     ).flag(default = false)
 
     override fun run() {
-        echo("Hello $schemaPath! Formats are $formats, outputing to $outputPath, creationAsNote = $creationSqlAsTableNote, renderNullableFields = $renderNullableFields")
-    }
-}
+        val project: Project = FloorPlanConsumerSniffer
+            .sniff(schemaFile)
+            .read(schemaFile)
 
-fun main(args: Array<String>) = FloorPlanCli().main(args)
-
-/*fun main(args: Array<String>) {
-    val input = InputParser.parse(args)
-
-    val src = File(input.schemaPath)
-
-    val project: Project = FloorPlanConsumerSniffer
-        .sniff(src)
-        .read(src)
-
-    val outputFormats = input.mapOutputFormats()
-
-    outputFormats.forEach { outputFormat ->
-        FloorPlan.render(
-            project = project,
-            output = Output(
-                outputFormat,
-                if (input.outputPath == null) Destination.StandardOut else Destination.Disk(File(input.outputPath))
-            )
-        )
-    }
-}*/
-
-private fun InputParser.Input.mapOutputFormats(): List<Format> {
-    return formats?.map {
-        when (it.trim().toLowerCase()) {
-            "dbml" -> Format.DBML(
+        val outputFormats = formats?.map {
+            when (it.trim().toLowerCase()) {
+                "dbml" -> Format.DBML(
+                    DbmlConfiguration(
+                        creationSqlAsTableNote,
+                        renderNullableFields
+                    )
+                )
+                "svg" -> Format.SVG
+                "png" -> Format.PNG
+                "dot" -> Format.DOT
+                else -> throw IllegalArgumentException("Unrecognized rendering format: $it. Must be one of dbml, svg, png, dot.")
+            }
+        } ?: listOf(
+            Format.DBML(
                 DbmlConfiguration(
                     creationSqlAsTableNote,
                     renderNullableFields
                 )
             )
-            "svg" -> Format.SVG
-            "png" -> Format.PNG
-            "dot" -> Format.DOT
-            else -> throw IllegalArgumentException("Unrecognized rendering format: $it. Must be one of dbml, svg, png, dot.")
-        }
-    } ?: listOf(
-        Format.DBML(
-            DbmlConfiguration(
-                creationSqlAsTableNote,
-                renderNullableFields
-            )
         )
-    )
+
+        outputFormats.forEach { outputFormat ->
+            FloorPlan.render(
+                project = project,
+                output = Output(
+                    outputFormat,
+                    if (outputPath == null) Destination.StandardOut else Destination.Disk(outputPath!!.toFile())
+                )
+            )
+        }
+    }
 }
+
+fun main(args: Array<String>) = FloorPlanCli().main(args)
