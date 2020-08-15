@@ -12,6 +12,8 @@ Table posts {
   user_id integer
   status post_status
   created_at timestamp
+
+  note: 'Stores blog posts'
 }
 
 Enum post_status {
