@@ -46,6 +46,48 @@ class TableParserTest {
     }
 
     @Test
+    fun `no alias of table when absent`() {
+        val input = """
+            Table posts {
+              id int [pk, increment]
+              title varchar [not null]
+            }
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertNull(tables[0].alias)
+    }
+
+    @Test
+    fun `parses alias of table`() {
+        val input = """
+            Table posts as P {
+              id int [pk, increment]
+              title varchar [not null]
+            }
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("P", tables[0].alias)
+    }
+
+    @Test
+    fun `parses alias of table with quotes`() {
+        val input = """
+            Table "posts" as "P" {
+              id int [pk, increment]
+              title varchar [not null]
+            }
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("P", tables[0].alias)
+    }
+
+    @Test
     fun `parses name of multiple tables`() {
         val input = """
             Table posts {
@@ -73,12 +115,227 @@ class TableParserTest {
     }
 
     @Test
+    fun `no note of table when absent`() {
+        val input = """
+            Table posts {
+              id int [pk, increment]
+              title varchar [not null]
+            }
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertNull(tables[0].note)
+    }
+
+    @Test
+    fun `parses table note`() {
+        val input = """
+            table post_tags [note: 'hey table note']{
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey table note", tables.first().note)
+    }
+
+    @Test
+    fun `parses table note ignoring casing`() {
+        val input = """
+            table post_tags [NoTe: 'hey table note'] {
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey table note", tables.first().note)
+    }
+
+    @Test
+    fun `parses table note with space`() {
+        val input = """
+            table post_tags [note: 'hey table note'] {
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey table note", tables.first().note)
+    }
+
+    @Test
+    fun `parses table note with quote`() {
+        val input = """
+            table post_tags [note: 'hey "table" note'] {
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey \"table\" note", tables.first().note)
+    }
+
+    @Test
+    fun `parses inline table note`() {
+        val input = """
+            table post_tags {
+              id int [pk]
+              post_id int
+              tag_id int
+              
+              Note: 'hey "table" note'
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey \"table\" note", tables.first().note)
+    }
+
+    @Test
+    fun `parses inline table note ignoring casing`() {
+        val input = """
+            table post_tags {
+              id int [pk]
+              post_id int
+              tag_id int
+              
+              note: 'hey "table" note'
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey \"table\" note", tables.first().note)
+    }
+
+    @Test
+    fun `parses inline table note even when there are column notes`() {
+        val input = """
+            table post_tags {
+              id int [pk]
+              post_id int [note: 'some random column note']
+              tag_id int
+              
+              note: 'hey "table" note'
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey \"table\" note", tables.first().note)
+    }
+
+    @Test
+    fun `prefer inline table note over named note`() {
+        val input = """
+            table post_tags [note: 'some note that will be ignored'] {
+              id int [pk]
+              post_id int
+              tag_id int
+              
+              Note: 'hey "table" note'
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey \"table\" note", tables.first().note)
+    }
+
+    @Test
+    fun `take last table note when multiple are defined`() {
+        val input = """
+            table post_tags [note: 'some note that will be ignored'] {
+              id int [pk]
+              post_id int
+              tag_id int
+              
+              Note: 'another ignored note'
+              Note: 'hey "table" note'
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey \"table\" note", tables.first().note)
+    }
+
+    @Test
+    fun `parses table note and alias together`() {
+        val input = """
+            table post_tags as PT [note: 'hey table note'] {
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("PT", tables.first().alias)
+        assertEquals("hey table note", tables.first().note)
+    }
+
+    @Test
     fun `passes column content to be parsed by delegation`() {
         val input = """
             table post_tags [note: 'hey table note']{
               id int [pk]
               post_id int
               tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals(3, tables.first().columns.size)
+    }
+
+    @Test
+    fun `passes column content to be parsed by delegation when there are table notes`() {
+        val input = """
+            table post_tags [note: 'hey table note']{
+              id int [pk]
+              post_id int
+              tag_id int
+              
+              note: 'hey table note'
             }
 
 

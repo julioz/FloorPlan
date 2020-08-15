@@ -3,6 +3,7 @@ package com.zynger.floorplan
 import com.zynger.floorplan.Format.*
 import com.zynger.floorplan.dbml.Project
 import com.zynger.floorplan.dbml.ReferenceOrder
+import com.zynger.floorplan.dbml.Table
 import com.zynger.floorplan.dbml.render.ProjectRenderer
 import guru.nidi.graphviz.attribute.*
 import guru.nidi.graphviz.attribute.Rank.RankDir
@@ -90,7 +91,9 @@ object FloorPlan {
                 }
                 append("</table>")
             }
-            val node = mutNode(it.name).add(Label.html(htmlTable))
+            val node = mutNode(it.name)
+                .add(Label.html(htmlTable))
+                .add("tooltip", getTooltipForTable(it))
             g.add(node)
         }
 
@@ -103,6 +106,24 @@ object FloorPlan {
         }
 
         return Graphviz.fromGraph(g)
+    }
+
+    private fun getTooltipForTable(table: Table): String {
+        return buildString {
+            append("Table ${table.name}")
+            apply {
+                if (table.note != null) {
+                    appendln()
+                    append("Note: ${table.note}")
+                }
+            }
+            apply {
+                if (table.alias != null) {
+                    appendln()
+                    append("Alias: ${table.alias}")
+                }
+            }
+        }
     }
 
     private val ReferenceOrder.label: String

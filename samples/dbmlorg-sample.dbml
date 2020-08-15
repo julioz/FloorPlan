@@ -1,4 +1,4 @@
-Table users {
+Table users as U [note: 'Stores user data'] {
   id integer
   username varchar
   role varchar
@@ -12,6 +12,8 @@ Table posts {
   user_id integer
   status post_status
   created_at timestamp
+
+  note: 'Stores blog posts'
 }
 
 Enum post_status {
