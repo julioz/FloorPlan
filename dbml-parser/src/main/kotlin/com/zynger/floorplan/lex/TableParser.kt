@@ -31,7 +31,7 @@ object TableParser {
     }
 
     private fun MatchGroup.parseTableAlias(): String? {
-        return value.substringAfter("as").trim().removeSurroundQuotes()
+        return value.substringAfter("as").trim().removeSurroundQuotes().takeIf { it.isNotBlank() }
     }
 
     private fun String.removeSurroundQuotes(): String {

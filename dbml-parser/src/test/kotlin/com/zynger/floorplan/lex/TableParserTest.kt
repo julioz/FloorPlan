@@ -46,6 +46,20 @@ class TableParserTest {
     }
 
     @Test
+    fun `no alias of table when absent`() {
+        val input = """
+            Table posts {
+              id int [pk, increment]
+              title varchar [not null]
+            }
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertNull(tables[0].alias)
+    }
+
+    @Test
     fun `parses alias of table`() {
         val input = """
             Table posts as P {
