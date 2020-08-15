@@ -146,6 +146,23 @@ class TableParserTest {
     }
 
     @Test
+    fun `parses table note with different casing`() {
+        val input = """
+            table post_tags [NoTe: 'hey table note'] {
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey table note", tables.first().note)
+    }
+
+    @Test
     fun `parses table note with space`() {
         val input = """
             table post_tags [note: 'hey table note'] {

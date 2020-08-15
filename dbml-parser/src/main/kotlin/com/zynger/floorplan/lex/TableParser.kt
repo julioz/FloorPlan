@@ -35,7 +35,10 @@ object TableParser {
     }
 
     private fun MatchGroup.parseTableNote(): String? {
-        return value.substringAfter("note: '").substringBefore("'").trim().removeSurroundQuotes().takeIf { it.isNotBlank() }
+        val noteDelimiter = "note: '"
+        val noteStartIndex = value.indexOf(noteDelimiter, ignoreCase = true)
+        val noteWithoutStartDelimiter = if (noteStartIndex == -1) value else value.substring(noteStartIndex + noteDelimiter.length, value.length)
+        return noteWithoutStartDelimiter.substringBefore("'").trim().removeSurroundQuotes().takeIf { it.isNotBlank() }
     }
 
     private fun String.removeSurroundQuotes(): String {
