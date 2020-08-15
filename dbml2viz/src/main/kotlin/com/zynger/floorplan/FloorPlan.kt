@@ -112,6 +112,12 @@ object FloorPlan {
         return buildString {
             append("Table ${table.name}")
             apply {
+                if (table.note != null) {
+                    appendln()
+                    append("Note: ${table.note}")
+                }
+            }
+            apply {
                 if (table.alias != null) {
                     appendln()
                     append("Alias: ${table.alias}")

@@ -9,6 +9,7 @@ class TableRendererTest {
     companion object {
         private const val TABLE_NAME = "Users"
         private const val TABLE_ALIAS = "U"
+        private const val TABLE_NOTE = "Some table note"
         private const val TABLE_NAME_2 = "Songs"
         private const val TABLE_NAME_3 = "Albums"
         private const val COLUMN_NAME_1 = "userId"
@@ -127,6 +128,55 @@ class TableRendererTest {
         assertEquals(
             """
                 Table $TABLE_NAME as $TABLE_ALIAS {
+                  $COLUMN_NAME_1 varchar [note: 'not null']
+                }
+            """.trimIndent(),
+            table.render()
+        )
+    }
+
+    @Test
+    fun `table with note`() {
+        val table = TableRenderer(
+            Table(
+                name = TABLE_NAME,
+                note = TABLE_NOTE,
+                rawValue = CREATE_SQL,
+                columns = listOf(FIELD_1),
+                indexes = emptyList()
+            ),
+            referencesFromTable = emptyList(),
+            settings = DEFAULT_SETTINGS
+        )
+
+        assertEquals(
+            """
+                Table $TABLE_NAME [note: '$TABLE_NOTE'] {
+                  $COLUMN_NAME_1 varchar [note: 'not null']
+                }
+            """.trimIndent(),
+            table.render()
+        )
+    }
+
+    @Test
+    fun `table with alias and note`() {
+        val table = TableRenderer(
+            Table(
+                name = TABLE_NAME,
+                alias = TABLE_ALIAS,
+                note = TABLE_NOTE,
+                rawValue = CREATE_SQL,
+                columns = listOf(FIELD_1),
+                indexes = emptyList()
+            ),
+            referencesFromTable = emptyList(),
+            settings = DEFAULT_SETTINGS
+        )
+
+        assertEquals(
+            """
+                Table $TABLE_NAME as $TABLE_ALIAS [note: '$TABLE_NOTE'] {
                   $COLUMN_NAME_1 varchar [note: 'not null']
                 }
             """.trimIndent(),

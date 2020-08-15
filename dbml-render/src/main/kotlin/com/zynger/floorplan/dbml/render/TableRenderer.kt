@@ -23,6 +23,11 @@ class TableRenderer(
                     append("as ${table.alias} ")
                 }
             }
+            .apply {
+                if (table.note != null) {
+                    append("[note: '${table.note}'] ")
+                }
+            }
             .append("{")
             .appendln()
             .apply {

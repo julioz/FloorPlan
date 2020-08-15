@@ -11,11 +11,10 @@ object TableParser {
     private val TABLE_REGEX = Regex("""[Tt]able\s+$TABLE_NAME\s*$TABLE_ALIAS$TABLE_NOTES\s*$TABLE_CONTENT""")
 
     fun parseTables(dbmlInput: String): List<Table> {
-        // TODO: aliases and table notes also get parsed; should we update the modeling to include them?
-
         return TABLE_REGEX.findAll(dbmlInput).map {
             val tableName = it.groups[1]!!.value.trim().removeSurroundQuotes()
             val tableAlias = it.groups[2]?.parseTableAlias()
+            val tableNote = it.groups[3]?.parseTableNote()
             val tableContent = it.groups[4]!!.value
             val indexes = IndexParser.parseIndexes(tableContent)
             val primaryKeysFromIndexes = IndexParser.parseCompositePrimaryKeys(tableContent)
@@ -24,6 +23,7 @@ object TableParser {
                 rawValue = it.groups[0]!!.value,
                 name = tableName,
                 alias = tableAlias,
+                note = tableNote,
                 columns = ColumnParser.parseColumns(tableName, removeIndexes(tableContent), primaryKeysFromIndexes),
                 indexes = indexes
             )
@@ -32,6 +32,10 @@ object TableParser {
 
     private fun MatchGroup.parseTableAlias(): String? {
         return value.substringAfter("as").trim().removeSurroundQuotes().takeIf { it.isNotBlank() }
+    }
+
+    private fun MatchGroup.parseTableNote(): String? {
+        return value.substringAfter("note: '").substringBefore("'").trim().removeSurroundQuotes().takeIf { it.isNotBlank() }
     }
 
     private fun String.removeSurroundQuotes(): String {

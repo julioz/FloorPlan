@@ -115,6 +115,89 @@ class TableParserTest {
     }
 
     @Test
+    fun `no note of table when absent`() {
+        val input = """
+            Table posts {
+              id int [pk, increment]
+              title varchar [not null]
+            }
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertNull(tables[0].note)
+    }
+
+    @Test
+    fun `parses table note`() {
+        val input = """
+            table post_tags [note: 'hey table note']{
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey table note", tables.first().note)
+    }
+
+    @Test
+    fun `parses table note with space`() {
+        val input = """
+            table post_tags [note: 'hey table note'] {
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey table note", tables.first().note)
+    }
+
+    @Test
+    fun `parses table note with quote`() {
+        val input = """
+            table post_tags [note: 'hey "table" note'] {
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("hey \"table\" note", tables.first().note)
+    }
+
+    @Test
+    fun `parses table note and alias together`() {
+        val input = """
+            table post_tags as PT [note: 'hey table note'] {
+              id int [pk]
+              post_id int
+              tag_id int
+            }
+
+
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("PT", tables.first().alias)
+        assertEquals("hey table note", tables.first().note)
+    }
+
+    @Test
     fun `passes column content to be parsed by delegation`() {
         val input = """
             table post_tags [note: 'hey table note']{

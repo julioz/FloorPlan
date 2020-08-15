@@ -1,4 +1,4 @@
-Table users as U {
+Table users as U [note: 'Stores user data'] {
   id integer
   username varchar
   role varchar
