@@ -12,6 +12,12 @@ See an example of [Tivi's](https://github.com/chrisbanes/tivi)'s [schema (v26)](
 
 ![Tivi model](images/tivi-26.svg)
 
+### Diagram metadata
+
+Some output formats allow for metadata to be attached to the ER diagram rendering. When outputting to SVG, FloorPlan will include supplementary information on entities, if available.
+
+![metadata-on-hover](images/hover-metadata.png)
+
 ## [Database Markup Language (DBML)](https://www.dbml.org/home/).
 
 **[DBML](https://www.dbml.org/home/) (Database Markup Language)** is an open-source DSL language designed to define and document database schemas and structures. It is designed to be simple, consistent and highly-readable.
