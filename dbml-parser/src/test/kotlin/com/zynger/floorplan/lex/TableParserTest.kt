@@ -46,6 +46,34 @@ class TableParserTest {
     }
 
     @Test
+    fun `parses alias of table`() {
+        val input = """
+            Table posts as P {
+              id int [pk, increment]
+              title varchar [not null]
+            }
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("P", tables[0].alias)
+    }
+
+    @Test
+    fun `parses alias of table with quotes`() {
+        val input = """
+            Table "posts" as "P" {
+              id int [pk, increment]
+              title varchar [not null]
+            }
+        """.trimIndent()
+
+        val tables = TableParser.parseTables(input)
+
+        assertEquals("P", tables[0].alias)
+    }
+
+    @Test
     fun `parses name of multiple tables`() {
         val input = """
             Table posts {

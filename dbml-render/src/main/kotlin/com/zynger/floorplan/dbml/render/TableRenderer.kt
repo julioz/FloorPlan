@@ -18,6 +18,11 @@ class TableRenderer(
         return StringBuilder()
             .append("Table ${table.name}")
             .append(" ")
+            .apply {
+                if (table.alias != null) {
+                    append("as ${table.alias} ")
+                }
+            }
             .append("{")
             .appendln()
             .apply {

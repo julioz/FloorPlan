@@ -15,6 +15,7 @@ object TableParser {
 
         return TABLE_REGEX.findAll(dbmlInput).map {
             val tableName = it.groups[1]!!.value.trim().removeSurroundQuotes()
+            val tableAlias = it.groups[2]?.parseTableAlias()
             val tableContent = it.groups[4]!!.value
             val indexes = IndexParser.parseIndexes(tableContent)
             val primaryKeysFromIndexes = IndexParser.parseCompositePrimaryKeys(tableContent)
@@ -22,10 +23,15 @@ object TableParser {
             Table(
                 rawValue = it.groups[0]!!.value,
                 name = tableName,
+                alias = tableAlias,
                 columns = ColumnParser.parseColumns(tableName, removeIndexes(tableContent), primaryKeysFromIndexes),
                 indexes = indexes
             )
         }.toList()
+    }
+
+    private fun MatchGroup.parseTableAlias(): String? {
+        return value.substringAfter("as").trim().removeSurroundQuotes()
     }
 
     private fun String.removeSurroundQuotes(): String {
