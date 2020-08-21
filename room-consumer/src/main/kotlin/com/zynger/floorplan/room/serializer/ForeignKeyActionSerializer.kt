@@ -2,12 +2,16 @@ package com.zynger.floorplan.room.serializer
 
 import com.zynger.floorplan.room.ForeignKeyAction
 import kotlinx.serialization.*
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
-@Serializer(forClass = ForeignKeyAction::class)
-object ForeignKeyActionSerializer {
+object ForeignKeyActionSerializer: KSerializer<ForeignKeyAction> {
 
     override val descriptor: SerialDescriptor
-        get() = PrimitiveDescriptor("foreignKeyActionSerializer", PrimitiveKind.STRING)
+        get() = PrimitiveSerialDescriptor("foreignKeyActionSerializer", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): ForeignKeyAction {
         val value = decoder.decodeString().toUpperCase()
