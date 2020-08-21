@@ -3,16 +3,18 @@ package com.zynger.floorplan.room
 import com.zynger.floorplan.Consumer
 import com.zynger.floorplan.dbml.*
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import java.io.File
 import com.zynger.floorplan.room.Index as RoomIndex
 
 object RoomConsumer: Consumer {
-    private val json = Json(JsonConfiguration.Stable.copy(ignoreUnknownKeys = true, isLenient = true))
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
 
     override fun read(src: File): Project {
         val roomDatabase = json
-            .parse(Schema.serializer(), src.readText())
+            .decodeFromString(Schema.serializer(), src.readText())
             .database
 
         val tables: List<Table> = roomDatabase.entities.map {
