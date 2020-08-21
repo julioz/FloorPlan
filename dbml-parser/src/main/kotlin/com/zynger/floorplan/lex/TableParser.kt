@@ -70,7 +70,7 @@ object TableParser {
                 .map { it.trim() }
                 .filter { it !in tableNotes }
                 .forEach {
-                    appendln(it)
+                    appendLine(it)
                 }
         }
     }

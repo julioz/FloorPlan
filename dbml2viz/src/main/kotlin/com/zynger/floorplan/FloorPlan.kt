@@ -67,8 +67,8 @@ object FloorPlan {
 
         tables.forEach {
             val htmlTable = buildString {
-                appendln("<table border=\"0\" cellborder=\"1\" cellspacing=\"0\">")
-                appendln("<tr><td bgcolor=\"darkolivegreen1\"><b>${it.name}</b></td></tr>")
+                appendLine("<table border=\"0\" cellborder=\"1\" cellspacing=\"0\">")
+                appendLine("<tr><td bgcolor=\"darkolivegreen1\"><b>${it.name}</b></td></tr>")
 
                 it.columns.forEach { column ->
                     append("<tr><td port=\"${column.name}\">")
@@ -79,14 +79,14 @@ object FloorPlan {
                     if (column.primaryKey) {
                         append("</b>")
                     }
-                    appendln("</td></tr>")
+                    appendLine("</td></tr>")
                 }
                 if (it.indexes.isNotEmpty()) {
-                    appendln("<tr><td bgcolor=\"azure3\"><i>Indices</i></td></tr>")
+                    appendLine("<tr><td bgcolor=\"azure3\"><i>Indices</i></td></tr>")
                     it.indexes.forEach { index ->
                         append("<tr><td>")
                         append(index.name)
-                        appendln("</td></tr>")
+                        appendLine("</td></tr>")
                     }
                 }
                 append("</table>")
@@ -113,13 +113,13 @@ object FloorPlan {
             append("Table ${table.name}")
             apply {
                 if (table.note != null) {
-                    appendln()
+                    appendLine()
                     append("Note: ${table.note}")
                 }
             }
             apply {
                 if (table.alias != null) {
-                    appendln()
+                    appendLine()
                     append("Alias: ${table.alias}")
                 }
             }

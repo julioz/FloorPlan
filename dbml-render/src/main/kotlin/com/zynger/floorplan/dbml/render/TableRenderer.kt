@@ -29,32 +29,32 @@ class TableRenderer(
                 }
             }
             .append("{")
-            .appendln()
+            .appendLine()
             .apply {
                 append(columnRenderers.joinToString("\n") { it.render().prependIndent("  ") })
             }
-            .appendln()
+            .appendLine()
             .apply {
                 if (this@TableRenderer.indexRenderers.isNotEmpty()) {
-                    appendln()
+                    appendLine()
                     appendIndicesBlock()
                 }
             }
             .apply {
                 if (settings.creationSqlAsTableNote) {
-                    appendln("  ")
+                    appendLine("  ")
                     append("Note: ".prependIndent("  "))
                     append("'")
                     append(table.rawValue)
                     append("'")
-                    appendln()
+                    appendLine()
                 }
             }
             .append("}")
             .apply {
                 if (this@TableRenderer.referenceRenderers.isNotEmpty()) {
-                    appendln()
-                    appendln()
+                    appendLine()
+                    appendLine()
                     append(referenceRenderers.joinToString("\n") { it.render() })
                 }
             }
@@ -65,9 +65,9 @@ class TableRenderer(
         append("  ")
         append("Indexes")
         append("  ")
-        appendln("{")
-        this@TableRenderer.indexRenderers.forEach { appendln(it.render().prependIndent("    ")) }
+        appendLine("{")
+        this@TableRenderer.indexRenderers.forEach { appendLine(it.render().prependIndent("    ")) }
         append("  ")
-        appendln("}")
+        appendLine("}")
     }
 }
