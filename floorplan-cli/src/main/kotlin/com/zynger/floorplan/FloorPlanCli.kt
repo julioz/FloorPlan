@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.path
 import com.zynger.floorplan.dbml.Project
+import java.io.File
 import java.lang.IllegalArgumentException
 
 class FloorPlanCli: CliktCommand(
@@ -24,11 +25,11 @@ class FloorPlanCli: CliktCommand(
     )
     private val outputPath by option(
         names = *arrayOf("-o", "--output"),
-        help = "Output file for the rendering content"
+        help = "Output directory for the rendering content"
     ).path(
         mustExist = false,
-        canBeFile = true,
-        canBeDir = false
+        canBeFile = false,
+        canBeDir = true
     )
     private val formats by option(
         names = *arrayOf("--format", "-f"),
@@ -75,13 +76,40 @@ class FloorPlanCli: CliktCommand(
         )
 
         outputFormats.forEach { outputFormat ->
+            val destination = if (outputPath == null) {
+                Destination.StandardOut
+            } else {
+                val outputFileName = "${schemaFile.nameWithoutExtension}.${outputFormat.extension}"
+                val outputFile = File(
+                    getOutputFileParentDirectory(
+                        schema = schemaFile,
+                        outputLocation = outputPath!!.toFile()
+                    ),
+                    outputFileName
+                )
+                Destination.Disk(outputFile)
+            }
+
             FloorPlan.render(
                 project = project,
                 output = Output(
-                    outputFormat,
-                    if (outputPath == null) Destination.StandardOut else Destination.Disk(outputPath!!.toFile())
+                    format = outputFormat,
+                    destination = destination
                 )
             )
+        }
+    }
+
+    private fun getOutputFileParentDirectory(schema: File, outputLocation: File): File {
+        val relativizedPathToSchemaInput = schema.parentFile?.toURI()?.relativize(schema.toURI())?.path
+        return if (relativizedPathToSchemaInput != null && relativizedPathToSchemaInput.contains(File.separator)) {
+            // schema is stored under a sub-directory,
+            // we must relativize the directory structure to point to the parent dir.
+            val relativizedPath = relativizedPathToSchemaInput.substringBeforeLast(File.separator)
+            File(outputLocation.path + File.separator + relativizedPath)
+        } else {
+            // schema is directly under [outputLocation], so the parent is [outputLocation] itself.
+            outputLocation
         }
     }
 }

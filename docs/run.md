@@ -35,10 +35,13 @@ Currently, the supported formats are:
 !!! warning
     Some arguments are restricted to their combination with the specified output format. Refer to the individual argument documentation to verify its availability.
 
-### Write output to file (`--output`, `-o`)
+### Write output to directory (`--output`, `-o`)
 
+FloorPlan will write its output file(s) into the specified directory.
+The directory will be created if it doesn't exist and the input filename will be used to name the output files.
+ 
 ```
-gradlew run --args="<path-to-schema-file> --output <path-to-output-file>"
+gradlew run --args="<path-to-schema-file> --output <path-to-output-directory>"
 ```
 
 ### Add `CREATION SQL` as [Table note](https://www.dbml.org/docs/#table-notes) (`--creation-sql-as-table-note`, `-ctn`)
