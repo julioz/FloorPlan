@@ -12,7 +12,7 @@ repositories {
 }
 
 application {
-    mainClassName = "com.zynger.floorplan.AppKt"
+    mainClassName = "com.zynger.floorplan.FloorPlanCliKt"
 }
 
 dependencies {
