@@ -28,8 +28,20 @@ class FloorPlanPlugin: Plugin<Project> {
 
                     task.schemaLocation = File(floorPlanExtension.schemaLocation.get())
                     task.outputLocation = File(floorPlanExtension.outputLocation.get())
+                    task.notation = floorPlanExtension.getNotation()
                     task.outputFormats = outputFormatExtension.getFormats()
                 }
+        }
+    }
+
+    private fun FloorPlanExtension.getNotation(): String? {
+        return if (notation.isPresent && notation.get().trim().isNotEmpty()) {
+            val validNotations = Notation.all.map { it.identifier }
+            val notation = notation.get()
+            check(validNotations.contains(notation)) { "The notation $notation is unsupported." }
+            notation
+        } else {
+            null
         }
     }
 
