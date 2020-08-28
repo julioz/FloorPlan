@@ -2,17 +2,21 @@ package com.zynger.floorplan
 
 import com.zynger.floorplan.Format.*
 import com.zynger.floorplan.dbml.Project
+import com.zynger.floorplan.dbml.Reference
 import com.zynger.floorplan.dbml.ReferenceOrder
 import com.zynger.floorplan.dbml.Table
 import com.zynger.floorplan.dbml.render.ProjectRenderer
 import guru.nidi.graphviz.attribute.*
+import guru.nidi.graphviz.attribute.Attributes.attr
+import guru.nidi.graphviz.attribute.Attributes.attrs
 import guru.nidi.graphviz.attribute.Rank.RankDir
 import guru.nidi.graphviz.attribute.Rank.dir
 import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
 import guru.nidi.graphviz.model.Factory.*
+import guru.nidi.graphviz.model.Link
 import guru.nidi.graphviz.model.MutableGraph
-import java.lang.IllegalStateException
+import java.util.*
 
 object FloorPlan {
 
@@ -33,7 +37,7 @@ object FloorPlan {
                 }
             }
         } else {
-            val graphviz = graph(project)
+            val graphviz = graph(project, output.notation)
             val renderer = when (output.format) {
                 is DBML -> throw IllegalStateException()
                 DOT -> graphviz.render(Format.DOT)
@@ -48,7 +52,10 @@ object FloorPlan {
         }
     }
 
-    private fun graph(project: Project): Graphviz {
+    private fun graph(
+        project: Project,
+        notation: Notation
+    ): Graphviz {
         val tables = project.tables
         val references = project.references
 
@@ -98,14 +105,55 @@ object FloorPlan {
         }
 
         references.forEach {
-            val link = between(port(it.fromColumn), node(it.toTable).port(it.toColumn))
-                .with(Label.of(it.referenceOrder.label))
-                .with(Style.DASHED)
+            val link = when (notation) {
+                Notation.Chen -> chenLink(it)
+                Notation.CrowsFoot -> crowsFootLink(it)
+            }
 
             g.add(mutNode(it.fromTable).addLink(link))
         }
 
         return Graphviz.fromGraph(g)
+    }
+
+    private fun chenLink(reference: Reference): Link {
+        return between(port(reference.fromColumn), node(reference.toTable).port(reference.toColumn))
+            .with(Label.of(reference.referenceOrder.label))
+            .with(Style.DASHED)
+    }
+
+    private fun crowsFootLink(reference: Reference): Link {
+        /**
+         * Three symbols are used to represent cardinality:
+         *  - the ring represents "zero" (dot)
+         *  - the dash represents "one" (tee)
+         *  - the crow's foot represents "many" or "infinite" (crow)
+         *
+         *  These symbols are used in pairs to represent the four types
+         *  of cardinality that an entity may have in a relationship.
+         *  The inner component of the notation represents the minimum,
+         *  and the outer component represents the maximum.
+         *
+         *  - ring and dash → minimum zero, maximum one (optional)
+         *  - dash and dash → minimum one, maximum one (mandatory)
+         *  - ring and crow's foot → minimum zero, maximum many (optional)
+         *  - dash and crow's foot → minimum one, maximum many (mandatory)
+         */
+        val teeTee = Arrow.TEE.and(Arrow.TEE)
+        val crow = Arrow.CROW
+        val (arrowhead, arrowtail) = when (reference.referenceOrder) {
+            ReferenceOrder.OneToOne -> teeTee to teeTee
+            ReferenceOrder.OneToMany -> teeTee to crow
+            ReferenceOrder.ManyToOne -> crow to crow
+        }
+
+        val attributes: Attributes<ForLink> = attrs(
+            attr("arrowhead", arrowhead.value),
+            attr("arrowtail", arrowtail.value),
+            attr("dir", Arrow.DirType.BOTH.name.toLowerCase(Locale.ENGLISH))
+        )
+        return between(port(reference.fromColumn), node(reference.toTable).port(reference.toColumn))
+            .with(attributes)
     }
 
     private fun getTooltipForTable(table: Table): String {
