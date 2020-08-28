@@ -108,6 +108,7 @@ class FloorPlanCli: CliktCommand(
                 project = project,
                 output = Output(
                     format = outputFormat,
+                    notation = notation,
                     destination = destination
                 )
             )

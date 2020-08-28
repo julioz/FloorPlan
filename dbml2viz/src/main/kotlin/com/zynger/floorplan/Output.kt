@@ -46,5 +46,6 @@ sealed class Destination {
 
 data class Output(
     val format: Format,
+    val notation: Notation,
     val destination: Destination
 )
