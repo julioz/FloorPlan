@@ -236,6 +236,102 @@ class FloorPlanGradlePluginIntegrationTest {
             .withSuccessfulMessage()
     }
 
+    @Test
+    fun testNoExplicitNotationDoesNotFailBuild() {
+        createSchemasDirectory()
+        writeBuildGradle(
+            """plugins {
+             |  id "com.zynger.floorplan"
+             |}
+             |
+             |floorPlan {
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
+             |  outputFormat {
+             |    svg {
+             |      enabled = true
+             |    }
+             |  }
+             |}""".trimMargin()
+        )
+        floorPlanRunner()
+            .build()
+            .withSuccessfulMessage()
+    }
+
+    @Test
+    fun testChenNotationForDiagram() {
+        createSchemasDirectory()
+        writeBuildGradle(
+            """plugins {
+             |  id "com.zynger.floorplan"
+             |}
+             |
+             |floorPlan {
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
+             |  notation = "chen"
+             |  outputFormat {
+             |    svg {
+             |      enabled = true
+             |    }
+             |  }
+             |}""".trimMargin()
+        )
+        floorPlanRunner()
+            .build()
+            .withSuccessfulMessage()
+    }
+
+    @Test
+    fun testCrowsFootNotationForDiagram() {
+        createSchemasDirectory()
+        writeBuildGradle(
+            """plugins {
+             |  id "com.zynger.floorplan"
+             |}
+             |
+             |floorPlan {
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
+             |  notation = "crowsfoot"
+             |  outputFormat {
+             |    svg {
+             |      enabled = true
+             |    }
+             |  }
+             |}""".trimMargin()
+        )
+        floorPlanRunner()
+            .build()
+            .withSuccessfulMessage()
+    }
+
+    @Test
+    fun testInvalidNotationFailsBuild() {
+        createSchemasDirectory()
+        val notation = "unsupportednotation"
+        writeBuildGradle(
+            """plugins {
+             |  id "com.zynger.floorplan"
+             |}
+             |
+             |floorPlan {
+             |  schemaLocation = "${"\$projectDir"}/schemas"
+             |  outputLocation = "${"\$projectDir"}/schemas"
+             |  notation = "$notation"
+             |  outputFormat {
+             |    svg {
+             |      enabled = true
+             |    }
+             |  }
+             |}""".trimMargin()
+        )
+        floorPlanRunner()
+            .buildAndFail()
+            .withFailureMessage("The notation $notation is unsupported.")
+    }
+
     private fun floorPlanRunner(): GradleRunner {
         return GradleRunner.create()
             .withProjectDir(testProjectRoot.root)
