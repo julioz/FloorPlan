@@ -10,7 +10,6 @@ import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.path
 import com.zynger.floorplan.dbml.Project
 import java.io.File
-import java.lang.IllegalArgumentException
 
 class FloorPlanCli: CliktCommand(
     name = "floorplan",
@@ -18,6 +17,7 @@ class FloorPlanCli: CliktCommand(
 ) {
     private val onlyDbmlNote = "[note: only for DBML outputs]"
     private val validFormats = listOf("dbml", "svg", "png", "dot")
+    private val validNotation = Notation.all.map { it.identifier }
     private val schemaFile by argument().file(
         mustExist = true,
         canBeFile = true,
@@ -39,6 +39,14 @@ class FloorPlanCli: CliktCommand(
             "Unrecognized rendering format: ${it.minus(validFormats)}. Valid ones are ${validFormats.joinToString()}."
         }
     }
+    private val notation by option(
+        names = *arrayOf("--notation", "-n"),
+        help = "Specify the notation for the relationship rendering in the diagram [one of ${validNotation.joinToString()}]"
+    ).validate {
+        require(validNotation.contains(it)) {
+            "Unrecognized notation: $it. Valid ones are ${validNotation.joinToString()}."
+        }
+    }
     private val creationSqlAsTableNote by option(
         "--creation-sql-as-table-note", "--ctn",
         help = "Adds the SQL used to create tables as notes $onlyDbmlNote"
@@ -52,6 +60,12 @@ class FloorPlanCli: CliktCommand(
         val project: Project = FloorPlanConsumerSniffer
             .sniff(schemaFile)
             .read(schemaFile)
+
+        val notation: Notation = if (notation == null) {
+            Notation.Chen
+        } else {
+            Notation.all.find { notation == it.identifier }!!
+        }
 
         val outputFormats = formats?.map {
             when (it.trim().toLowerCase()) {
