@@ -19,6 +19,9 @@ open class FloorPlanTask : DefaultTask() {
     @OutputDirectory
     lateinit var outputLocation: File
 
+    @get:Input @Optional
+    var notation: String? = null
+
     @TaskAction
     fun generateFloorPlan() {
         if (!schemaLocation.exists()) {
@@ -34,6 +37,7 @@ open class FloorPlanTask : DefaultTask() {
         schemas.forEach { schema ->
             val outputHandler = OutputParameterHandler(schema, schemaLocation)
             val outputFormats: List<Format> = outputHandler.formats(outputFormats)
+            val notation: Notation = Notation.all.find { it.identifier == notation } ?: Notation.Chen
 
             val project: Project = FloorPlanConsumerSniffer
                 .sniff(schema)
@@ -44,7 +48,11 @@ open class FloorPlanTask : DefaultTask() {
 
                 FloorPlan.render(
                     project = project,
-                    output = Output(outputFormat, Destination.Disk(outputFile))
+                    output = Output(
+                        format = outputFormat,
+                        notation = notation,
+                        destination = Destination.Disk(outputFile)
+                    )
                 )
             }
         }

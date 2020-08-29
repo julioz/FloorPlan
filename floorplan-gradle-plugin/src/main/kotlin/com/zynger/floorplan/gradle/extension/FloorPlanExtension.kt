@@ -11,4 +11,5 @@ constructor(
 ) {
     val schemaLocation: Property<String> = objects.property(String::class.java)
     val outputLocation: Property<String> = objects.property(String::class.java)
+    val notation: Property<String> = objects.property(String::class.java).convention("")
 }

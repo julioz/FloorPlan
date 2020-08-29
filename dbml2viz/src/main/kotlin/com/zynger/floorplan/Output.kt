@@ -21,6 +21,19 @@ sealed class Format {
     }
 }
 
+sealed class Notation {
+    abstract val identifier: String
+    object Chen: Notation() {
+        override val identifier: String = "chen"
+    }
+    object CrowsFoot: Notation() {
+        override val identifier: String = "crowsfoot"
+    }
+    companion object {
+        val all = listOf(Chen, CrowsFoot)
+    }
+}
+
 data class DbmlConfiguration(
     val creationSqlAsTableNote: Boolean = false,
     val renderNullableFields: Boolean = false
@@ -33,5 +46,6 @@ sealed class Destination {
 
 data class Output(
     val format: Format,
+    val notation: Notation,
     val destination: Destination
 )
