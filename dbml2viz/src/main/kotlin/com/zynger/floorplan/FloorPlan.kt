@@ -141,10 +141,10 @@ object FloorPlan {
          */
         val teeTee = Arrow.TEE.and(Arrow.TEE)
         val crow = Arrow.CROW
-        val (arrowhead, arrowtail) = when (reference.referenceOrder) {
+        val (arrowtail, arrowhead) = when (reference.referenceOrder) {
             ReferenceOrder.OneToOne -> teeTee to teeTee
             ReferenceOrder.OneToMany -> teeTee to crow
-            ReferenceOrder.ManyToOne -> crow to crow
+            ReferenceOrder.ManyToOne -> crow to teeTee
         }
 
         val attributes: Attributes<ForLink> = attrs(
