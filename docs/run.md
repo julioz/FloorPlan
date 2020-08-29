@@ -44,6 +44,21 @@ The directory will be created if it doesn't exist and the input filename will be
 gradlew run --args="<path-to-schema-file> --output <path-to-output-directory>"
 ```
 
+### ERD Notation (`--notation`, `-n`)
+
+FloorPlan supports rendering entity-relationship diagrams using different notations.
+
+```
+gradlew run --args="<path-to-schema-file> --notation <notation-identifier>"
+```
+
+#### Supported notations
+
+| Name | Identifier | Screenshot |
+|---|---|---|
+| Simplified Chen (default) | `chen` | ![chen notation](images/notation-chen.svg) |
+| [Crow's Foot](https://www.vertabelo.com/blog/crow-s-foot-notation/) | `crowsfoot` | ![crow's foot notation](images/notation-crowsfoot.svg) |
+
 ### Add `CREATION SQL` as [Table note](https://www.dbml.org/docs/#table-notes) (`--creation-sql-as-table-note`, `-ctn`)
 
 This option is **disabled by default** since it can be quite verbose and would 'duplicate' what a UI rendering tool (better) provides.

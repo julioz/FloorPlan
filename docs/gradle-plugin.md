@@ -68,6 +68,25 @@ floorPlan {
 }
 ```
 
+#### ERD Notation
+
+FloorPlan supports rendering entity-relationship diagrams using different notations.
+
+```
+floorPlan {
+    schemaLocation = "$projectDir/schemas".toString()
+    outputLocation = "$projectDir/floorplan-output".toString()
+    notation = "crowsfoot"
+    outputFormat {
+        svg {
+            enabled = true
+        }
+    }
+}
+```
+
+Check [this page](../run/#supported-notations) for the supported notations list.
+
 ### Generate Floor Plan
 
 Once everything is setup, you can finally run FloorPlan to translate database schemas into ER diagrams.
