@@ -2,19 +2,28 @@ package com.zynger.floorplan
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.options.flag
-import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.split
-import com.github.ajalt.clikt.parameters.options.validate
+import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.path
 import com.zynger.floorplan.dbml.Project
 import java.io.File
+import java.util.*
 
 class FloorPlanCli: CliktCommand(
     name = "floorplan",
     help = "Render SCHEMAPATH as DBML or ER diagram."
 ) {
+    init {
+        val properties = Properties().apply {
+            Thread.currentThread().contextClassLoader
+                .getResource("floorplan-cli-version.properties")!!
+                .openStream()
+                .use { load(it) }
+        }
+        val version = properties["floorPlanVersion"].toString()
+        versionOption(version)
+    }
+
     private val onlyDbmlNote = "[note: only for DBML outputs]"
     private val validFormats = listOf("dbml", "svg", "png", "dot")
     private val validNotation = Notation.all.map { it.identifier }

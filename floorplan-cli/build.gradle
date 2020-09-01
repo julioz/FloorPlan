@@ -3,6 +3,7 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm'
 }
+apply from: "../versioning.gradle"
 
 sourceCompatibility = 1.8
 
@@ -13,6 +14,19 @@ repositories {
 
 application {
     mainClassName = "com.zynger.floorplan.FloorPlanCliKt"
+}
+
+task embarkVersionFile() {
+    doLast {
+        def resourcesDir = sourceSets.main.output.resourcesDir
+        resourcesDir.mkdirs()
+        new File(resourcesDir, "floorplan-cli-version.properties").text =
+                """floorPlanVersion=$floorPlanVersion
+                """
+    }
+}
+tasks.named("compileKotlin").configure {
+    finalizedBy "embarkVersionFile"
 }
 
 dependencies {
