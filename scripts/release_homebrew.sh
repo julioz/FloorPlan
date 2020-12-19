@@ -35,7 +35,7 @@ cd homebrew-tap
 git config user.email "julioz@users.noreply.github.com"
 
 cat - <<EOF > floorplan.rb
-class FloorPlan < Formula
+class Floorplan < Formula
   desc "floorplan"
   homepage "https://github.com/julioz/FloorPlan"
   url "https://github.com/julioz/FloorPlan/releases/download/v${floorplan_version}/${FLOORPLAN_DISTRIBUTION_NAME}.zip"
