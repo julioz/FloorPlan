@@ -108,6 +108,11 @@ SONATYPE_NEXUS_PASSWORD=
 ./gradlew publishPlugins
 ```
 
+* Release via homebrew
+```
+scripts/release_homebrew.sh
+```
+
 * Merge the release branch to master
 ```
 git checkout master
