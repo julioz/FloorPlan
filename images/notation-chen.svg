@@ -1,0 +1,63 @@
+<svg width="493px" height="248px"
+ viewBox="0.00 0.00 492.66 248.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(36 212)">
+<polygon fill="white" stroke="transparent" points="-36,36 -36,-212 456.66,-212 456.66,36 -36,36"/>
+<!-- users -->
+<g id="node1" class="node">
+<title>users</title>
+<g id="a_node1"><a xlink:title="Table users&#10;Note: Stores user data&#10;Alias: U">
+<polygon fill="#caff70" stroke="transparent" points="292.16,-88 292.16,-110 421.16,-110 421.16,-88 292.16,-88"/>
+<polygon fill="none" stroke="black" points="292.16,-88 292.16,-110 421.16,-110 421.16,-88 292.16,-88"/>
+<text text-anchor="start" x="342.28" y="-95.4" font-family="Times,serif" font-weight="bold" font-size="14.00">users</text>
+<polygon fill="none" stroke="black" points="292.16,-66 292.16,-88 421.16,-88 421.16,-66 292.16,-66"/>
+<text text-anchor="start" x="328.08" y="-73.4" font-family="Times,serif" font-size="14.00">id: </text>
+<text text-anchor="start" x="346.37" y="-73.4" font-family="Times,serif" font-style="italic" font-size="14.00">integer</text>
+<polygon fill="none" stroke="black" points="292.16,-44 292.16,-66 421.16,-66 421.16,-44 292.16,-44"/>
+<text text-anchor="start" x="305.16" y="-51.4" font-family="Times,serif" font-size="14.00">username: </text>
+<text text-anchor="start" x="366.19" y="-51.4" font-family="Times,serif" font-style="italic" font-size="14.00">varchar</text>
+<polygon fill="none" stroke="black" points="292.16,-22 292.16,-44 421.16,-44 421.16,-22 292.16,-22"/>
+<text text-anchor="start" x="321.1" y="-29.4" font-family="Times,serif" font-size="14.00">role: </text>
+<text text-anchor="start" x="350.26" y="-29.4" font-family="Times,serif" font-style="italic" font-size="14.00">varchar</text>
+<polygon fill="none" stroke="black" points="292.16,0 292.16,-22 421.16,-22 421.16,0 292.16,0"/>
+<text text-anchor="start" x="295.04" y="-7.4" font-family="Times,serif" font-size="14.00">created_at: </text>
+<text text-anchor="start" x="359.95" y="-7.4" font-family="Times,serif" font-style="italic" font-size="14.00">timestamp</text>
+</a>
+</g>
+</g>
+<!-- posts -->
+<g id="node2" class="node">
+<title>posts</title>
+<g id="a_node2"><a xlink:title="Table posts&#10;Note: Stores blog posts">
+<polygon fill="#caff70" stroke="transparent" points="0.5,-154 0.5,-176 129.5,-176 129.5,-154 0.5,-154"/>
+<polygon fill="none" stroke="black" points="0.5,-154 0.5,-176 129.5,-176 129.5,-154 0.5,-154"/>
+<text text-anchor="start" x="50.61" y="-161.4" font-family="Times,serif" font-weight="bold" font-size="14.00">posts</text>
+<polygon fill="none" stroke="black" points="0.5,-132 0.5,-154 129.5,-154 129.5,-132 0.5,-132"/>
+<text text-anchor="start" x="36.42" y="-139.4" font-family="Times,serif" font-size="14.00">id: </text>
+<text text-anchor="start" x="54.71" y="-139.4" font-family="Times,serif" font-style="italic" font-size="14.00">integer</text>
+<polygon fill="none" stroke="black" points="0.5,-110 0.5,-132 129.5,-132 129.5,-110 0.5,-110"/>
+<text text-anchor="start" x="29.43" y="-117.4" font-family="Times,serif" font-size="14.00">title: </text>
+<text text-anchor="start" x="58.6" y="-117.4" font-family="Times,serif" font-style="italic" font-size="14.00">varchar</text>
+<polygon fill="none" stroke="black" points="0.5,-88 0.5,-110 129.5,-110 129.5,-88 0.5,-88"/>
+<text text-anchor="start" x="36.81" y="-95.4" font-family="Times,serif" font-size="14.00">body: </text>
+<text text-anchor="start" x="72.2" y="-95.4" font-family="Times,serif" font-style="italic" font-size="14.00">text</text>
+<polygon fill="none" stroke="black" points="0.5,-66 0.5,-88 129.5,-88 129.5,-66 0.5,-66"/>
+<text text-anchor="start" x="21.26" y="-73.4" font-family="Times,serif" font-size="14.00">user_id: </text>
+<text text-anchor="start" x="69.86" y="-73.4" font-family="Times,serif" font-style="italic" font-size="14.00">integer</text>
+<polygon fill="none" stroke="black" points="0.5,-44 0.5,-66 129.5,-66 129.5,-44 0.5,-44"/>
+<text text-anchor="start" x="14.25" y="-51.4" font-family="Times,serif" font-size="14.00">status: </text>
+<text text-anchor="start" x="53.53" y="-51.4" font-family="Times,serif" font-style="italic" font-size="14.00">post_status</text>
+<polygon fill="none" stroke="black" points="0.5,-22 0.5,-44 129.5,-44 129.5,-22 0.5,-22"/>
+<text text-anchor="start" x="3.38" y="-29.4" font-family="Times,serif" font-size="14.00">created_at: </text>
+<text text-anchor="start" x="68.29" y="-29.4" font-family="Times,serif" font-style="italic" font-size="14.00">timestamp</text>
+</a>
+</g>
+</g>
+<!-- posts&#45;&gt;users -->
+<g id="edge1" class="edge">
+<title>posts:user_id&#45;&gt;users:id</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M129,-77C197.76,-77 217.47,-77 281.45,-77"/>
+<polygon fill="black" stroke="black" points="281.66,-80.5 291.66,-77 281.66,-73.5 281.66,-80.5"/>
+<text text-anchor="middle" x="210.33" y="-81.2" font-family="Times,serif" font-size="14.00">*&#45;1</text>
+</g>
+</g>
+</svg>
