@@ -84,6 +84,8 @@ git tag v<next-release-version>
 git push origin v<next-release-version>
 ```
 
+* Create a [new GitHub release based on that tag](https://github.com/julioz/FloorPlan/releases/new), and upload the zip and tar distributions
+
 * Make sure you have valid credentials in `~/.gradle/gradle.properties` to upload the artifacts
 ```
 SONATYPE_NEXUS_USERNAME=
@@ -106,6 +108,11 @@ SONATYPE_NEXUS_PASSWORD=
 * Release to Gradle Plugin Portal
 ```
 ./gradlew publishPlugins
+```
+
+* Release via homebrew
+```
+scripts/release_homebrew.sh
 ```
 
 * Merge the release branch to master
