@@ -5,6 +5,13 @@ After checking out this repository, [make sure you have Gradle installed](https:
 gradlew run --args="<path-to-schema-file>"
 ```
 
+### Installation with Homebrew
+
+On MacOS you can install `FloorPlan` also with [Homebrew](https://brew.sh/)
+```
+brew install julioz/tap/floorplan
+```
+
 ## Command-line arguments
 
 ### Output format (`--format`, `-f`)
