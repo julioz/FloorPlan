@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e
+set -o pipefail
+
 ## Update the homebrew descriptor (Inspired by https://github.com/holgerbrandl/kscript/issues/50)
 
 FLOORPLAN_CLI_HOME=floorplan-cli
@@ -31,12 +34,11 @@ cd homebrew-tap
 
 git config user.email "julioz@users.noreply.github.com"
 
-
 cat - <<EOF > floorplan.rb
 class FloorPlan < Formula
   desc "floorplan"
   homepage "https://github.com/julioz/FloorPlan"
-  url "https://github.com/holgerbrandl/kscript/releases/download/v${floorplan_version}/kscript-${floorplan_version}-bin.zip"
+  url "https://github.com/julioz/FloorPlan/releases/download/v${floorplan_version}/${FLOORPLAN_DISTRIBUTION_NAME}.zip"
   sha256 "${archiveMd5}"
 
   bottle :unneeded
@@ -50,8 +52,8 @@ class FloorPlan < Formula
 end
 EOF
 
-#git add kscript.rb
-#git commit -m "v${floorplan_version} release"
-#git push #origin releases
-#
+git add floorplan.rb
+git commit -m "v${floorplan_version} release"
+git push
+
 ## to test use `brew install julioz/tap/floorplan`
