@@ -7,16 +7,18 @@ import java.io.File
 
 object FloorPlanConsumerSniffer {
 
-    fun sniff(inputSourceFile: File): Consumer {
-        return when (inputSourceFile.extension) {
-            "json" -> RoomConsumer
-            "db" -> SqliteConsumer
-            "dbml" -> DbmlConsumer
-            else -> throw IllegalArgumentException("Unknown file extension: ${inputSourceFile.extension}")
-        }
-    }
+    private val extensionToConsumer = mapOf(
+        "json" to RoomConsumer,
+        "db" to SqliteConsumer,
+        "dbml" to DbmlConsumer
+    )
 
-    fun isConsumable(inputSourceFile: File): Boolean {
-        return inputSourceFile.extension == "json" || inputSourceFile.extension == "db"
-    }
+    fun sniff(inputSourceFile: File): Consumer =
+        if (isConsumable(inputSourceFile)) {
+            extensionToConsumer.getValue(inputSourceFile.extension)
+        } else {
+            throw IllegalArgumentException("Unknown file extension: ${inputSourceFile.extension}")
+        }
+
+    fun isConsumable(inputSourceFile: File): Boolean = extensionToConsumer.containsKey(inputSourceFile.extension)
 }
