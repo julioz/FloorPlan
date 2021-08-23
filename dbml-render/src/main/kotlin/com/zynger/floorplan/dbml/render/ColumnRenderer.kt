@@ -2,6 +2,7 @@ package com.zynger.floorplan.dbml.render
 
 import com.zynger.floorplan.Settings
 import com.zynger.floorplan.dbml.Column
+import java.util.*
 
 class ColumnRenderer(
     private val column: Column,
@@ -45,7 +46,7 @@ class ColumnRenderer(
     }
 
     private fun String.toType(): String {
-        return when (this.toUpperCase().trim()) {
+        return when (this.uppercase(Locale.ENGLISH).trim()) {
             "TEXT" -> "varchar"
             "INTEGER" -> "int"
             "REAL" -> "real"
@@ -58,7 +59,7 @@ class ColumnRenderer(
                  *
                  * https://www.dbml.org/docs/#table-definition
                  */
-                this.toLowerCase().replace("\\s".toRegex(), "")
+                this.lowercase(Locale.ENGLISH).replace("\\s".toRegex(), "")
             }
         }
     }

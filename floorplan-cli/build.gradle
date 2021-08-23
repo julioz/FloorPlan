@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-    id 'java'
+    id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
 }
 apply from: "../versioning.gradle"
@@ -9,11 +9,10 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 application {
-    mainClassName = "com.zynger.floorplan.FloorPlanCliKt"
+    getMainClass().set("com.zynger.floorplan.FloorPlanCliKt")
 }
 
 task embarkVersionFile() {

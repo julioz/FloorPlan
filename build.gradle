@@ -4,7 +4,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         if (includeSampleApp) {
             mavenLocal()
         }
@@ -17,7 +17,7 @@ buildscript {
     }
 }
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.0' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.5.21' apply false
 }
 
 apply from: "versioning.gradle"
@@ -28,5 +28,4 @@ subprojects {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
