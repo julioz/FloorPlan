@@ -1,4 +1,4 @@
 ext {
   floorPlanGroup = "com.juliozynger.floorplan"
-  floorPlanVersion = "0.4-SNAPSHOT"
+  floorPlanVersion = "0.4"
 }
