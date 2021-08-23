@@ -4,7 +4,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         if (includeSampleApp) {
             mavenLocal()
         }
@@ -28,5 +28,4 @@ subprojects {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
