@@ -33,7 +33,7 @@ class FloorPlanCli: CliktCommand(
         canBeDir = false
     )
     private val outputPath by option(
-        names = *arrayOf("-o", "--output"),
+        names = arrayOf("-o", "--output"),
         help = "Output directory for the rendering content"
     ).path(
         mustExist = false,
@@ -41,7 +41,7 @@ class FloorPlanCli: CliktCommand(
         canBeDir = true
     )
     private val formats by option(
-        names = *arrayOf("--format", "-f"),
+        names = arrayOf("--format", "-f"),
         help = "Specify an output format for the rendering content [one or more of DBML, SVG, PNG, DOT]"
     ).split(",").validate {
         require(it.all { format -> validFormats.contains(format) }) {
@@ -49,7 +49,7 @@ class FloorPlanCli: CliktCommand(
         }
     }
     private val notation by option(
-        names = *arrayOf("--notation", "-n"),
+        names = arrayOf("--notation", "-n"),
         help = "Specify the notation for the relationship rendering in the diagram [one of ${validNotation.joinToString()}]"
     ).validate {
         require(validNotation.contains(it)) {
@@ -77,7 +77,7 @@ class FloorPlanCli: CliktCommand(
         }
 
         val outputFormats = formats?.map {
-            when (it.trim().toLowerCase()) {
+            when (it.trim().lowercase(Locale.ENGLISH)) {
                 "dbml" -> Format.DBML(
                     DbmlConfiguration(
                         creationSqlAsTableNote,

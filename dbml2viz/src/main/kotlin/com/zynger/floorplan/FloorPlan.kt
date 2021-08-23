@@ -150,7 +150,7 @@ object FloorPlan {
         val attributes: Attributes<ForLink> = attrs(
             attr("arrowhead", arrowhead.value),
             attr("arrowtail", arrowtail.value),
-            attr("dir", Arrow.DirType.BOTH.name.toLowerCase(Locale.ENGLISH))
+            attr("dir", Arrow.DirType.BOTH.name.lowercase(Locale.ENGLISH))
         )
         return between(port(reference.fromColumn), node(reference.toTable).port(reference.toColumn))
             .with(attributes)

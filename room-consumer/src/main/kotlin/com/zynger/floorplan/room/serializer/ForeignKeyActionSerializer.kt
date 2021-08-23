@@ -7,6 +7,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import java.util.*
 
 object ForeignKeyActionSerializer: KSerializer<ForeignKeyAction> {
 
@@ -14,7 +15,7 @@ object ForeignKeyActionSerializer: KSerializer<ForeignKeyAction> {
         get() = PrimitiveSerialDescriptor("foreignKeyActionSerializer", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): ForeignKeyAction {
-        val value = decoder.decodeString().toUpperCase()
+        val value = decoder.decodeString().uppercase(Locale.ENGLISH)
         return ForeignKeyAction.values().find { it.key == value }!!
     }
 
