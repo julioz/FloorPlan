@@ -3,7 +3,7 @@
 ## 0.4
 
 - Gradle Plugin: Take in DBML files [as input](https://github.com/julioz/FloorPlan/pull/63).
-  - General: FloorPlan CLI is now distributed via homebrew! Checkout the [documentation](https://julioz.github.io/FloorPlan/contributing/) for more information.
+- General: FloorPlan CLI is now distributed via homebrew! Checkout the [documentation](https://julioz.github.io/FloorPlan/contributing/) for more information.
 - General: Update to [Kotlin 1.5](https://github.com/julioz/FloorPlan/pull/64).
 
 ## 0.3
