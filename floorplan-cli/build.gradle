@@ -1,3 +1,5 @@
+import java.nio.file.Paths
+
 plugins {
     id 'application'
     id 'java-library'
@@ -15,15 +17,23 @@ application {
     getMainClass().set("com.zynger.floorplan.FloorPlanCliKt")
 }
 
-task embarkVersionFile() {
+tasks.register('embarkVersionFile') {
+    inputs.property("floorPlanVersion", floorPlanVersion)
+
+    outputs.file(
+        Paths.get(sourceSets.main.output.resourcesDir.path)
+            .resolve("floorplan-cli-version.properties")
+    ).withPropertyName("floorplanVersionPropertiesFile")
+
     doLast {
         def resourcesDir = sourceSets.main.output.resourcesDir
         resourcesDir.mkdirs()
         new File(resourcesDir, "floorplan-cli-version.properties").text =
-                """floorPlanVersion=$floorPlanVersion
+            """floorPlanVersion=$floorPlanVersion
                 """
     }
 }
+
 tasks.named("compileKotlin").configure {
     finalizedBy "embarkVersionFile"
 }
