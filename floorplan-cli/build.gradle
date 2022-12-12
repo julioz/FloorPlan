@@ -17,25 +17,26 @@ application {
     getMainClass().set("com.zynger.floorplan.FloorPlanCliKt")
 }
 
-tasks.register('embarkVersionFile') {
+def embarkVersionFileTask = tasks.register('embarkVersionFile') {
     inputs.property("floorPlanVersion", floorPlanVersion)
 
-    outputs.file(
-        Paths.get(sourceSets.main.output.resourcesDir.path)
-            .resolve("floorplan-cli-version.properties")
-    ).withPropertyName("floorplanVersionPropertiesFile")
+    def genDir = layout.buildDirectory.dir('generated-props')
+    outputs.dir(genDir)
 
     doLast {
-        def resourcesDir = sourceSets.main.output.resourcesDir
-        resourcesDir.mkdirs()
-        new File(resourcesDir, "floorplan-cli-version.properties").text =
-            """floorPlanVersion=$floorPlanVersion
-                """
+        genDir.get()
+            .file('floorplan-cli-version.properties')
+            .asFile
+            .text = "floorPlanVersion=$floorPlanVersion"
     }
 }
 
-tasks.named("compileKotlin").configure {
-    finalizedBy "embarkVersionFile"
+sourceSets {
+    main {
+        resources {
+            srcDir(embarkVersionFileTask)
+        }
+    }
 }
 
 dependencies {
