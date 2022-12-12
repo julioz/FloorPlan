@@ -21,7 +21,7 @@ def embarkVersionFileTask = tasks.register('embarkVersionFile') {
     inputs.property("floorPlanVersion", floorPlanVersion)
 
     def genDir = layout.buildDirectory.dir('generated-props')
-    outputs.dir(genDir).withPropertyName("floorplanVersionGeneratedPropertiesFile")
+    outputs.dir(genDir)
 
     doLast {
         genDir.get()
